@@ -5,6 +5,11 @@ Use the human's first domain message as the brief. Create `_work/<date>-<slug>/S
 
 The reusable knowledge index points to canonical facts and human answers. Do not copy whole transcripts into memory. Classify each assertion as sourced fact, human decision, recommendation, assumption, or open question. Every decision names the business benefit, alternatives/costs, and evidence that would invalidate it.
 
+## Objective-led iteration
+Before decomposing a request, read the living objective map in knowledge/business.md. Name the primary objective, the secondary objective served, dependencies and observable done criteria. Establish enough industry/company/role context to explain why the requested behavior matters; mark missing facts explicitly. Do not model an entire company before the first useful prototype. Keep one evolving map rather than creating sprint/roadmap documents.
+
+Loop: smallest testable case → prototype → inspect output with the human → revise unanswered scenarios → integrate the behavior supported by evidence. The human can change direction; update the map and sources instead of defending an obsolete plan. A prototype can confirm usefulness for the simulated case without proving real-world effectiveness. Integration still requires validation and the pre-merge peer gate. Maintain a brief-to-deliverable coverage table in DESIGN.md and draft known sections as information arrives; leave architecture, run results and time as pending until evidenced.
+
 ## Git and shared information on main
 `main` is both the integration branch and canonical shared record. Its physical checkout is discovered with `git worktree list --porcelain`, not a hard-coded machine path. Product changes live in sibling worktrees. Shared `memory/`, `knowledge/`, `_work/`, and `prompts/` records are written directly to the main checkout, not separate divergent feature copies.
 
@@ -26,7 +31,7 @@ python scripts/workspace.py new feature-slug
 ## Review lifecycle and definition of done
 Track each stage as pending / active / passed / failed / blocked / not-applicable (with reason): input, questions, plan, implementation, validation, security/reliability audit, review result. Each pass needs an evidence reference. No placeholder is a pass. Research tasks can have implementation = a document and tests = source/consistency checks.
 
-The author checks each step, then asks the other vendor to challenge substantive decisions and results. Ask about business fit, missing scenarios, incorrect assumptions, failure/retry behavior, privacy, and evidence. One bounded peer call per related step group is sufficient; material fixes get another review. A reviewer receives supplied context and does not recursively invoke the author. Distinguish addressed, rejected-with-rationale, and unresolved findings. Model agreement is evidence, not proof.
+The author checks each substantive step. Cross-vendor consultation is required at plan, pre-merge, and final gates (human answer, decision 0002); intermediate edits use self-checks. A discovery plan may pass as a plan for discussion without implying approval to implement an unresolved product. The pre-merge review covers changes being integrated, including material instruction changes; the final review covers the full assessment before completion. Ask about business fit, missing scenarios, incorrect assumptions, failure/retry behavior, privacy, and evidence. Material findings get fixes and re-review at the relevant gate. A reviewer receives supplied context and does not recursively invoke the author. Distinguish addressed, rejected-with-rationale, and unresolved findings. Model agreement is evidence, not proof.
 
 Final assessment review walks the original brief, thesis, real end-to-end workflow, everyday-user UI including failure states, eval cases, README run instructions, real/stubbed inventory, design doc, secrets check, actual time spent, and limitations. Every step must receive AI review. Until there is a product and this gate passes, the assessment is incomplete. Human business answers stay pending until provided; no additional approval gates are imposed for routine authorized work.
 
