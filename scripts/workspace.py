@@ -42,6 +42,8 @@ def main():
         print(json.dumps({'worktree': str(root), 'main': str(canonical), 'lock': str(lock)}, indent=2))
         return
     if args.command == 'lock':
+        if root != canonical:
+            raise ValueError('Acquire shared records lock from canonical main checkout')
         lock.mkdir()  # Atomic; an existing lock is a failure, never overwritten.
         (lock / 'owner.json').write_text(json.dumps({'worktree': str(root), 'owner': args.owner, 'created': datetime.now().astimezone().isoformat()}), encoding='utf-8')
         print('Records lock acquired. Release after checkpoint with unlock.')
@@ -94,7 +96,7 @@ def main():
     paths = []
     for value in args.paths:
         path = (root / value).resolve()
-        if not path.is_relative_to(root) or path.relative_to(root).parts[0] not in allowed:
+        if not path.is_relative_to(root) or not path.relative_to(root).parts or path.relative_to(root).parts[0] not in allowed:
             raise ValueError('Checkpoint accepts only explicit shared record files inside main')
         if not path.is_file():
             raise ValueError('Pass individual existing files; deletions require manual review')

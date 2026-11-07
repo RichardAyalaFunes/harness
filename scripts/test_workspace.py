@@ -54,6 +54,7 @@ class WorkspaceTests(unittest.TestCase):
         base = ['checkpoint', '--owner', 'chat-a', '--message', 'record', '--paths']
         self.run_helper(*base, 'product.txt', ok=False)
         self.run_helper(*base, '../outside.md', ok=False)
+        self.run_helper(*base, '.', ok=False)
         self.run_helper('checkpoint', '--owner', 'chat-b', '--message', 'bad', '--paths', 'memory/STATE.md', ok=False)
         self.git('add', 'product.txt')
         self.run_helper(*base, 'memory/STATE.md', ok=False)
@@ -73,6 +74,7 @@ class WorkspaceTests(unittest.TestCase):
         result = self.run_helper('info', cwd=target)
         self.assertIn(str(self.root).replace('\\', '\\\\'), result.stdout)
         self.run_helper('new', 'other', cwd=target, ok=False)
+        self.run_helper('lock', '--owner', 'feature-chat', cwd=target, ok=False)
         self.assertTrue(list((self.root / '_work').glob('*example/STATE.md')))
 
     def test_commit_failure_preserves_edits_and_clears_owned_index(self):
