@@ -1,0 +1,12 @@
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+node_modules/
+__pycache__/
+.venv/
+.worktrees/
+.claude/settings.local.json
+*.local.json
+artifacts/local/

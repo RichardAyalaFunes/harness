@@ -1,0 +1,1 @@
+Connectivity and isolation smoke check only. Reply with your vendor identity and READY. Do not use tools or call models. This is not a product or implementation review.
