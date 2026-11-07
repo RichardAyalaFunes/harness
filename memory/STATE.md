@@ -16,4 +16,4 @@ Next: human refines thesis and supplies fictional client/role and report operato
 
 Git main is canonical. Existing worktree: D:/AI_SPACE/OWN/harness-challenge-business-discovery (work/business-discovery). Merge current main into that clean worktree before product work. No remote/publication. Logs and locks remain cooperative protocols, not global platform interception.
 
-Status check: client/role and report user/action are the next human inputs; first costly mistake and time budget remain open. Newly present .agents/, .claude/ and skills-lock.json are untracked and outside the previous validation; they were inspected for file inventory only and left unchanged.
+Status check (Codex, superseded by the client-context answers above: client/role, user and time budget are answered; the "first costly mistake" belonged to former P): client/role and report user/action are the next human inputs; first costly mistake and time budget remain open. Newly present .agents/, .claude/ and skills-lock.json are untracked and outside the previous validation; they were inspected for file inventory only and left unchanged.
