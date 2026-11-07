@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Client context · Discovery questions</title>
+<style>*{box-sizing:border-box}body{margin:0;background:#f4f5f0;color:#182c29;font:16px/1.6 system-ui,sans-serif}main{max-width:1100px;margin:auto;padding:40px 22px 80px}h1{font-size:clamp(1.9rem,5vw,3.1rem);line-height:1.12;max-width:880px}h2{line-height:1.25}a{color:#146452}.tag{font-size:.85rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#146452}.muted,.source{color:#526560}.source{font-size:.88rem}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}.card,fieldset{background:#fff;border:1px solid #cbd7d0;border-radius:12px;padding:24px;margin:0 0 22px;min-width:0}legend{font-size:1.1rem;font-weight:700;padding:0 8px}label{display:block;margin:14px 0 8px;font-weight:650}select,textarea{font:inherit;width:100%;padding:12px;border:1px solid #82998f;border-radius:6px;background:#fff;color:#182c29;min-height:44px}textarea{min-height:90px}button{min-height:44px;padding:12px 20px;background:#146452;color:#fff;border:0;border-radius:6px;font:inherit;font-weight:650;cursor:pointer}button:focus-visible,a:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid #ad5d1f;outline-offset:3px}.option{border-left:3px solid #cbd7d0;padding-left:14px;margin:16px 0}.recommend{border-color:#146452}.note{border-left:4px solid #146452;padding:12px 18px;background:#e5eee7}pre{background:#f4f5f0;border:1px solid #cbd7d0;border-radius:8px;padding:14px;overflow-x:auto;font-size:.88rem;line-height:1.45}table{border-collapse:collapse;width:100%;font-size:.95rem}th,td{text-align:left;vertical-align:top;padding:10px;border-bottom:1px solid #cbd7d0}th{background:#e5eee7}.table-scroll{overflow-x:auto}.pill{display:inline-block;padding:4px 10px;background:#e5eee7;border-radius:6px;margin:4px 4px 0 0;font-size:.9rem}nav{display:flex;gap:18px;flex-wrap:wrap}@media(max-width:720px){.grid{grid-template-columns:1fr}main{padding:24px 16px 60px}.card,fieldset{padding:18px}}@media print{button,nav{display:none}body{background:#fff}}</style></head>
+<body><main>
+<nav><a href="../../readme.html">Workspace home</a><a href="../../knowledge/business.md">Objective map</a><a href="../2026-11-07-business-discovery/discussion.html">Previous discussion</a><a href="#questions">Questions</a></nav>
+<header>
+<p class="tag">Discovery · Question set · No product built yet</p>
+<h1>The job description is not enough. How does the harness keep the role understanding current?</h1>
+<p>Source: your message of 2026-11-07 (<code>prompts/client-context/001-user.md</code>). Everything under “What you told us” comes from you. Everything else is a <strong>proposal</strong> and stays unapproved until you answer.</p>
+<span class="pill">Fact: clients are SMBs, ≤ 80–100 people</span><span class="pill">Fact: every client touchpoint is re-analysed</span><span class="pill">Fact: sources are simulated in a folder</span><span class="pill">Fact: no production deploy</span>
+</header>
+
+<section class="card"><h2>What you told us</h2>
+<ul>
+<li>A job description describes a team, but not what the company expects of that team or where the company is heading. The harness has to reason about both.</li>
+<li>A kickoff meeting captures current state and expectations at 6, 9, 12 and 18 months.</li>
+<li>Any message or meeting can change the earlier understanding, including budget, urgency and importance. Some changes are small and some are large. Each one must be re-analysed against what we already know.</li>
+<li>Client restrictions matter, for example required universities or previous employers.</li>
+<li>Sources to simulate in a folder: email, calendar, meeting transcripts (tl;dv-style), Slack/Teams, Notion, plus external intel: news, funding, Glassdoor-style reviews, forums, social posts and hiring signals.</li>
+<li>More information is not better. Dispersed or noisy context degrades results, so relevance has to be filtered. <strong>Rule: do not overfill the context window.</strong></li>
+<li>Results are saved to a simulated ATS/CRM (HubSpot-, Greenhouse-like or internal).</li>
+<li>In production: raw files go to a file bucket and derived knowledge to a database with RAG embeddings. For this assessment, local files such as JSONL are acceptable.</li>
+<li>The AI reaches data through a CLI or Node.js tools it can start itself. Setup after cloning from GitHub should be minimal, for example <code>pnpm install</code> and then start.</li>
+</ul></section>
+
+<section class="card"><h2>Proposed reframing of the primary objective</h2>
+<p class="note"><strong>Proposal P′:</strong> keep the agency's understanding of a client role accurate and current as client communications and company signals arrive. After each touchpoint, the recruiter sees what changed, why it matters (budget, urgency, must-haves, constraints, horizon), and what to do next. The ATS/CRM record is updated only after the recruiter confirms.</p>
+<p>How this relates to the earlier draft P (recruiter calibration): the living role profile becomes the <em>reference</em> against which a recruiter's understanding could later be checked. Question C1 asks which of the two leads.</p>
+<div class="grid">
+<div><strong>Example flow</strong><p>JD → kickoff transcript → role profile v1 → founder email: “board wants profitability, push start date to Q3, cap budget” → delta: urgency ↓, budget ↓, seniority under review, severity <em>material</em> → recruiter confirms → profile v2 → ATS note + task “re-confirm salary band”.</p></div>
+<div><strong>Proposed role-profile fields</strong><p>Company stage and trajectory · why the role exists now · team today and what it expects · what the company expects of the team · outcomes at 6/9/12/18 months · must-have vs. trainable · client restrictions (with risk flag) · budget / urgency / priority · open unknowns · source citations per field · version and “as of”.</p></div>
+</div></section>
+
+<section class="card"><h2>Proposed folder layout</h2>
+<p>Product data lives under <code>harness/</code>, separate from the workspace's own <code>knowledge/</code> and <code>memory/</code>, which record our development process rather than product data.</p>
+<pre>harness/
+  data/
+    sources/                      # simulated bucket: raw, immutable, fictional
+      &lt;client-id&gt;/
+        manifest.jsonl            # one line per item: id, channel, date, author, path
+        email/2026-10-02-jd.md    # header block + body (email-like)
+        calendar/events.json
+        transcripts/2026-10-05-kickoff.md   # speaker-labelled, tl;dv-style
+        chat/slack-export.jsonl
+        docs/notion-hiring-plan.md
+        intel/news-*.md  intel/reviews-*.md  intel/social-*.md
+    store/                        # simulated database: derived, append-only
+      signals.jsonl               # extracted facts: field, value, source_id, quote, reliability
+      role-events.jsonl           # each re-analysis: delta, severity, decision
+      roles/&lt;role-id&gt;.json        # current profile snapshot (versioned)
+    ats/                          # simulated ATS/CRM
+      clients.jsonl contacts.jsonl roles.jsonl notes.jsonl activities.jsonl
+  src/  (cli, tools, harness loop, web UI)
+  fixtures/  (scenario + intended reading for evals)</pre>
+<div class="table-scroll"><table><caption>Simulation vs. production mapping (proposal)</caption>
+<tr><th>Concern</th><th>This assessment</th><th>Production</th></tr>
+<tr><td>Raw files</td><td><code>data/sources/</code> folder</td><td>Object storage bucket</td></tr>
+<tr><td>Derived knowledge</td><td>JSONL + JSON snapshots</td><td>Database + vector index</td></tr>
+<tr><td>Retrieval</td><td>Metadata filter + keyword ranking; embedding interface stubbed</td><td>Hybrid search with embeddings</td></tr>
+<tr><td>Connectors</td><td>Ingest command reads new files in the folder</td><td>Gmail/Outlook, calendar, tl;dv, Slack, Teams, Notion webhooks</td></tr>
+<tr><td>ATS/CRM</td><td>JSONL tables behind an adapter</td><td>HubSpot / Greenhouse / internal API adapter</td></tr>
+</table></div></section>
+
+<section id="questions"><h2>Questions</h2>
+<p>Recommended options are proposals, not pre-selected answers. Skip anything and it stays pending. Answer here and export the JSON, or reply in chat with question IDs (for example “C1 A, C3 your proposal but fintech”). Start with <strong>C1–C3</strong>, which unblock the plan. C4 onward can take the recommended default if you prefer.</p>
+<form id="f"></form>
+<button id="export" type="button">Export answers (JSON)</button>
+<p id="status" role="status" aria-live="polite">Nothing is saved automatically. Export does not write repository files. Answers become canonical only after you send them to the agent and it records them.</p>
+</section>
+<p class="source">Proposals by Claude (this chat). Not reviewed by a peer yet: the cross-vendor plan gate runs after your answers shape a plan. Structure and inline-script checks only; browser QA has not been done.</p>
+</main>
+<script>
+const Q=[
+['C1','Which idea leads the first vertical slice?','Primary objective. Your new message centres on keeping the role understanding current. The earlier draft centred on calibrating recruiters.',[
+['A','Living client/role understanding leads; calibration later uses it as the reference',1,'Matches the reasoning you described. One clear, demonstrable end-to-end workflow.','Recruiter calibration moves to a stretch goal or a "what next" item.'],
+['B','Recruiter calibration leads; the living profile only generates the reference',0,'Keeps the earlier, more unusual angle.','Multi-source ingestion becomes setup for the reference, so most effort goes into plumbing.'],
+['C','Both in the first slice',0,'Most complete story.','Roughly twice the scope; risks a half-built slice.']]],
+['C2','Who uses it, and what decision does it change?','End user. The brief scores empathy for a non-technical user.',[
+['A','The recruiter or account manager who owns the search: “what changed, does it matter, what do I do”',1,'Makes the next step concrete: re-brief sourcing, ask the client, pause, update the ATS.','A recruiting-lead overview is not covered.'],
+['B','Recruiting lead overseeing several roles',0,'Portfolio view of at-risk searches.','Needs several clients and roles in the first slice.'],
+['C','Client-facing: share back “here is what we understood”',0,'Builds client alignment.','Needs client-safe output and tone controls.']]],
+['C3','Which fictional client and role?','O1. Proposal: "Northwind Freight Tech" (fictional), 55 people, logistics SaaS, Series A closed 3 months ago, hiring a Senior Backend Engineer expected to lead a 3-person squad within 12 months. Accept it, adjust it or give your own.',null],
+['C4','How many source events in the first scenario?','O2. Enough to show both a small and a large change without flooding context.',[
+['A','6–8 events across 5 channels, including one disruptive change and one noisy or irrelevant item',1,'Shows minor vs. material deltas and noise filtering.','About a day of mock-data writing and review.'],
+['B','3 events: JD, kickoff, one change',0,'Fastest.','Does not demonstrate relevance filtering or multi-channel sources.'],
+['C','15+ events',0,'Realistic volume.','Hard to review; most of the time goes into data, not judgment.']]],
+['C5','How should change severity be expressed?','Your point: "sometimes small, sometimes higher."',[
+['A','None / minor / material / critical, plus the affected fields and a recommended action',1,'Easy for a recruiter to read and testable against fixtures.','Boundaries between levels need examples in the rubric.'],
+['B','Free-text impact summary',0,'Flexible.','Hard to evaluate or sort.'],
+['C','Numeric 0–100 score',0,'Sortable.','False precision; hard to justify.']]],
+['C6','Who applies a change to the role profile and the ATS?','Guards against an AI misreading silently rewriting the brief.',[
+['A','Harness proposes; the recruiter accepts, edits or rejects each delta; everything is logged',1,'Human in the loop, auditable, and shows failure handling.','One extra click per change.'],
+['B','Auto-apply with an undo log',0,'Zero friction.','Wrong extractions spread to sourcing before anyone notices.']]],
+['C7','How should restrictive client requirements be handled (for example universities, previous employers, age or nationality proxies)?','Some criteria may be legitimate and some may be discriminatory depending on jurisdiction. This is not legal advice.',[
+['A','Record each one with its source; flag possibly risky ones for recruiter review with a reason; never apply silently',1,'Respects the client while showing responsible design.','Needs a short, conservative list of flag patterns.'],
+['B','Record as stated, no flags',0,'Simplest.','Can automate exclusionary filters.'],
+['C','Refuse risky criteria',0,'Strongest guardrail.','Overrides legitimate business needs; the recruiter loses control.']]],
+['C8','How realistic should external intel be (news, funding, reviews, social)?','O1. You want company context beyond the JD.',[
+['A','Fully fictional company with synthetic news, reviews and posts, each labelled synthetic',1,'No real-company claims, no scraping or terms-of-service issues, and repeatable evals.','Does not demonstrate live research.'],
+['B','A real public company',0,'Feels realistic.','Accuracy and defamation risk; data goes stale.'],
+['C','Live web search at run time',0,'Shows real research.','Non-deterministic, needs keys, hard to evaluate.']]],
+['C9','How should relevance and noise be controlled?','Your point: more information does not mean better results.',[
+['A','Extract each item into small signals scored by relevance to role fields, freshness and source reliability (client statement > internal note > news > anonymous review); only top signals and the current profile enter context',1,'Bounded context; conflicts are visible and cited.','The reliability ordering is an assumption you should check.'],
+['B','Summarise every item and pass all summaries',0,'Simple.','Grows with every message; this is the noise you want to avoid.']]],
+['C10','How should the raw simulated sources be stored?','Your question: where and in which folder.',[
+['A','Per client, per channel, near-native formats (email-like .md, calendar .json, transcript .md, Slack-export .jsonl, Notion .md) plus a manifest.jsonl',1,'Feels like real connectors and ingest stays realistic; easy to read and review.','Ingest needs a small parser per channel.'],
+['B','One JSONL with all messages normalised',0,'Easiest to code.','Hides the multi-system reality you want to show.']]],
+['C11','Which format for the derived knowledge store?','You asked: JSONL, JSON or CSV.',[
+['A','JSONL append-only logs (signals, role events, ATS tables) plus JSON snapshots for current profiles',1,'Append-only history, streamable line by line, Git-diffable, no database install. Node reads it with built-ins.','No indexes; fine at assessment scale.'],
+['B','SQLite through Node 24’s built-in node:sqlite',0,'Real queries and full-text search, still no install.','Binary file in Git; less transparent to reviewers.'],
+['C','CSV',0,'Opens in a spreadsheet.','Poor fit for nested fields, quotes and multiline text.'],
+['D','Plain JSON files only',0,'Simple.','Rewriting whole files loses append-only history.']]],
+['C12','Embeddings / RAG in the assessment?','In production you expect a database with RAG embeddings.',[
+['A','Metadata filters plus keyword ranking now, behind a retrieval interface; embeddings named as a stub',1,'No second API key, deterministic tests, honest about the stub.','Semantic matches can be missed; mitigated by structured signals.'],
+['B','Local embeddings via a downloadable small model',0,'Real vector search offline.','Model download (tens of MB) and a heavier setup.'],
+['C','Hosted embeddings API',0,'Closest to production.','A second provider key that reviewers may not have.']]],
+['C13','What shape should the simulated ATS/CRM take?','You mentioned HubSpot, Greenhouse or an internal system.',[
+['A','Generic internal ATS (clients, contacts, roles, notes, activities) behind an adapter interface',1,'Small, neutral, and shows where a real adapter would plug in.','Not a faithful copy of any product.'],
+['B','Field names mirroring one vendor’s export',0,'Recognisable to recruiters.','More fields, brand imitation, and vendor schemas change.']]],
+['C14','How do the AI and the user reach the data?','Your proposal: CLI or Node.js tools the AI can start.',[
+['A','One Node package: the same functions run as a CLI (pnpm harness …), as model tools in the harness loop, and behind a local web UI started with pnpm start',1,'One code path; Claude Code or a reviewer can use the CLI directly.','Learning one small package.'],
+['B','Separate local HTTP API server that everything calls',0,'Clean service boundary.','Extra process and more to break during setup.'],
+['C','An MCP server as well',0,'Plugs into AI clients.','Extra surface; can be added later.']]],
+['C15','What exactly is the context-window rule?','Your standing rule: do not overfill context.',[
+['A','Tools return IDs and short summaries under a fixed cap; raw text only by ID with an excerpt limit; each analysis sees the current profile, the new item and the top related signals, never the full history',1,'Predictable cost and quality; testable as a guardrail.','Caps need tuning; truncation must be visible.'],
+['B','Only a per-run token budget',0,'Simple.','Does not stop irrelevant material from crowding the context.']]],
+['C16','Model runtime and keyless running','E1 is open. RadHires offers a temporary Claude API key on request.',[
+['A','Claude API with a recorded replay mode, so reviewers can run the full flow without a key; live mode when a key is set',1,'Runs right after clone and evals are repeatable.','Replay shows recorded outputs; it must be labelled as such.'],
+['B','Live only; key required',0,'Always real output.','Reviewers without a key cannot run it.'],
+['C','Another provider',0,'Your choice.','Tell us which and why.']]],
+['C17','What should the everyday interface be?','The brief asks you to justify the interface for a non-technical user.',[
+['A','Local web page: role profile “as of” vX, a timeline of touchpoints, “what changed” cards with accept/edit/reject, and ATS sync status',1,'Matches the recruiter’s mental model (client timeline); failures are visible.','Needs a small front end.'],
+['B','Chat surface',0,'Familiar.','Changes and history are harder to scan.'],
+['C','CLI only',0,'Cheapest.','Not for everyday recruiters.']]],
+['C18','Who authors the mock data and its intended reading?','Eval references need an owner. Previously you agreed to review fictional references.',[
+['A','AI drafts each source item plus a hidden "intended reading" sheet (expected deltas and severity); you review',1,'Fast, with clear eval ground truth.','Your review time is the bottleneck.'],
+['B','You write the key client messages; AI fills the rest',0,'Most realistic voice.','Slower to produce.']]],
+['C19','Fields, horizons or restrictions to add or remove','Review the proposed role-profile fields above (including 6/9/12/18-month outcomes).',null],
+['C20','Time budget and constraints','Hours available, deadline, whether to request the RadHires key, and anything that is off limits.',null]
+];
+const f=document.getElementById('f');
+function el(t,txt,cls){const e=document.createElement(t);if(txt)e.textContent=txt;if(cls)e.className=cls;return e;}
+for(const [id,title,why,opts] of Q){const fs=el('fieldset');fs.appendChild(el('legend',id+' · '+title));fs.appendChild(el('p',why,'muted'));
+ if(opts){for(const [k,l,rec,b,c] of opts){const d=el('div',null,'option'+(rec?' recommend':''));d.appendChild(el('strong',k+' · '+l+(rec?' (recommended)':'')));const p=el('p');p.appendChild(document.createTextNode('Benefit: '+b));p.appendChild(el('br'));p.appendChild(document.createTextNode('Cost: '+c));d.appendChild(p);fs.appendChild(d);}
+  const lb=el('label','Your answer');lb.htmlFor=id;const s=el('select');s.id=id;s.name=id;s.appendChild(new Option('Unanswered',''));for(const [k,l] of opts)s.appendChild(new Option(k+' · '+l,k));fs.append(lb,s);}
+ const lt=el('label',opts?'Notes or another approach':'Your response');lt.htmlFor=id+'-notes';const t=el('textarea');t.id=id+'-notes';t.name=id+'-notes';fs.append(lt,t);f.appendChild(fs);}
+document.getElementById('export').addEventListener('click',()=>{const payload={schemaVersion:1,artifact:'client-context-discovery',source:'prompts/client-context/001-user.md',answers:Object.fromEntries(new FormData(f)),exportedAt:new Date().toISOString()};const url=URL.createObjectURL(new Blob([JSON.stringify(payload,null,2)],{type:'application/json'}));const a=document.createElement('a');a.href=url;a.download='client-context-answers.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);document.getElementById('status').textContent='Export requested. Send the JSON in chat so the answers are recorded. Blank answers stay pending.';});
+</script></body></html>

@@ -1,6 +1,10 @@
 # Shared state
 
-Updated: 2026-11-07 · Codex. Stage: objective-led recruiter-calibration discovery.
+Updated: 2026-11-07 · Claude (client-context chat). Stage: client-context discovery questions.
+
+LATEST: the human added the client-context direction (prompts/client-context/001-user.md; summary in knowledge/business.md). Questions C1–C20 are in _work/2026-11-07-client-context/questions.html and are all unanswered. C1–C3 (which objective leads, user/decision, fictional client/role) unblock the plan. These records live on branch claude/recruitment-company-context-dbf9b4: a hook blocked direct writes to the main checkout, so promotion to main is pending.
+
+Earlier baton (Codex):
 
 Confirmed human direction: fictional recruiting agency; evaluate recruiter understanding of client/role and evidence use; scenario calibration BEFORE a new client role; owner reviews fictional reference; Claude/Codex review at PLAN, PRE-MERGE, FINAL (decision 0002), author checks each step.
 

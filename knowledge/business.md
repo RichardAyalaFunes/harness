@@ -41,6 +41,17 @@ Use three categories across artifacts: **A — requirement interpretation** (mis
 ## Runtime and respondent prerequisites
 **E1 (open):** select and verify runtime/provider access and run configuration before claiming a working model critique or running O5 live-harness checks. Development CLI authentication does not establish API access. **E2 (open):** identify who supplies the demo's recruiter response; owner role-play or pre-authored synthetic responses are options, not actual recruiters who have been assessed. These do not block a clearly labelled static concept.
 
+## Confirmed by the human — client context (prompts/client-context/001-user.md, 2026-11-07)
+- A JD alone is insufficient. Understand the client's current state and trajectory, what the team expects of the company and what the company expects of the team, and expectations at 6/9/12/18 months, usually gathered in a kickoff.
+- Clients are small to medium companies with at most about 80–100 people.
+- Every message or meeting is re-analysed for its effect on the current role understanding. Changes vary in size and can shift budget, necessity and importance.
+- Client restrictions (for example universities or previous employers) must be captured.
+- Communications (email, calendar, transcripts, Slack/Teams, Notion) and client intel (news, funding, review sites, forums, social, hiring) are simulated with mock data in a folder.
+- Relevance beats volume. Standing rule: do not overfill the model context window.
+- A simulated ATS/CRM stores results. In production: raw files in a bucket, knowledge in a database with RAG embeddings. For this assessment, local files (JSONL/JSON/CSV under discussion) are acceptable.
+- The AI reaches data through CLI or Node.js tools it can start. Setup after cloning should be minimal (for example pnpm install/start). No production deploy.
+- Open: C1–C20 in _work/2026-11-07-client-context/questions.html, including whether the living role understanding (proposed P′) replaces or feeds the recruiter-calibration objective P.
+
 ## Critical open questions
 Primary operator and report audience/action; fictional client/company/role focus; exact costly judgment error; representative scenario; how to challenge the owner-reviewed fictional reference; shape of recruiter input/output; success criterion; time/budget. Training timing and initial fictional reference reviewer are already answered; do not ask them again.
 
