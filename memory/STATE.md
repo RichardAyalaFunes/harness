@@ -1,10 +1,12 @@
 # Shared state
 
 Updated: 2026-11-07 · Codex
-Stage: workspace bootstrap / business discovery pending.
+Stage: foundation implemented and reviewed; business discovery pending.
 
-Read `_work/2026-11-07-bootstrap/STATE.md` for setup evidence. User request is preserved in `prompts/bootstrap/001-user.txt`. Original candidate brief is unchanged. The reference online-teachers workspace was inspected read-only; its policies and business facts were not imported wholesale.
+Original brief unchanged. User input: prompts/bootstrap/001-user.txt. Rules: AGENTS.md; workflow: docs/workflow.md. HTML entry: readme.html; pending workspace/business questions: _work/2026-11-07-bootstrap/questions.html. Decisions and research: knowledge/INDEX.md.
 
-Next: answer the HTML workspace questions and supply the business case. Do not redo research, initialize another repository, or select a product stack prematurely. The workspace foundation and the eventual assessment must be reported separately. Required peer reviews and checks are recorded in the bootstrap workstream before completion claims.
+Live Claude and Codex consultation helpers returned successfully. Five Git behavior tests, structural checks and inline JavaScript syntax passed. Claude final peer review found no blocking foundation issues; two low-priority guards were applied and tested. Browser QA is pending because local-file previews were blocked by browser policy. First peer raw exchange has a disclosed logging gap; later peer prompts/replies are saved.
 
-Capture limitation: only messages available in participating sessions can be saved. No platform-wide transcript capture has been installed.
+Git main is the canonical shared record. Existing worktree: D:/AI_SPACE/OWN/harness-challenge-business-discovery, branch work/business-discovery. Next: receive business case and human answers; read canonical main memory, merge current main into clean feature worktree before code changes. Do not reinitialize Git or select a business domain/stack prematurely.
+
+The assessment itself is incomplete: business thesis, product harness/UI, runtime evals and final brief-to-evidence audit remain. No remote is configured. No global transcript hook is installed; logging and shared-file locks are cooperative agent protocols, not platform guarantees.

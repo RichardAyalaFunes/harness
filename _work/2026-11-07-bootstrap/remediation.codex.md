@@ -14,3 +14,6 @@ Source: implementation-review.claude.md. Codex, 2026-11-07.
 10. HTML: README and validation explicitly state browser checks remain unverified. Decision form is implemented, not claimed browser-tested.
 
 Lower severity: decode replacement, output overwrite prevention, literal Git pathspecs, narrower checker PASS claim, no silent cleanup of partial worktree creation. Runtime CLI timeout descendant handling remains a limitation. No automatic global prompt logging or enforcement is claimed.
+
+## Final peer review
+Claude final-review.claude.md found no high or blocking issues and passed the bounded foundation with disclosed limitations. Its two recommended minor guards were applied: reject checkpoint root path cleanly; reject taking the record lock from a feature worktree. Existing behavioral tests now exercise both. Remaining low-priority cleanup (branch-collision messaging, auth-status timeout evidence, rollback-error preservation, broader credential patterns and Windows descendant cleanup) is deferred as documented hardening, not hidden blockers. Codex reviewed these two guards against the peer recommendations and reran the five-test suite successfully.
