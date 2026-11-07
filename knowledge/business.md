@@ -43,7 +43,7 @@ Use three categories across artifacts: **A — requirement interpretation** (mis
 
 ## Human answers C1–C20 (prompts/client-context/003-user.md, 2026-11-07)
 Recommended option accepted for C1, C2, C4–C18; C3 proposal accepted. Notes that change the design:
-- **C1 → primary objective is now P′:** keep the agency's understanding of a client role accurate and current as communications and company signals arrive. Recruiter calibration (former P) is deferred; the living profile may later serve as its reference. The O1–O6 map below belongs to former P and is superseded once the plan rewrites it for P′.
+- **C1 → primary objective is now P′:** keep the agency's understanding of a client role accurate and current as communications and company signals arrive. (Calibration later restored to scope; see the validation answers.) The O1–O6 map below belongs to former P and is superseded once the plan rewrites it for P′.
 - **C2:** the user is the recruiter or account manager owning the search.
 - **C5 note: staged, evidence-checked workflow.** Each update runs through ordered stages. A stage counts as complete only when its artifact exists with the required content, never on the model's word. The human's example chain: analyse what changed → generate questions (question file exists) → answer them (answers present in that file) → revalidate → human review → publish (ATS or shared channel). The human says this is an example, not the final list. Stages may be skipped only where a scenario permits. The same discipline extends the objective → secondary-objective practice to activities. The human suggested it may also become an agent rule.
 - **C6 note:** real-tenant triggers (scheduled polling of Meet/tl;dv transcripts several times a day, or a human-triggered sync) are out of scope. Keep an explicit out-of-scope register.
@@ -52,10 +52,12 @@ Recommended option accepted for C1, C2, C4–C18; C3 proposal accepted. Notes th
 - **C19 note:** two fictional clients. (1) Northwind Freight Tech (55 people, Series A) with two open roles: Senior Backend Engineer joining a built team, and a new AI Agent Engineer as the team expands its capabilities. (2) An early-stage startup hiring a Founding Engineer, its first engineer. Research public JDs for similar roles as structural samples.
 - **C20:** the human manages the deadline. No time budget. Continue.
 
-## Open validation questions (raised by Claude, unanswered)
-- **V1 (C7):** apply lawful restrictions such as universities or previous employers as stated. For criteria based on protected characteristics (age, gender, nationality and similar), record them and send them to the recruiter as a client conversation rather than an automatic filter? Recommended: yes. Rationale: in many jurisdictions these are unlawful to apply, and the agency carries that risk too. This is not legal advice.
-- **V2 (C4/C19):** scenario size with three roles. Recommended: Northwind shares company events across both roles (about 8 events, including the expansion news that opens the AI role); the startup gets about 5 events. Each role keeps its own profile.
-- **V3 (C5):** make the stage-and-evidence discipline a standing agent rule in AGENTS.md as well as product behaviour? Recommended: yes, as a short rule. It is a material instruction change, so it gets peer review at the pre-merge gate.
+## Validation answers and scope correction (prompts/client-context/005-user.md, 2026-11-07)
+- **Recruiter calibration is in scope, triggered by P′.** A change to the role profile must drive recalibration of the recruiter, so they understand what changed and why it matters. (Proposed, unconfirmed: which severity levels trigger recalibration, for example material and critical only.) P′ and former P form one chain: client signal → profile delta → recruiter calibration. This supersedes "calibration deferred" in the C1 note.
+- **V1 yes:** follow lawful client restrictions, and the AI must still point out possible bias. Protected-characteristic criteria are recorded and raised with the recruiter, not auto-applied as filters.
+- **V2 yes:** Northwind has about 8 events shared across its two roles, with the expansion opening the AI Agent Engineer role. The startup has about 5 events. Each role has its own profile.
+- **V3 yes:** the stage-and-evidence rule goes into AGENTS.md (rule 13).
+- **Presentation intent (draft, for the end):** readme.html becomes the human's presentation. Message: the owner has built RAG systems (the human wrote "RAC"; interpreted as RAG, to confirm) and app integrations many times. They omitted them from this MVP on purpose because integrations depend on each client's tools and are easy to learn. The point of this submission is the reasoning: what changed, why it matters, and how the recruiter's judgment follows. Final wording is the owner's.
 
 ## Confirmed by the human — client context (prompts/client-context/001-user.md, 2026-11-07)
 - A JD alone is insufficient. Understand the client's current state and trajectory, what the team expects of the company and what the company expects of the team, and expectations at 6/9/12/18 months, usually gathered in a kickoff.

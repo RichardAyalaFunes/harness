@@ -2,7 +2,7 @@
 
 Updated: 2026-11-07 · Claude (client-context chat). Stage: client-context answers recorded; plan next.
 
-LATEST: the human answered C1–C20 (prompts/client-context/003-user.md; recorded in knowledge/business.md). Primary objective is now P′, the living client/role understanding, for the recruiter or account manager, using the staged, evidence-checked workflow (C5 note). Two clients, three roles (C19). Storage is JSONL. UI style follows docs/ui-style-reference.md with the adaptations listed in designs.md. Repo DESIGN.md remains the assessment design deliverable. Open: V1–V3. Next: draft the P′ objective map and plan, run the plan-gate peer review, then JD research and mock data.
+LATEST: V1–V3 answered (prompts/client-context/005-user.md). Scope is one chain: client signal → role-profile delta → recruiter recalibration (calibration is back in scope). Lawful restrictions are followed while possible bias is flagged. Two clients, three roles. AGENTS.md rule 13 (stage-and-evidence) passed the Codex pre-merge recheck (_work/2026-11-07-client-context/premerge-rule13*.codex.md). Open: which severity levels trigger recalibration (until confirmed, every change does); confirm RAC = RAG. readme.html will become the owner's presentation at the end. UI style: docs/ui-style-reference.md plus the designs.md adaptations. Next: rewrite the objective map for the chain, define the workflow stages and checks, run the plan-gate peer review, research JD samples, build mock data.
 
 Earlier baton (Codex):
 
