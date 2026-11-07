@@ -1,8 +1,8 @@
 # Shared state
 
-Updated: 2026-11-07 · Claude (client-context chat). Stage: client-context discovery questions.
+Updated: 2026-11-07 · Claude (client-context chat). Stage: client-context answers recorded; plan next.
 
-LATEST: the human added the client-context direction (prompts/client-context/001-user.md; summary in knowledge/business.md). Questions C1–C20 are in _work/2026-11-07-client-context/questions.html and are all unanswered. C1–C3 (which objective leads, user/decision, fictional client/role) unblock the plan. These records live on branch claude/recruitment-company-context-dbf9b4: a hook blocked direct writes to the main checkout, so promotion to main is pending.
+LATEST: the human answered C1–C20 (prompts/client-context/003-user.md; recorded in knowledge/business.md). Primary objective is now P′, the living client/role understanding, for the recruiter or account manager, using the staged, evidence-checked workflow (C5 note). Two clients, three roles (C19). Storage is JSONL. UI style follows docs/ui-style-reference.md with the adaptations listed in designs.md. Repo DESIGN.md remains the assessment design deliverable. Open: V1–V3. Next: draft the P′ objective map and plan, run the plan-gate peer review, then JD research and mock data.
 
 Earlier baton (Codex):
 

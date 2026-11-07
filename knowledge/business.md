@@ -41,6 +41,22 @@ Use three categories across artifacts: **A — requirement interpretation** (mis
 ## Runtime and respondent prerequisites
 **E1 (open):** select and verify runtime/provider access and run configuration before claiming a working model critique or running O5 live-harness checks. Development CLI authentication does not establish API access. **E2 (open):** identify who supplies the demo's recruiter response; owner role-play or pre-authored synthetic responses are options, not actual recruiters who have been assessed. These do not block a clearly labelled static concept.
 
+## Human answers C1–C20 (prompts/client-context/003-user.md, 2026-11-07)
+Recommended option accepted for C1, C2, C4–C18; C3 proposal accepted. Notes that change the design:
+- **C1 → primary objective is now P′:** keep the agency's understanding of a client role accurate and current as communications and company signals arrive. Recruiter calibration (former P) is deferred; the living profile may later serve as its reference. The O1–O6 map below belongs to former P and is superseded once the plan rewrites it for P′.
+- **C2:** the user is the recruiter or account manager owning the search.
+- **C5 note: staged, evidence-checked workflow.** Each update runs through ordered stages. A stage counts as complete only when its artifact exists with the required content, never on the model's word. The human's example chain: analyse what changed → generate questions (question file exists) → answer them (answers present in that file) → revalidate → human review → publish (ATS or shared channel). The human says this is an example, not the final list. Stages may be skipped only where a scenario permits. The same discipline extends the objective → secondary-objective practice to activities. The human suggested it may also become an agent rule.
+- **C6 note:** real-tenant triggers (scheduled polling of Meet/tl;dv transcripts several times a day, or a human-triggered sync) are out of scope. Keep an explicit out-of-scope register.
+- **C7 note:** the client's restrictions are followed even if they look biased. Flagging stays (option A). See open V1.
+- **C11 note:** JSONL chosen so evaluators can read and audit the data. SQLite was rejected for this assessment because a binary file defeats auditing; production would use a real database.
+- **C19 note:** two fictional clients. (1) Northwind Freight Tech (55 people, Series A) with two open roles: Senior Backend Engineer joining a built team, and a new AI Agent Engineer as the team expands its capabilities. (2) An early-stage startup hiring a Founding Engineer, its first engineer. Research public JDs for similar roles as structural samples.
+- **C20:** the human manages the deadline. No time budget. Continue.
+
+## Open validation questions (raised by Claude, unanswered)
+- **V1 (C7):** apply lawful restrictions such as universities or previous employers as stated. For criteria based on protected characteristics (age, gender, nationality and similar), record them and send them to the recruiter as a client conversation rather than an automatic filter? Recommended: yes. Rationale: in many jurisdictions these are unlawful to apply, and the agency carries that risk too. This is not legal advice.
+- **V2 (C4/C19):** scenario size with three roles. Recommended: Northwind shares company events across both roles (about 8 events, including the expansion news that opens the AI role); the startup gets about 5 events. Each role keeps its own profile.
+- **V3 (C5):** make the stage-and-evidence discipline a standing agent rule in AGENTS.md as well as product behaviour? Recommended: yes, as a short rule. It is a material instruction change, so it gets peer review at the pre-merge gate.
+
 ## Confirmed by the human — client context (prompts/client-context/001-user.md, 2026-11-07)
 - A JD alone is insufficient. Understand the client's current state and trajectory, what the team expects of the company and what the company expects of the team, and expectations at 6/9/12/18 months, usually gathered in a kickoff.
 - Clients are small to medium companies with at most about 80–100 people.

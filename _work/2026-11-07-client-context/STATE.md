@@ -8,7 +8,7 @@ prompts/client-context/001-user.md. The human asked to resume the stalled discov
 Note: the previous worktree (work/business-discovery) was clean at the same commit as main (3c0dc7e). No unsaved in-progress work was found to recover.
 
 ## Questions
-questions.html: C1–C20 with recommendations; all unanswered. C1 (which objective leads), C2 (user/decision) and C3 (fictional client/role) unblock the plan.
+questions.html: C1–C20 answered 2026-11-07 (prompts/client-context/003-user.md). Validation raised V1–V3 (knowledge/business.md), which are unanswered. C1 (which objective leads), C2 (user/decision) and C3 (fictional client/role) unblock the plan.
 
 ## Plan
 Pending answers. Proposed P′ (living client/role understanding with confirmed deltas) is not accepted. The plan-gate peer review will run on the plan derived from the answers.
@@ -23,4 +23,4 @@ Built-in browser: 20 fieldsets render; no page-level horizontal overflow at 375p
 Synthetic and fictional data only is proposed (C8). Discriminatory-restriction handling is raised as C7. No secrets.
 
 ## Review result
-Questions stage: active, awaiting the human. Promotion to canonical main is pending: a session hook blocks this chat from writing to the main checkout. The lock was acquired and released without edits. Records are committed on this branch and need a merge or checkpoint on main.
+Questions stage: passed (answers recorded and checked for consistency); V1–V3 open. UI style reference adopted in designs.md with contrast adaptations (orange 2.70:1, sienna 4.26:1, green 2.21:1 measured on #fdfbf9). Promoted to main by a fast-forward merge on the human's instruction (003-user.md).
