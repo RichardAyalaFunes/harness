@@ -1,5 +1,7 @@
 # 0001 — Shared records, isolated implementation
 
+Update 2026-11-07: the cross-vendor review cadence below is superseded by accepted human decision 0002. Other decisions remain in force. This preserves the historical rationale.
+
 Date: 2026-11-07. Status: adopted for reversible bootstrap; open choices remain proposals.
 Source: prompts/bootstrap/001-user.txt; original assessment brief; referenced workspace AGENTS.md and _work/README.md (read-only); peer consultation summarized in bootstrap record.
 

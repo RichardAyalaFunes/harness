@@ -1,12 +1,13 @@
 # Shared state
 
-Updated: 2026-11-07 · Codex
-Stage: foundation implemented and reviewed; business discovery pending.
+Updated: 2026-11-07 · Codex. Stage: objective-led recruiter-calibration discovery.
 
-Original brief unchanged. User input: prompts/bootstrap/001-user.txt. Rules: AGENTS.md; workflow: docs/workflow.md. HTML entry: readme.html; pending workspace/business questions: _work/2026-11-07-bootstrap/questions.html. Decisions and research: knowledge/INDEX.md.
+Confirmed human direction: fictional recruiting agency; evaluate recruiter understanding of client/role and evidence use; scenario calibration BEFORE a new client role; owner reviews fictional reference; Claude/Codex review at PLAN, PRE-MERGE, FINAL (decision 0002), author checks each step.
 
-Live Claude and Codex consultation helpers returned successfully. Five Git behavior tests, structural checks and inline JavaScript syntax passed. Claude final peer review found no blocking foundation issues; two low-priority guards were applied and tested. Browser QA is pending because local-file previews were blocked by browser policy. First peer raw exchange has a disclosed logging gap; later peer prompts/replies are saved.
+New standing practice: primary objective→secondary objectives→dependencies and observable done criteria. Detailed company/domain context is built progressively around the next useful experiment; no fixed roadmap/Scrum paperwork. Prototype, inspect, revise, then integrate validated behavior. Preserve provenance and draft assessment deliverables continuously.
 
-Git main is the canonical shared record. Existing worktree: D:/AI_SPACE/OWN/harness-challenge-business-discovery, branch work/business-discovery. Next: receive business case and human answers; read canonical main memory, merge current main into clean feature worktree before code changes. Do not reinitialize Git or select a business domain/stack prematurely.
+Read knowledge/business.md for confirmed facts, draft primary objective, O1–O6, canonical A/B/C diagnosis categories and open runtime/respondent prerequisites. knowledge/recruiter-calibration.md holds alternatives/research. Current HTML: _work/2026-11-07-business-discovery/discussion.html. README explains the owner's intent (agent-drafted wording pending their confirmation); DESIGN.md maps each original brief requirement to evidence/still owed. Human sources: prompts/business-discovery/001-user.md, 003-user.md, 004-user.md.
 
-The assessment itself is incomplete: business thesis, product harness/UI, runtime evals and final brief-to-evidence audit remain. No remote is configured. No global transcript hook is installed; logging and shared-file locks are cooperative agent protocols, not platform guarantees.
+Next: human refines thesis and supplies fictional client/role and report operator/action. Do not re-ask timing/reference ownership. No product stack/provider/role has been selected, no runnable business harness exists, and no recruiter/outcome validity or market-novelty claim is established. HTML structure/inline-script syntax checked; browser QA still pending. Plan/pre-merge critiques and findings are recorded in the current workstream; final assessment review remains pending implementation.
+
+Git main is canonical. Existing worktree: D:/AI_SPACE/OWN/harness-challenge-business-discovery (work/business-discovery). Merge current main into that clean worktree before product work. No remote/publication. Logs and locks remain cooperative protocols, not global platform interception.
