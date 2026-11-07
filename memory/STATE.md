@@ -11,3 +11,5 @@ Read knowledge/business.md for confirmed facts, draft primary objective, O1–O6
 Next: human refines thesis and supplies fictional client/role and report operator/action. Do not re-ask timing/reference ownership. No product stack/provider/role has been selected, no runnable business harness exists, and no recruiter/outcome validity or market-novelty claim is established. HTML structure/inline-script syntax checked; browser QA still pending. Plan/pre-merge critiques and findings are recorded in the current workstream; final assessment review remains pending implementation.
 
 Git main is canonical. Existing worktree: D:/AI_SPACE/OWN/harness-challenge-business-discovery (work/business-discovery). Merge current main into that clean worktree before product work. No remote/publication. Logs and locks remain cooperative protocols, not global platform interception.
+
+Status check: client/role and report user/action are the next human inputs; first costly mistake and time budget remain open. Newly present .agents/, .claude/ and skills-lock.json are untracked and outside the previous validation; they were inspected for file inventory only and left unchanged.
