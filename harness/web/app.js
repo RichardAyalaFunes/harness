@@ -50,7 +50,9 @@ function animateDetails(det) {
     const end = closing ? sum.offsetHeight : det.scrollHeight;
     det.style.overflow = 'hidden';
     const a = det.animate([{ height: `${start}px` }, { height: `${end}px` }], { duration: 260, easing: 'cubic-bezier(.2,.8,.2,1)' });
-    a.onfinish = () => { if (closing) det.open = false; det.style.overflow = ''; delete det.dataset.anim; };
+    let doneOnce = false;
+    const fin = () => { if (doneOnce) return; doneOnce = true; a.cancel(); if (closing) det.open = false; det.style.overflow = ''; delete det.dataset.anim; };
+    a.onfinish = fin; setTimeout(fin, 300);
   });
   return det;
 }
@@ -75,6 +77,7 @@ async function api(path, body) {
   if (!r.ok) throw new Error(j.error || r.statusText);
   return j;
 }
+const shake = (el) => { if (el && !REDUCED.matches) el.animate([{ transform: 'none' }, { transform: 'translateX(-6px)' }, { transform: 'translateX(5px)' }, { transform: 'translateX(-3px)' }, { transform: 'none' }], { duration: 320 }); };
 let toastTimer;
 function toast(msg, bad) {
   const t = $('toast');
@@ -116,12 +119,13 @@ async function render() {
       [view] = await Promise.all([r.role ? roleScreen(r.role, r.tab) : positionsScreen(), newTab ? wait(140) : null]);
     }
     main.replaceChildren(banner(), view);
+    afterRender(main);
     if (newScreen) view.classList.add('screen-in');
     const v = main.querySelector('.view');
     if (newTab && v) { v.style.setProperty('--dir', dir); v.classList.add('view-in'); }
     moveIndicator(main, newTab ? fromTab : null);
   } catch (e) {
-    main.replaceChildren(h('div', { class: 'errbox', role: 'alert' }, `Could not load: ${e.message}`));
+    main.replaceChildren(h('div', { class: 'errbox', role: 'alert' }, `Could not load: ${e.message}`), h('button', { class: 'pill light', onclick: () => { last = {}; render(); } }, 'Try again'));
   }
 }
 // Sliding pill behind the active tab: starts under the previous tab, glides to the new one.
@@ -139,9 +143,39 @@ function moveIndicator(main, fromTab) {
 }
 window.addEventListener('hashchange', render);
 const rerender = () => render();
-async function act(fn, okMsg) {
-  try { const r = await fn(); if (okMsg) toast(okMsg); await render(); return r; }
-  catch (e) { toast(e.message, true); await render(); }
+// Exit animation: fade, slide and collapse an element before it is removed by a re-render.
+function leave(el, dir = 1) {
+  if (!el || REDUCED.matches) return Promise.resolve();
+  const hgt = el.offsetHeight;
+  el.style.overflow = 'hidden';
+  const a = el.animate([{ opacity: 1, transform: 'none', height: `${hgt}px` }, { opacity: 0, transform: `translateX(${dir * 24}px) scale(.97)`, height: `${hgt}px`, offset: 0.6 }, { opacity: 0, height: '0px', marginTop: '0px', marginBottom: '0px', paddingTop: '0px', paddingBottom: '0px' }],
+    { duration: 320, easing: 'cubic-bezier(.4,0,.2,1)', fill: 'forwards' });
+  // Never block on the animation (a hidden tab pauses it): continue after its duration either way.
+  return Promise.race([a.finished.catch(() => {}), new Promise((res) => setTimeout(res, 360))]);
+}
+// opts.leave: element to animate out on success. opts.mark: [kind, id] to animate in after the re-render.
+async function act(fn, okMsg, opts = {}) {
+  try {
+    const r = await fn();
+    if (opts.leave) await leave(opts.leave, opts.dir);
+    state.mark = opts.mark || null;
+    if (okMsg) toast(okMsg);
+    await render(); return r;
+  } catch (e) { toast(e.message, true); await render(); }
+}
+// After a re-render: highlight what arrived or changed (moved card, completed step, numbers that changed).
+state.nums = {};
+function afterRender(main) {
+  if (state.mark) {
+    const [k, id] = state.mark;
+    main.querySelector(`[data-${k}="${id}"]`)?.classList.add(k === 'item' ? 'justdone' : 'arrive');
+    state.mark = null;
+  }
+  main.querySelectorAll('[data-num]').forEach((el) => {
+    const key = `${location.hash}|${el.dataset.num}`;
+    if (key in state.nums && state.nums[key] !== el.textContent) el.classList.add('bump');
+    state.nums[key] = el.textContent;
+  });
 }
 const banner = () => h('div', { class: 'glass banner' }, h('b', null, 'Replay model. '), 'The data below is produced by the real pipeline and checks from hand-authored model outputs. It demonstrates orchestration and checks, not extraction quality. Fictional clients and people.');
 
@@ -183,7 +217,7 @@ async function roleScreen(roleId, tab) {
     h('div', { class: 'glass seg', role: 'tablist' }, h('span', { class: 'ind', 'aria-hidden': 'true' }), tabs.map(([id, label, dot, tip]) => h('button', { role: 'tab', 'data-tab': id, title: tip, 'aria-selected': String(id === tab), class: id === tab ? 'on' : '', onclick: () => { location.hash = `#/role/${roleId}/${id}`; } }, label, dot ? h('span', { class: 'n', title: 'needs attention' }) : null))),
     h('div', { class: 'view' }, body()));
 }
-const kpi = (label, v, tip) => h('div', { class: 'tile kpi' }, h('small', null, label, tip ? hint(tip) : null), h('b', null, v));
+const kpi = (label, v, tip) => h('div', { class: 'tile kpi' }, h('small', null, label, tip ? hint(tip) : null), h('b', { 'data-num': label }, v));
 
 // Pipeline: moves are never gated by learning data.
 function pipelineTab(d, cands) {
@@ -191,9 +225,9 @@ function pipelineTab(d, cands) {
     h('p', { class: 'sub' }, 'Moving a candidate is never blocked by the learning steps. Applied restrictions are shown in the brief only and do not filter candidates.'),
     h('div', { class: 'board' }, d.stages.map((s, i) => h('section', { class: 'glass col', 'aria-label': s },
       h('h4', null, s, h('span', null, cands.filter((c) => c.stage === i).length)),
-      cands.filter((c) => c.stage === i).map((c) => h('div', { class: 'tile cand' },
+      cands.filter((c) => c.stage === i).map((c) => h('div', { class: 'tile cand', 'data-cand': c.id },
         h('div', { class: 'who' }, h('div', { class: 'av', style: `background:${AV[c.id % AV.length]}` }, c.name.split(/[ .]+/).map((x) => x[0]).slice(0, 2).join('')), h('div', null, h('b', null, c.name), h('small', null, s))),
-        i < d.stages.length - 1 ? h('button', { class: 'mv', 'aria-label': `Move ${c.name} to ${d.stages[i + 1]}`, onclick: () => act(() => api(`/api/candidates/${c.id}/move`, { to: i + 1 }), `${c.name} moved to ${d.stages[i + 1]}`) }, 'Next stage →') : null))))));
+        i < d.stages.length - 1 ? h('button', { class: 'mv', 'aria-label': `Move ${c.name} to ${d.stages[i + 1]}`, onclick: (e) => act(() => api(`/api/candidates/${c.id}/move`, { to: i + 1 }), `${c.name} moved to ${d.stages[i + 1]}`, { leave: e.currentTarget.closest('.cand'), mark: ['cand', c.id] }) }, 'Next stage →') : null))))));
 }
 
 // ---- brief ----
@@ -261,8 +295,8 @@ function changeBox(c) {
 function decisionActs(kind, id, ready) {
   const reason = h('input', { type: 'text', placeholder: 'Reason for rejecting', 'aria-label': 'Reason for rejecting' });
   return h('div', { class: 'acts' },
-    h('button', { class: 'pill dark', disabled: !ready, onclick: () => act(() => api(`/api/${kind}/${id}/approve`, {}), 'Approved') }, 'Approve'),
-    reason, h('button', { class: 'pill light', onclick: () => (reason.value.trim() ? act(() => api(`/api/${kind}/${id}/reject`, { reason: reason.value.trim() }), 'Rejected, kept for audit') : toast('Write a reason first', true)) }, 'Reject'),
+    h('button', { class: 'pill dark', disabled: !ready, onclick: (e) => act(() => api(`/api/${kind}/${id}/approve`, {}), 'Approved', { leave: e.currentTarget.closest('.prop') }) }, 'Approve'),
+    reason, h('button', { class: 'pill light', onclick: (e) => (reason.value.trim() ? act(() => api(`/api/${kind}/${id}/reject`, { reason: reason.value.trim() }), 'Rejected, kept for audit', { leave: e.currentTarget.closest('.prop'), dir: -1 }) : (toast('Write a reason first', true), shake(reason))) }, 'Reject'),
     ready ? null : chip('processing failed: see how this was processed', 'r'));
 }
 function proposalCard(p) {
@@ -358,7 +392,7 @@ function changesTab(d) {
 // ---- stay current ----
 function ackItem(it, d) {
   return itemShell(it, [h('div', { class: 'was' }, it.detail.was ? h('small', null, `was: ${it.detail.was}`) : null), it.detail.note ? h('p', { class: 'sub' }, it.detail.note) : null,
-    it.completion ? null : h('button', { class: 'pill dark', onclick: () => act(() => api(`/api/items/${it.id}/complete`, { recruiter: d.me }), 'Confirmed') }, 'I have read and understood this')]);
+    it.completion ? null : h('button', { class: 'pill dark', onclick: () => act(() => api(`/api/items/${it.id}/complete`, { recruiter: d.me }), 'Confirmed', { mark: ['item', it.id] }) }, 'I have read and understood this')]);
 }
 function studyItem(it, d) {
   const ta = h('textarea', { rows: 4, 'aria-label': `Your answer: ${it.title}`, placeholder: 'Answer in your own words (at least 20 characters)', value: it.completion ? it.completion.response || '' : '', disabled: !!it.completion });
@@ -368,7 +402,7 @@ function studyItem(it, d) {
   if (res) showRes(res);
   return itemShell(it, [h('p', { class: 'prompt' }, it.detail.prompt), h('div', { class: 'answer' }, ta), result,
     it.completion ? null : h('div', { class: 'acts split' }, h('button', { class: 'micb', type: 'button', title: 'Answer by voice: not available yet', onclick: () => $('pop').classList.add('on') }, micIcon(), h('span', null, 'Record audio'), h('em', null, 'soon')), h('button', { class: 'pill dark', onclick: async () => {
-      try { const r = await api(`/api/items/${it.id}/complete`, { recruiter: d.me, response: ta.value }); if (r.passed) { toast('Answer recorded'); await render(); } else showRes(r.result); }
+      try { const r = await api(`/api/items/${it.id}/complete`, { recruiter: d.me, response: ta.value }); if (r.passed) { state.mark = ['item', it.id]; toast('Answer recorded'); await render(); } else { showRes(r.result); shake(ta); } }
       catch (e) { toast(e.message, true); }
     } }, 'Submit answer'))]);
 }
@@ -383,7 +417,7 @@ function reviewItem(it, d) {
       try {
         const accepted = boxes.filter((b) => b.cb.checked).map((b) => b.i);
         const r = await api(`/api/items/${it.id}/complete`, { recruiter: d.me, accepted, none_needed: none.checked, response: why.value });
-        if (r.passed) { toast('Review recorded'); await render(); } else toast(`Not recorded: ${r.result.rule}`, true);
+        if (r.passed) { state.mark = ['item', it.id]; toast('Review recorded'); await render(); } else toast(`Not recorded: ${r.result.rule}`, true);
       } catch (e) { toast(e.message, true); }
     } }, 'Accept review'))]);
 }
@@ -396,7 +430,7 @@ state.chat = {};
 function askPanel(d) {
   const log = (state.chat[d.role.id] ||= []);
   const list = h('div', { class: 'chatlog', 'aria-live': 'polite' });
-  const draw = () => { examples.hidden = log.length > 0; list.hidden = !log.length; list.replaceChildren(...(log.length ? log.map((m) => h('div', { class: `msg ${m.role}${m.error ? ' err' : ''}` },
+  const draw = () => { examples.classList.toggle('gone', log.length > 0); list.hidden = !log.length; list.replaceChildren(...(log.length ? log.map((m) => h('div', { class: `msg ${m.role}${m.error ? ' err' : ''}` },
     h('div', null, m.content),
     m.role === 'assistant' && !m.error ? h('small', null, m.stub ? 'Stub: no live model connected.' : m.in_brief ? `Based on the brief${m.based_on.length ? `: ${m.based_on.map((b) => b.label).join(', ')}` : ''}.` : 'Not in the brief: confirm with the client.') : null))
     : [])); };
@@ -408,8 +442,11 @@ function askPanel(d) {
     const question = q.value.trim(); if (!question) return;
     const history = log.filter((m) => !m.error).map((m) => ({ role: m.role, content: m.content }));
     log.push({ role: 'user', content: question }); q.value = ''; btn.disabled = true; btn.textContent = 'Thinking…'; draw();
+    const dots = h('div', { class: 'msg assistant typing', 'aria-label': 'Thinking' }, h('i'), h('i'), h('i')); list.append(dots); list.scrollTop = list.scrollHeight;
+    const t0 = Date.now();
     try { const r = await api(`/api/roles/${d.role.id}/ask`, { question, history }); log.push({ role: 'assistant', content: r.answer, in_brief: r.in_brief, based_on: r.based_on, stub: r.stub }); }
     catch (err) { log.push({ role: 'assistant', content: err.message, error: true }); }
+    await wait(Math.max(0, 450 - (Date.now() - t0)));
     btn.disabled = false; btn.textContent = 'Ask'; draw(); list.scrollTop = list.scrollHeight; q.focus();
   } }, q, btn);
   draw();
@@ -437,7 +474,7 @@ function currentTab(d) {
       d.items.length ? null : h('p', { class: 'sub' }, 'Nothing to learn yet: no approved change has created a step.'),
       sec('Confirm', 'read and acknowledge', 'ack', ackItem), sec('Study', 'write what you would do', 'study', studyItem), sec('Review', 'learn from the client decision', 'review', reviewItem)),
     h('div', null, h('div', { class: 'glass panel' }, h('h3', null, 'Team', hint('Up to date means the recruiter completed every step for this position: a confirmation, a written answer or an accepted review.')), h('p', { class: 'sub' }, 'Who has learned every approved change.'),
-      d.team.map((t) => h('div', { class: `trow${t.id === d.me ? ' me' : ''}` }, h('b', null, t.name), h('span', null, `${t.done}/${t.total}`),
+      d.team.map((t) => h('div', { class: `trow${t.id === d.me ? ' me' : ''}` }, h('b', null, t.name), h('span', { 'data-num': `team-${t.id}` }, `${t.done}/${t.total}`),
         t.up_to_date ? chip('Up to date', 'ok') : t.id === d.me ? h('button', { class: 'pill dark sm', onclick: goToNext }, `Do it now (${t.pending})`) : chip(`${t.pending} to do`, 'y')))),
       verifyPanel(d)));
 }
