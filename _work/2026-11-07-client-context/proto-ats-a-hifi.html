@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Mock ATS · role intelligence</title>
+<style>
+:root{--ink:#16181d;--ink2:#4b5160;--muted:#8a8f9c;--glass:rgba(255,255,255,.58);--glass2:rgba(255,255,255,.86);--edge:rgba(255,255,255,.9);
+--yellow:#f8c65a;--yellowsoft:#fdeec7;--blue:#bcd5ef;--red:#d9536a;--green:#2f9e66;--shadow:0 12px 40px rgba(40,55,80,.09);
+--font:"Outfit","Segoe UI Variable Display","Segoe UI",system-ui,sans-serif}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%}
+body{font:15px/1.5 var(--font);color:var(--ink);min-width:1360px;background:#eef0f3;
+background-image:radial-gradient(1000px 700px at 5% 0%,#c3d9f2 0%,transparent 62%),radial-gradient(900px 700px at 100% 100%,#f3d996 0%,transparent 62%),radial-gradient(700px 500px at 60% 40%,#f4f5f7 0%,transparent 70%);background-attachment:fixed}
+button{font:inherit;color:inherit;cursor:pointer;border:0;background:none}
+button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid var(--ink);outline-offset:3px}
+.glass{background:var(--glass);backdrop-filter:blur(26px) saturate(140%);-webkit-backdrop-filter:blur(26px) saturate(140%);border:1px solid var(--edge);border-radius:28px;box-shadow:var(--shadow)}
+.tile{background:var(--glass2);border:1px solid var(--edge);border-radius:20px}
+.app{display:grid;grid-template-columns:96px 1fr;gap:24px;padding:24px;min-height:100vh}
+.side{display:flex;flex-direction:column;align-items:center;gap:14px;padding:20px 0;position:sticky;top:24px;height:calc(100vh - 48px)}
+.mark{width:52px;height:52px;border-radius:16px;background:var(--ink);color:#fff;display:grid;place-items:center;font-weight:700;font-size:20px;margin-bottom:18px}
+.nb{width:52px;height:52px;border-radius:18px;display:grid;place-items:center;color:var(--ink2)}
+.nb.on{background:var(--glass2);color:var(--ink);box-shadow:0 4px 14px rgba(40,55,80,.08)}
+.nb svg{width:22px;height:22px}
+.side .foot{margin-top:auto;font-size:10px;color:var(--muted);text-align:center;padding:0 8px}
+main{min-width:0}
+.topbar{display:flex;align-items:center;gap:14px;margin-bottom:22px}
+.hello{font-size:15px;color:var(--ink2)}.hello b{color:var(--ink);font-weight:600}
+.round{width:46px;height:46px;border-radius:50%;display:grid;place-items:center;position:relative}
+.round svg{width:20px;height:20px}
+.dot{position:absolute;top:6px;right:6px;min-width:18px;height:18px;border-radius:9px;background:var(--ink);color:#fff;font-size:11px;display:grid;place-items:center;padding:0 5px}
+.search{margin-left:auto;display:flex;align-items:center;gap:8px;padding:0 18px;height:46px;border-radius:23px;width:300px;color:var(--muted);font-size:14px}
+.chip{display:inline-flex;align-items:center;gap:6px;border-radius:10px;padding:3px 10px;font-size:13px;font-weight:600;white-space:nowrap}
+.chip.y{background:var(--yellow);color:#3b2a00}.chip.ys{background:var(--yellowsoft);color:#6b4b00}
+.chip.g{background:rgba(255,255,255,.9);color:var(--ink2);border:1px solid #e6e8ec}.chip.r{background:#fbe1e6;color:#a8324a}.chip.k{background:var(--ink);color:#fff}
+.h1{font-size:15px;color:var(--ink2);margin:0}
+.big{font-size:56px;font-weight:600;letter-spacing:-.02em;line-height:1.05;margin:6px 0 0}
+.title{font-size:34px;font-weight:600;letter-spacing:-.01em;margin:2px 0 0}
+.sub{color:var(--muted);font-size:14px}
+/* positions */
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.pos{padding:22px;cursor:pointer;transition:transform .15s}.pos:hover{transform:translateY(-2px)}
+.pos .co{font-size:13px;color:var(--muted)}.pos h3{font-size:21px;margin:2px 0 14px;font-weight:600}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.stat{padding:12px 14px}.stat small{display:block;color:var(--muted);font-size:12px}.stat b{font-size:22px;font-weight:600}
+.spark{height:44px;margin-top:12px}
+/* position hero */
+.hero{padding:26px 30px;display:grid;grid-template-columns:1.3fr 1fr;gap:28px;align-items:center}
+.crumb{font-size:13px;color:var(--muted)}.crumb button{color:var(--muted);text-decoration:underline;padding:0}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.kpi{padding:14px 16px}.kpi small{display:block;color:var(--muted);font-size:12px;margin-bottom:4px}.kpi b{font-size:26px;font-weight:600}
+.seg{display:inline-flex;gap:4px;padding:5px;border-radius:22px;margin:22px 0 18px}
+.seg button{padding:9px 20px;border-radius:17px;font-size:14px;color:var(--ink2);display:flex;align-items:center;gap:8px}
+.seg button.on{background:var(--ink);color:#fff}
+.seg .n{width:7px;height:7px;border-radius:50%;background:var(--yellow)}
+.alert{display:flex;align-items:center;gap:14px;padding:14px 18px;margin-bottom:18px}
+.alert .ic{width:40px;height:40px;border-radius:14px;background:var(--yellow);display:grid;place-items:center}
+.alert .act{margin-left:auto;display:flex;gap:8px}
+.pill{height:40px;padding:0 20px;border-radius:20px;font-size:14px;font-weight:500;display:inline-flex;align-items:center;gap:8px}
+.pill.dark{background:var(--ink);color:#fff}.pill.light{background:var(--glass2);border:1px solid #e6e8ec}
+/* board */
+.board{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:16px}
+.col{padding:14px;min-height:420px}
+.col h4{margin:4px 6px 12px;font-size:14px;font-weight:600;display:flex;justify-content:space-between;align-items:center}
+.col h4 span{font-size:12px;color:var(--muted);background:var(--glass2);border-radius:8px;padding:1px 8px}
+.cand{display:flex;gap:10px;align-items:center;padding:10px 12px;margin-bottom:10px}
+.av{width:36px;height:36px;border-radius:12px;display:grid;place-items:center;font-size:13px;font-weight:600;color:#fff;flex:none}
+.cand b{display:block;font-size:14px;font-weight:600}.cand small{font-size:12px;color:var(--muted)}
+/* brief */
+.two{display:grid;grid-template-columns:1fr 340px;gap:20px;align-items:start}
+.panel{padding:22px 24px}.panel+.panel{margin-top:20px}
+.panel h3{font-size:18px;font-weight:600;margin:0 0 2px}.panel .sub{margin-bottom:12px}
+.rows .r{display:grid;grid-template-columns:220px 1fr;gap:16px;align-items:center;padding:12px 16px;border-radius:16px}
+.rows .r:nth-child(odd){background:rgba(255,255,255,.55)}
+.rows .r .k{color:var(--muted);font-size:14px}.rows .r .v{font-weight:500}
+.rows .r.chg{background:var(--yellowsoft)}
+.was{display:block;font-size:12px;color:var(--muted);font-weight:400}.was s{color:var(--red)}
+.list{margin:0;padding:0;list-style:none}.list li{display:flex;gap:12px;padding:10px 0;border-bottom:1px solid rgba(0,0,0,.05);font-size:14px}.list li:last-child{border:0}
+.num{width:26px;height:26px;border-radius:9px;background:var(--glass2);border:1px solid #e6e8ec;display:grid;place-items:center;font-size:12px;font-weight:600;flex:none}
+.list small{display:block;color:var(--muted);font-size:12px}
+/* changes */
+.tl{position:relative;height:130px;margin:10px 24px 0}.tl::before{content:"";position:absolute;left:0;right:0;top:66px;border-top:2px solid #e0b347}
+.tl svg{position:absolute;inset:0;width:100%;height:100%}
+.ev{position:absolute;top:0;transform:translateX(-50%);text-align:center;width:160px}.ev i{display:block;width:14px;height:14px;margin:12px auto 10px;border-radius:50%;background:#fff;border:2.5px solid #e0b347}.ev.dec i{border-radius:3px;transform:rotate(45deg);border-color:var(--ink)}
+.ev .d{font-size:12px;color:var(--muted)}.ev b{display:block;font-size:14px;font-weight:600;margin-top:2px}
+.ev .chip{margin-top:6px}
+.cmp{width:100%;border-collapse:separate;border-spacing:0 6px;font-size:14px}
+.cmp th{font-size:12px;color:var(--muted);font-weight:500;text-align:left;padding:0 14px}
+.cmp th b{display:block;color:var(--ink);font-size:14px;font-weight:600}
+.cmp td{background:rgba(255,255,255,.6);padding:11px 14px}
+.cmp td:first-child{border-radius:14px 0 0 14px;color:var(--ink2)}.cmp td:last-child{border-radius:0 14px 14px 0}
+.cmp td.c{background:var(--yellowsoft);font-weight:600}.cmp td.same{color:#b5b9c3}
+.grp{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;display:block}
+/* check */
+.q{padding:18px 20px;margin-bottom:14px}
+.q p{margin:0 0 12px;font-weight:600;font-size:16px}.q .qn{color:var(--muted);font-weight:500;margin-right:6px}
+.opts{display:flex;flex-wrap:wrap;gap:8px}
+.opt{padding:9px 16px;border-radius:14px;background:var(--glass2);border:1px solid #e6e8ec;font-size:14px;text-align:left}
+.opt.sel{background:var(--ink);color:#fff;border-color:var(--ink)}
+.opt.right{background:#dff3e8;border-color:#bfe5cf;color:#1d6b43}.opt.wrong{background:#fbe1e6;border-color:#f2c3cd;color:#a8324a}
+textarea{width:100%;min-height:70px;border-radius:14px;border:1px solid #e6e8ec;background:var(--glass2);padding:10px 14px;font:inherit;font-size:14px;resize:vertical}
+.fb{margin-top:12px;padding:10px 14px;border-radius:14px;background:rgba(255,255,255,.7);font-size:14px;color:var(--ink2)}
+.fb b.ok{color:var(--green)}.fb b.bad{color:var(--red)}.fb b.part{color:#9a6a00}
+.score{font-size:64px;font-weight:600;letter-spacing:-.02em;line-height:1}.score small{font-size:24px;color:var(--muted)}
+.seg5{display:flex;gap:6px;margin:14px 0}.seg5 i{flex:1;height:10px;border-radius:5px;background:#e3e6eb}.seg5 i.y{background:var(--ink)}.seg5 i.h{background:var(--yellow)}
+.cov{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid rgba(0,0,0,.05);font-size:14px}.cov:last-child{border:0}
+.stub{font-size:12px;color:var(--muted);margin-top:14px}
+</style></head><body>
+<div class="app">
+<aside class="side glass">
+<div class="mark" aria-label="mock ATS">r</div>
+<button class="nb on" onclick="go('list')" aria-label="Positions"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="3" y="7" width="18" height="13" rx="3"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button>
+<button class="nb" disabled aria-label="Candidates (mock)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0"/><path d="M16 4.5a3.5 3.5 0 0 1 0 7M18 14a6 6 0 0 1 3.5 6"/></svg></button>
+<button class="nb" disabled aria-label="Clients (mock)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 21V5l8-2v18M12 8h8v13M8 9h.01M8 13h.01M8 17h.01M16 12h.01M16 16h.01"/></svg></button>
+<div class="foot">Fictional data · prototype</div>
+</aside>
+<main id="main"></main>
+</div>
+<script>
+const $=s=>document.getElementById(s);
+const POS=[
+{id:'nw-be',co:'Northwind Freight Tech',t:'Senior Backend Engineer',ver:'v4',unrev:3,check:null,last:'2 / 5',stages:[3,2,1,1,0],trend:[1,2,2,4,5]},
+{id:'nw-ai',co:'Northwind Freight Tech',t:'AI Agent Engineer',ver:'v1',unrev:0,check:'4 / 5',stages:[9,3,1,0,0],trend:[1,1,1,1,1]},
+{id:'ks-fe',co:'Kestrel Labs',t:'Founding Engineer',ver:'v2',unrev:2,check:'3 / 5',stages:[5,2,1,1,0],trend:[1,1,3,3,3]}];
+const STAGES=['Sourced','Screening','Client review','Interview','Offer'];
+const NAMES=['A. Lindqvist','J. Moreau','P. Novak','S. Haddad','L. Brandt','K. Osei','D. Weber','T. Kowalski','R. Silva','E. Duval','N. Ivanova','H. Tanaka'];
+const AV=['#7d9cc6','#c9a24d','#8a7fb8','#5f9f8a','#c27c6b','#6c8296'];
+const V=[['v1','02 oct · JD'],['v2','05 oct · kickoff'],['v3','21 oct · news'],['v4','03 nov · founder email']];
+const F=[
+['Context','Direction',['Grow the road product','=','Rail expansion; AI routing team planned','=']],
+['Context','Team',['—','6 backend, reports to CTO, on-call rota','=','=']],
+['Requirements','Incident ownership',['—','Must-have','=','=']],
+['Requirements','5+ yrs backend in production',['Must-have','=','=','=']],
+['Requirements','Postgres under load',['Must-have','=','=','=']],
+['Requirements','Event-driven systems',['Must-have','=','=','=']],
+['Requirements','Go',['Must-have','Trainable','=','=']],
+['Requirements','Logistics domain',['Nice to have','=','=','=']],
+['Restrictions','No staff from partner Carrio',['—','Applied','=','=']],
+['Restrictions','Top-10 university preference',['—','⚑ Not applied · possible bias','=','=']],
+['Expectations','6 / 12 / 18 months',['—','On-call owner / leads squad of 3 / not discussed','=','=']],
+['Offer','Level',['Senior','=','=','Senior; mid-level mentioned, unconfirmed']],
+['Offer','Budget',['€70–80k','=','=','Up to €72k']],
+['Offer','Start',['ASAP','=','=','Q1']]];
+const EV=[['02 oct','JD received','v1',6],['05 oct','Kickoff call','v2',16],['21 oct','Rail expansion news','v3',47],['03 nov','Founder email','v4',76],['10 nov','Client rejected D. Ruiz','no new version',94,1]];
+const ASK=[['Why is the role open now?','raised 02 oct'],['Is the university preference job-related?','raised 05 oct'],['Is mid-level accepted, or only discussed?','raised 03 nov'],['Does system design become a must-have?','raised 10 nov'],['What is expected at 18 months?','raised 05 oct']];
+const Q=[
+{f:'Go',p:'A strong candidate has never used Go. What do you do?',o:['Reject: Go is a must-have','Keep: Go is trainable, check incident ownership','Ask the client first'],a:1,src:'kickoff · 05 oct',why:'Go moved from must-have to trainable in v2.'},
+{f:'Budget',p:'Your best finalist expects €76k. What do you do?',o:['Drop them: the cap is €72k','Submit as normal: range is €70–80k','Keep them and confirm the cap with the client'],a:2,src:'founder email · 03 nov',why:'The cap fell to €72k in v4. Keep strong finalists until the client confirms.'},
+{f:'Restrictions',p:'Which client rule do we apply today?',o:['Top-10 universities only','No staff from partner Carrio','Both'],a:1,src:'kickoff · 05 oct',why:'The university preference is flagged as possible bias and not applied.'},
+{f:'Level',p:'Is a strong mid-level candidate in scope?',o:['Yes, confirmed','Not confirmed: ask before submitting','No'],a:1,src:'founder email · 03 nov',why:'Mentioned in the email, not confirmed.'},
+{f:'Must-haves',p:'In your own words: what must a submission show, beyond the stack?',open:true,keys:['incident','outage','on-call','design'],src:'kickoff · 05 oct; client decision · 10 nov',why:'Expected: owning production incidents end to end and, since 10 nov, evidence of system design trade-offs.'}];
+const S={view:'list',pos:null,tab:'pipeline',ans:{},done:false};
+const ic={bell:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 16V11a6 6 0 1 1 12 0v5l1.5 2h-15z"/><path d="M10 20a2 2 0 0 0 4 0"/></svg>',
+search:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>',
+spark:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3b2a00" stroke-width="2" stroke-linecap="round"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M6 6l2.5 2.5M15.5 15.5 18 18M6 18l2.5-2.5M15.5 8.5 18 6"/></svg>'};
+function go(v,id){S.view=v;if(id){S.pos=id;S.tab='pipeline';S.ans={};S.done=false}draw();scrollTo(0,0)}
+function tab(t){S.tab=t;draw()}
+function topBar(){const n=POS.reduce((a,p)=>a+p.unrev,0);return `<div class="topbar"><div class="hello">Hi <b>Ana</b>, welcome back</div>
+<div class="search glass">${ic.search} Search positions</div>
+<button class="round glass" aria-label="${n} unreviewed brief changes">${ic.bell}<span class="dot">${n}</span></button></div>`}
+function draw(){$('main').innerHTML=topBar()+(S.view==='list'?list():position())}
+function spark(t){const w=260,h=44,m=Math.max(...t),pts=t.map((v,i)=>[i*w/(t.length-1),h-4-(v/m)*(h-10)]);return `<svg class="spark" viewBox="0 0 ${w} ${h}" preserveAspectRatio="none" width="100%"><polyline fill="none" stroke="#e0b347" stroke-width="2.5" stroke-linejoin="round" points="${pts.map(p=>p.join(',')).join(' ')}"/>${pts.map(p=>`<circle cx="${p[0]}" cy="${p[1]}" r="3" fill="#fff" stroke="#e0b347" stroke-width="2"/>`).join('')}</svg>`}
+function list(){const total=POS.reduce((a,p)=>a+p.unrev,0);return `<section class="glass hero" style="grid-template-columns:1fr auto">
+<div><p class="h1">Open positions</p><div class="big">${POS.length} searches</div><div style="margin-top:10px;display:flex;gap:8px"><span class="chip y">${total} brief changes to review</span><span class="chip g">1 knowledge check due</span></div></div>
+<div class="sub" style="max-width:300px">Open a position to see its pipeline, the current role brief, how it changed, and whether you're up to date.</div></section>
+<h2 style="font-size:18px;font-weight:600;margin:28px 4px 14px">Your positions</h2>
+<div class="cards">${POS.map(p=>`<article class="glass pos" onclick="go('pos','${p.id}')" tabindex="0" onkeydown="if(event.key==='Enter')go('pos','${p.id}')">
+<div style="display:flex;justify-content:space-between;align-items:start"><div><div class="co">${p.co}</div><h3>${p.t}</h3></div><span class="chip k">${p.ver}</span></div>
+<div class="stats"><div class="tile stat"><small>Candidates</small><b>${p.stages.reduce((a,b)=>a+b)}</b></div>
+<div class="tile stat"><small>Changes to review</small><b>${p.unrev}</b> ${p.unrev?'<span class="chip y" style="vertical-align:4px">new</span>':''}</div></div>
+<div style="display:flex;justify-content:space-between;align-items:center;margin-top:12px"><span class="sub">Brief changes over time</span>${p.check?`<span class="chip g">check ${p.check}</span>`:'<span class="chip r">check due</span>'}</div>
+${spark(p.trend)}</article>`).join('')}</div>`}
+function position(){const p=POS.find(x=>x.id===S.pos),full=p.id==='nw-be';
+const T=[['pipeline','Pipeline'],['brief','Role brief'],['changes','Changes',p.unrev],['check','Knowledge check',!p.check]];
+return `<section class="glass hero"><div><div class="crumb"><button onclick="go('list')">Positions</button> / ${p.co}</div>
+<div class="title">${p.t}</div><div class="sub" style="margin-top:4px">Recruiter Ana · client contact: CTO · remote EU</div></div>
+<div class="kpis"><div class="tile kpi"><small>Brief</small><b>${p.ver}</b></div><div class="tile kpi"><small>To review</small><b>${p.unrev}</b></div>
+<div class="tile kpi"><small>Your check</small><b>${S.done?scoreTotal()+'/5':p.check?p.check.replace(' ',''):'due'}</b></div><div class="tile kpi"><small>Candidates</small><b>${p.stages.reduce((a,b)=>a+b)}</b></div></div></section>
+<div class="seg glass">${T.map(([k,l,n])=>`<button class="${S.tab===k?'on':''}" onclick="tab('${k}')">${l}${n?'<span class="n"></span>':''}</button>`).join('')}</div>
+${!full&&S.tab!=='pipeline'?`<div class="glass panel"><h3>No detailed data in this prototype</h3><div class="sub">Open Northwind · Senior Backend Engineer to see this tab.</div></div>`:({pipeline:pipe,brief,changes,check})[S.tab](p)}`}
+function pipe(p){let n=0;return `${p.unrev?`<div class="glass alert"><div class="ic">${ic.spark}</div><div><b>Brief changed to ${p.ver} on 03 nov</b><div class="sub">Budget, start date and level changed. Review before submitting more candidates.</div></div>
+<div class="act"><button class="pill light" onclick="tab('changes')">See changes</button><button class="pill dark" onclick="tab('check')">Take the check</button></div></div>`:''}
+<div class="board">${STAGES.map((s,i)=>`<div class="glass col"><h4>${s}<span>${p.stages[i]}</span></h4>${Array.from({length:p.stages[i]},()=>{const nm=NAMES[n%12],c=AV[n%6];n++;return `<div class="tile cand"><div class="av" style="background:${c}">${nm.split(' ').map(x=>x[0]).join('').replace('.','')}</div><div><b>${nm}</b><small>${2+n} days in stage</small></div></div>`}).join('')}</div>`).join('')}</div>
+<p class="stub">Fake candidates. The harness does not score or validate candidates.</p>`}
+function cur(r){let v=r[2][0];r[2].forEach(x=>{if(x!=='=')v=x});return v}
+function prev(r){let v=null;r[2].slice(0,3).forEach(x=>{if(x!=='=')v=x});return v}
+function brief(){const groups=[...new Set(F.map(r=>r[0]))];return `<div class="two"><div>${groups.map(g=>`<section class="glass panel"><h3>${g}</h3><div class="sub">${{Context:'Why the role exists and what surrounds it.',Requirements:'Each criterion with its weight.',Restrictions:'Rules that may discriminate are flagged and not applied until confirmed job-related.',Expectations:'Outcomes after the hire, from the kickoff.',Offer:'Level, budget and start.'}[g]}</div>
+<div class="rows">${F.filter(r=>r[0]===g).map(r=>{const chg=r[2][3]!=='=';return `<div class="r ${chg?'chg':''}"><div class="k">${r[1]}</div><div class="v">${cur(r).replace('⚑ ','')} ${chg?'<span class="chip y">changed in v4</span>':cur(r).startsWith('⚑')?'<span class="chip r">⚑ bias check</span>':''}${chg?`<span class="was">was <s>${prev(r)}</s> · founder email, 03 nov</span>`:''}</div></div>`}).join('')}</div></section>`).join('')}</div>
+<div style="position:sticky;top:24px"><section class="glass panel"><h3>Open questions for Northwind</h3><div class="sub">Ask on the next client call.</div><ul class="list">${ASK.map((a,i)=>`<li><span class="num">${i+1}</span><div>${a[0]}<small>${a[1]}</small></div></li>`).join('')}</ul></section>
+<section class="glass panel"><h3>Before your next call</h3><ul class="list"><li><span class="num">1</span>Screen for incident ownership stories, not Go keywords.</li><li><span class="num">2</span>Keep finalists above €72k until the cap is confirmed.</li><li><span class="num">3</span>Note one design decision and its trade-off per submission.</li></ul></section></div></div>`}
+function changes(){return `<section class="glass panel"><h3>Timeline</h3><div class="sub">Every source that touched the brief. The diamond is a client decision: a learning signal without a new version.</div>
+<div class="tl">
+${EV.map(e=>`<div class="ev ${e[4]?'dec':''}" style="left:${e[3]}%"><div class="d">${e[0]}</div><b style="margin-top:0">${e[1]}</b><i></i><span class="chip ${e[4]?'g':'y'}">${e[2]}</span></div>`).join('')}</div></section>
+<section class="glass panel"><h3>Compare versions</h3><div class="sub">Yellow = changed in that version. Grey = same as before.</div>
+<table class="cmp"><thead><tr><th>Field</th>${V.map(v=>`<th><b>${v[0]}</b>${v[1]}</th>`).join('')}</tr></thead><tbody>
+${F.map(r=>`<tr><td><span class="grp">${r[0]}</span>${r[1]}</td>${r[2].map((c,i)=>`<td class="${c==='='?'same':i?'c':''}">${c==='='?'same':c}</td>`).join('')}</tr>`).join('')}</tbody></table></section>
+<section class="glass panel"><h3>Client decisions</h3><div class="sub">Each one teaches us what to verify. It changes the brief only when the client changes a criterion.</div>
+<div class="rows"><div class="r"><div class="k">10 nov · rejected D. Ruiz</div><div class="v">“Weak on system design.” <span class="chip g">◆ learning signal</span><span class="was">No new version. Design depth added to what to verify; question sent to the client.</span></div></div></div></section>`}
+function score(q,i){const a=S.ans[i];if(q.open){const t=(a||'').toLowerCase(),inc=['incident','outage','on-call'].some(k=>t.includes(k)),des=t.includes('design');return inc&&des?1:inc||des?.5:0}return a===q.a?1:0}
+function scoreTotal(){return Q.reduce((a,q,i)=>a+score(q,i),0)}
+function pick(i,j){if(S.done)return;S.ans[i]=j;draw()}
+function submitQ(){const t=$('t4');if(t)S.ans[4]=t.value;S.done=true;draw()}
+function check(){const d=S.done;return `<div class="two"><div>
+<section class="glass panel" style="margin-bottom:14px"><h3>Knowledge check · brief v4</h3><div class="sub" style="margin:0">Answer without opening the brief. Questions come from what changed and from the must-haves. It shows what to re-read; it says nothing about candidates.</div></section>
+${Q.map((q,i)=>`<div class="glass q"><p><span class="qn">${i+1}/5</span>${q.p}</p>
+${q.open?`<textarea id="t${i}" ${d?'disabled':''} placeholder="Write a sentence or two">${S.ans[i]||''}</textarea>`:`<div class="opts">${q.o.map((o,j)=>{let c='opt';if(d){if(j===q.a)c+=' right';else if(S.ans[i]===j)c+=' wrong'}else if(S.ans[i]===j)c+=' sel';return `<button class="${c}" onclick="pick(${i},${j})">${o}</button>`}).join('')}</div>`}
+${d?`<div class="fb">${(s=>`<b class="${s===1?'ok':s?'part':'bad'}">${s===1?'Correct':s?'Partly':'Missed'}</b>`)(score(q,i))} · ${q.why} <span class="sub">· ${q.src}</span></div>`:''}</div>`).join('')}
+${d?`<button class="pill light" onclick="S.ans={};S.done=false;draw()">Retake</button>`:`<button class="pill dark" onclick="submitQ()">Check my answers</button>`}
+<p class="stub">Stub: the free-text answer is scored by keyword match here. The harness would use the model with the brief as the reference.</p></div>
+<div style="position:sticky;top:24px">${d?result():`<section class="glass panel"><h3>Your result</h3><div class="score">–<small> / 5</small></div><div class="sub" style="margin-top:8px">Last check: 2 / 5 on v3. Three fields changed since.</div></section>`}
+<section class="glass panel"><h3>Your last screening</h3><div class="sub">D. Ruiz · transcript 06 nov · 11 questions</div>
+${[['Incident ownership','asked','g'],['Postgres under load','asked','g'],['Event-driven systems','briefly','ys'],['System design','not asked','r'],['Go (trainable)','4 of 11 questions','r']].map(c=>`<div class="cov"><span>${c[0]}</span><span class="chip ${c[2]}">${c[1]}</span></div>`).join('')}
+<div class="fb">Your questions treated Go as a must-have, which v2 removed. The client then rejected on design depth.</div></section></div></div>`}
+function result(){const s=Q.map((q,i)=>score(q,i)),miss=Q.filter((q,i)=>s[i]<1);return `<section class="glass panel"><h3>Your result</h3><div class="score">${scoreTotal()}<small> / 5</small></div>
+<div class="seg5">${s.map(x=>`<i class="${x===1?'y':x?'h':''}"></i>`).join('')}</div>
+${miss.length?`<div class="sub">Re-read in the brief</div><ul class="list">${miss.map((q,i)=>`<li><span class="num">${i+1}</span><div>${q.f}<small>${q.src}</small></div></li>`).join('')}</ul><button class="pill light" onclick="tab('brief')" style="margin-top:6px">Open role brief</button>`:'<div class="sub">You are up to date with v4.</div>'}</section>`}
+const h=location.hash.slice(1);if(['pipeline','brief','changes','check'].includes(h)){S.view='pos';S.pos='nw-be';S.tab=h}if(location.search.includes('demo')){S.ans={0:1,1:0,2:1,3:1,4:'I check they owned an outage on-call'};S.done=true}draw();
+</script></body></html>

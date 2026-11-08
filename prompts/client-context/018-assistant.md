@@ -1,0 +1,2 @@
+# Assistant message 018 (summary of visible reply)
+Built proto-ats-a-hifi.html: prototype A in a light frosted-glass style (desktop). Fixed a script bug (a global function named top), the brief row layout, the timeline and the free-text stub scoring. Verified with headless Edge screenshots at 1440px, saved under _work/2026-11-07-client-context/evidence/. Asked whether the new style replaces the earlier style guide.

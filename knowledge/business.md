@@ -59,6 +59,11 @@ Recommended option accepted for C1, C2, C4–C18; C3 proposal accepted. Notes th
 - **V3 yes:** the stage-and-evidence rule goes into AGENTS.md (rule 13).
 - **Presentation intent (draft, for the end):** readme.html becomes the human's presentation. Message: the owner has built RAG systems (the human wrote "RAC"; interpreted as RAG, to confirm) and app integrations many times. They omitted them from this MVP on purpose because integrations depend on each client's tools and are easy to learn. The point of this submission is the reasoning: what changed, why it matters, and how the recruiter's judgment follows. Final wording is the owner's.
 
+## Prototype A chosen; glass visual style (prompts/client-context/017-user.md, 2026-11-08)
+- The human chose prototype A (tabs inside the position: Pipeline, Role brief, Changes, Knowledge check).
+- Visual direction for the product UI: light frosted-glass cards, large radii, soft blue/yellow backdrop, yellow pills for changes, large numerals, dark selected tab. Desktop, light theme. This supersedes docs/ui-style-reference.md for the product UI; designs.md is not yet updated (pending confirmation that it also applies to question/decision pages).
+- Artifact: _work/2026-11-07-client-context/proto-ats-a-hifi.html; screenshots in the same folder under evidence/.
+
 ## Role information inside a mock ATS (prompts/client-context/015-user.md, 2026-11-07)
 - Wrap the brief in a mock ATS: positions list, then a position with a fake candidate Kanban. Candidates and pipeline are fake and out of scope; role information and its changes are the scope.
 - Bring back the version comparison table (faster to compare than prose) alongside the timeline.
