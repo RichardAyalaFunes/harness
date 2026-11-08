@@ -20,6 +20,43 @@ function h(tag, attrs, ...kids) {
 const chip = (text, cls = 'g', tip) => h('span', { class: `chip ${cls}`, title: tip }, text);
 // "?" hint: hover or keyboard focus shows a short explanation.
 const hint = (text) => h('span', { class: 'hint', tabindex: '0', role: 'note', 'aria-label': text, 'data-tip': text }, '?');
+const tipEl = document.body.appendChild(document.createElement('div'));
+tipEl.className = 'tipfloat'; tipEl.setAttribute('aria-hidden', 'true');
+function showTip(el) {
+  tipEl.textContent = el.dataset.tip;
+  tipEl.classList.add('on');
+  const a = el.getBoundingClientRect(), t = tipEl.getBoundingClientRect();
+  const left = Math.max(8, Math.min(innerWidth - t.width - 8, a.left + a.width / 2 - t.width / 2));
+  const below = a.bottom + 8 + t.height < innerHeight;
+  tipEl.style.left = `${left}px`; tipEl.style.top = `${below ? a.bottom + 8 : a.top - t.height - 8}px`;
+}
+const hideTip = () => tipEl.classList.remove('on');
+for (const [ev, fn] of [['mouseover', showTip], ['focusin', showTip]]) document.addEventListener(ev, (e) => { const el = e.target.closest?.('.hint'); if (el) fn(el); });
+for (const ev of ['mouseout', 'focusout']) document.addEventListener(ev, (e) => { if (e.target.closest?.('.hint')) hideTip(); });
+addEventListener('scroll', hideTip, true);
+addEventListener('hashchange', hideTip);
+
+// Smooth open/close for every <details>: height and opacity ease instead of jumping.
+function animateDetails(det) {
+  const sum = det.querySelector(':scope > summary');
+  sum.addEventListener('click', (e) => {
+    if (REDUCED.matches) return;
+    e.preventDefault();
+    if (det.dataset.anim) return;
+    det.dataset.anim = '1';
+    const start = det.offsetHeight;
+    const closing = det.open;
+    if (!closing) det.open = true;
+    const end = closing ? sum.offsetHeight : det.scrollHeight;
+    det.style.overflow = 'hidden';
+    const a = det.animate([{ height: `${start}px` }, { height: `${end}px` }], { duration: 260, easing: 'cubic-bezier(.2,.8,.2,1)' });
+    a.onfinish = () => { if (closing) det.open = false; det.style.overflow = ''; delete det.dataset.anim; };
+  });
+  return det;
+}
+new MutationObserver((ms) => { for (const m of ms) for (const n of m.addedNodes) if (n.querySelectorAll) [n, ...n.querySelectorAll('details')].forEach((d) => { if (d.tagName === 'DETAILS' && !d.dataset.wired) { d.dataset.wired = '1'; animateDetails(d); } }); })
+  .observe(document.body, { childList: true, subtree: true });
+const REDUCED = matchMedia('(prefers-reduced-motion: reduce)');
 const SVGNS = 'http://www.w3.org/2000/svg';
 function micIcon() {
   const s = document.createElementNS(SVGNS, 'svg'); s.setAttribute('viewBox', '0 0 24 24'); s.setAttribute('aria-hidden', 'true');
@@ -56,7 +93,6 @@ function route() {
 // Motion: a new screen shows a short skeleton then rises in; a new tab slides in from the side of the tab
 // you clicked; re-renders after an action (same screen) do not animate. Reduced-motion users get no movement.
 const TAB_ORDER = ['pipeline', 'brief', 'changes', 'current'];
-const REDUCED = matchMedia('(prefers-reduced-motion: reduce)');
 const wait = (ms) => new Promise((res) => setTimeout(res, REDUCED.matches ? 0 : ms));
 let last = { role: undefined, tab: undefined };
 const skeleton = () => h('div', { class: 'skel', 'aria-busy': 'true', 'aria-label': 'Loading' },
@@ -330,8 +366,8 @@ function studyItem(it, d) {
   const res = it.completion ? it.completion.result : null;
   const showRes = (r) => { result.hidden = false; result.replaceChildren(h('b', { class: r.passed ? 'ok' : 'bad' }, r.passed ? 'Answer recorded. ' : `Not recorded yet: ${r.rule}. `), r.points ? r.points.map((p) => h('div', { class: `pt${p.hit ? ' y' : ''}` }, p.hit ? '✓' : '○', ' ', p.text)) : null, r.note ? h('p', { class: 'stubnote' }, `Replay stub: ${r.note}`) : null); };
   if (res) showRes(res);
-  return itemShell(it, [h('p', { class: 'prompt' }, it.detail.prompt), h('div', { class: 'answer' }, ta, h('button', { class: 'micb', type: 'button', title: 'Answer by voice: not available yet', onclick: () => $('pop').classList.add('on') }, micIcon(), h('span', null, 'Record audio'), h('em', null, 'soon'))), result,
-    it.completion ? null : h('div', { class: 'acts' }, h('button', { class: 'pill dark', onclick: async () => {
+  return itemShell(it, [h('p', { class: 'prompt' }, it.detail.prompt), h('div', { class: 'answer' }, ta), result,
+    it.completion ? null : h('div', { class: 'acts split' }, h('button', { class: 'micb', type: 'button', title: 'Answer by voice: not available yet', onclick: () => $('pop').classList.add('on') }, micIcon(), h('span', null, 'Record audio'), h('em', null, 'soon')), h('button', { class: 'pill dark', onclick: async () => {
       try { const r = await api(`/api/items/${it.id}/complete`, { recruiter: d.me, response: ta.value }); if (r.passed) { toast('Answer recorded'); await render(); } else showRes(r.result); }
       catch (e) { toast(e.message, true); }
     } }, 'Submit answer'))]);
@@ -352,7 +388,7 @@ function reviewItem(it, d) {
     } }, 'Accept review'))]);
 }
 function itemShell(it, kids) {
-  return h('article', { class: `glass item${it.completion ? ' done' : ''}` }, h('div', { class: 'top' }, h('b', null, it.title), it.completion ? chip('✓ Done', 'ok') : chip('To do', 'y')),
+  return h('article', { class: `glass item${it.completion ? ' done' : ' todo'}`, 'data-item': it.id }, h('div', { class: 'top' }, h('b', null, it.title), it.completion ? chip('✓ Done', 'ok') : chip('To do', 'y')),
     h('small', null, `From ${srcName(it.source_id)}`), kids);
 }
 // ---- ask about this role (chat grounded in the current brief) ----
@@ -360,10 +396,11 @@ state.chat = {};
 function askPanel(d) {
   const log = (state.chat[d.role.id] ||= []);
   const list = h('div', { class: 'chatlog', 'aria-live': 'polite' });
-  const draw = () => list.replaceChildren(...(log.length ? log.map((m) => h('div', { class: `msg ${m.role}${m.error ? ' err' : ''}` },
+  const draw = () => { examples.hidden = log.length > 0; list.hidden = !log.length; list.replaceChildren(...(log.length ? log.map((m) => h('div', { class: `msg ${m.role}${m.error ? ' err' : ''}` },
     h('div', null, m.content),
     m.role === 'assistant' && !m.error ? h('small', null, m.stub ? 'Stub: no live model connected.' : m.in_brief ? `Based on the brief${m.based_on.length ? `: ${m.based_on.map((b) => b.label).join(', ')}` : ''}.` : 'Not in the brief: confirm with the client.') : null))
-    : [h('p', { class: 'sub' }, 'Examples: “What is LangGraph and why would they care?” · “What does owning an incident look like?”')]));
+    : [])); };
+  const examples = h('p', { class: 'sub examples' }, 'Examples: “What is LangGraph and why would they care?” · “What does owning an incident look like?”');
   const q = h('input', { type: 'text', placeholder: 'Ask anything about this role', 'aria-label': 'Your question about this role', maxlength: '500' });
   const btn = h('button', { class: 'pill dark', type: 'submit' }, 'Ask');
   const form = h('form', { class: 'askform', onsubmit: async (e) => {
@@ -377,7 +414,14 @@ function askPanel(d) {
   } }, q, btn);
   draw();
   return h('div', { class: 'glass panel' }, h('h3', null, 'Ask about this role', hint('Short answers based only on the approved brief for this role. If the brief does not cover it, the answer says so and you should ask the client.')),
-    h('p', { class: 'sub' }, 'Unsure about a term or requirement? Ask. Answers are short and based on this role’s brief.'), list, form);
+    h('p', { class: 'sub' }, 'Unsure about a term or requirement? Ask. Answers are short and based on this role’s brief.'), list, form, examples);
+}
+// Scroll to the first open step and pulse it once.
+function goToNext() {
+  const el = document.querySelector('.item.todo'); if (!el) return;
+  el.scrollIntoView({ behavior: REDUCED.matches ? 'auto' : 'smooth', block: 'center' });
+  el.classList.remove('pulse'); void el.offsetWidth; el.classList.add('pulse');
+  setTimeout(() => el.querySelector('textarea:not([disabled]), button.pill, input')?.focus({ preventScroll: true }), 450);
 }
 function currentTab(d) {
   const by = (k) => d.items.filter((i) => i.kind === k);
@@ -385,12 +429,16 @@ function currentTab(d) {
   const sec = (title, sub, k, fn) => (by(k).length ? h('div', null, h('div', { class: 'sechead' }, h('h3', null, title, hint(TIPS[k])), h('span', { class: 'sub' }, `${by(k).filter((i) => i.completion).length} of ${by(k).length} done · ${sub}`)), by(k).map((i) => fn(i, d))) : null);
   return h('div', { class: 'two' },
     h('div', null,
-      h('div', { class: 'glass panel' }, h('h3', null, 'Stay current'), h('p', { class: 'sub' }, `You have completed ${d.my_progress.done} of ${d.my_progress.total} items for this position. Only approved changes appear here.`)),
+      h('div', { class: `glass panel${d.my_progress.done < d.my_progress.total ? ' due' : ''}` }, h('h3', null, 'Stay current'),
+        d.my_progress.done < d.my_progress.total
+          ? h('div', { class: 'duebar' }, h('span', null, h('b', null, `${d.my_progress.total - d.my_progress.done} step${d.my_progress.total - d.my_progress.done > 1 ? 's' : ''} waiting for you. `), 'Each takes a minute and keeps your screenings in line with what the client wants now.'), h('button', { class: 'pill dark', onclick: goToNext }, 'Start now'))
+          : h('p', { class: 'sub' }, `All done: you have completed ${d.my_progress.total} of ${d.my_progress.total} steps for this position.`)),
       askPanel(d),
       d.items.length ? null : h('p', { class: 'sub' }, 'Nothing to learn yet: no approved change has created a step.'),
       sec('Confirm', 'read and acknowledge', 'ack', ackItem), sec('Study', 'write what you would do', 'study', studyItem), sec('Review', 'learn from the client decision', 'review', reviewItem)),
     h('div', null, h('div', { class: 'glass panel' }, h('h3', null, 'Team', hint('Up to date means the recruiter completed every step for this position: a confirmation, a written answer or an accepted review.')), h('p', { class: 'sub' }, 'Who has learned every approved change.'),
-      d.team.map((t) => h('div', { class: `trow${t.id === d.me ? ' me' : ''}` }, h('b', null, t.name), h('span', null, `${t.done}/${t.total}`), t.up_to_date ? chip('Up to date', 'ok') : chip(`${t.pending} to do`, 'y')))),
+      d.team.map((t) => h('div', { class: `trow${t.id === d.me ? ' me' : ''}` }, h('b', null, t.name), h('span', null, `${t.done}/${t.total}`),
+        t.up_to_date ? chip('Up to date', 'ok') : t.id === d.me ? h('button', { class: 'pill dark sm', onclick: goToNext }, `Do it now (${t.pending})`) : chip(`${t.pending} to do`, 'y')))),
       verifyPanel(d)));
 }
 

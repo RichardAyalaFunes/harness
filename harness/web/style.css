@@ -340,3 +340,39 @@ details.how[open] ol.stg li:nth-child(2){animation-delay:.03s}details.how[open] 
 .oldver{animation:rise .3s var(--ease) both}
 
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-delay:0s!important;transition-duration:.01ms!important}.sk{animation:none}}
+
+/* Floating tooltip on <body>: always above page content */
+.hint::after{content:none!important;display:none!important}
+.tipfloat{position:fixed;z-index:1000;max-width:280px;padding:9px 12px;border-radius:12px;background:var(--ink);color:#fff;font-size:12.5px;line-height:1.45;box-shadow:0 10px 28px rgba(0,0,0,.2);pointer-events:none;opacity:0;transform:translateY(-4px);transition:opacity .15s var(--ease),transform .15s var(--ease)}
+.tipfloat.on{opacity:1;transform:none}
+
+/* details open/close */
+details>summary{list-style:none}details>summary::-webkit-details-marker{display:none}
+details>summary::before{content:"";display:inline-block;width:0;height:0;margin-right:8px;border-left:6px solid currentColor;border-top:4.5px solid transparent;border-bottom:4.5px solid transparent;transition:transform .22s var(--ease);vertical-align:middle}
+details[open]>summary::before{transform:rotate(90deg)}
+
+/* study actions: audio left, submit right, one row */
+.acts.split{justify-content:space-between}
+.acts.split .micb{margin-top:0}
+
+/* ask panel: examples under the input */
+.examples{margin:10px 2px 0}
+.chatlog[hidden]{display:none}
+
+/* pending steps: soft yellow light travelling around the border */
+@property --spin{syntax:'<angle>';inherits:false;initial-value:0deg}
+.item.todo{position:relative;isolation:isolate}
+.item.todo::before{content:"";position:absolute;inset:-1px;border-radius:inherit;padding:2px;
+  background:conic-gradient(from var(--spin),transparent 0deg,transparent 250deg,rgba(248,198,90,.25) 290deg,#f8c65a 330deg,rgba(248,198,90,.25) 350deg,transparent 360deg);
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;
+  animation:spin 3.2s linear infinite;pointer-events:none;z-index:1}
+@keyframes spin{to{--spin:360deg}}
+.item.todo .top .chip.y{animation:breathe 2.4s ease-in-out infinite}
+@keyframes breathe{50%{box-shadow:0 0 0 5px rgba(248,198,90,.25)}}
+.item.pulse{animation:pulse 1s var(--ease)}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(248,198,90,.7)}100%{box-shadow:0 0 0 18px rgba(248,198,90,0)}}
+.panel.due{border-color:rgba(248,198,90,.7)}
+.duebar{display:flex;gap:14px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-top:6px;font-size:14px;color:var(--ink2)}
+.duebar b{color:var(--ink)}
+.pill.sm{min-height:32px;height:32px;padding:0 14px;font-size:13px}
+@media (prefers-reduced-motion:reduce){.item.todo::before{animation:none;background:linear-gradient(rgba(248,198,90,.8),rgba(248,198,90,.8))}}
