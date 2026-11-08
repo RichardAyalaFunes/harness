@@ -2,7 +2,7 @@
 
 Updated: 2026-11-07 · Claude (client-context chat). Stage: client-context answers recorded; plan next.
 
-LATEST: prototype A adjusted per prompts/client-context/023-user.md: no checklist gate on moving candidates (plain "Next stage"); checks only on brief changes and client decisions; team view of recruiters up to date per brief version; candidate-matching via transcripts recorded as out of scope. Earlier decisions in knowledge/business.md ("Decisions before implementation"): F3+F1 now, F2 later; acknowledge vs study triggers; SQLite + raw files; OpenAI API at the end; README install notes. Checked by screenshots (evidence/) and a scripted move. Next: P-prime objective map and workflow stages with checks, then plan-gate Codex review, JD research, mock data, harness.
+LATEST (2026-11-08): harness built and merged. harness/ = Node 24 + node:sqlite, 7 checked stages, CLI, web UI from prototype A, replay model by default, OpenAI provider wired (retries, generic errors). 94 tests pass; harness check 12/12. Plan gate PASS (3rd Codex pass), pre-merge PASS (2nd pass); see _work/2026-11-08-harness-build/review-dispositions.claude.md. README, DESIGN.md, readme.html written (owner to confirm the first-person quote and time spent). PENDING: owner puts OPENAI_API_KEY (+ OPENAI_MODEL) in harness/.env; then live run (HARNESS_MODEL=openai pnpm harness rebuild), record results vs replay, then final Codex review.
 
 Earlier baton (Codex):
 
