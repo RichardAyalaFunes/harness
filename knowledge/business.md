@@ -59,6 +59,11 @@ Recommended option accepted for C1, C2, C4–C18; C3 proposal accepted. Notes th
 - **V3 yes:** the stage-and-evidence rule goes into AGENTS.md (rule 13).
 - **Presentation intent (draft, for the end):** readme.html becomes the human's presentation. Message: the owner has built RAG systems (the human wrote "RAC"; interpreted as RAG, to confirm) and app integrations many times. They omitted them from this MVP on purpose because integrations depend on each client's tools and are easy to learn. The point of this submission is the reasoning: what changed, why it matters, and how the recruiter's judgment follows. Final wording is the owner's.
 
+## UI feedback on prototype-hifi (prompts/client-context/011-user.md, 2026-11-07)
+- Too much information in one space and too many visible stages. The UI is for learning and reading: one idea at a time, catching what the user is looking for.
+- The style did not follow docs/ui-style-reference.md closely enough. Wanted: its editorial feel (large lowercase display type, generous space, handwritten-style captions, sticker accents).
+- Deliver two different presentation ideas (proto-story.html, proto-brief.html). prototype-hifi.html is superseded. Rule-13 stages stay internal, not on the reading screen.
+
 ## Prototype choice and client-feedback loop (prompts/client-context/009-user.md, 2026-11-07)
 - UI direction: A's timeline + B's "what we know, by version" table + the open-unknowns checklist on the right. B's search-lifecycle strip was unclear: dropped. Next artifact: high-fidelity, desktop-only, in the docs/ui-style-reference.md style (prototype-hifi.html).
 - Client decisions (reject, or advance a candidate) are the strongest feedback. A rejection need not create a new profile version when criteria did not change. It still produces a learning signal: what our screening must verify next time.

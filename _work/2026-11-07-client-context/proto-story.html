@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Role story · Northwind</title>
+<style>
+:root{--cream:#fdfbf9;--dew:#f7efe9;--ink:#171717;--cocoa:#2b1a07;--orange:#ff6f1e;--sienna:#ce500a;--muted:#6b5d50;--sky:#3b82f6;--pink:#ff66cf;--sprout:#22c55e;
+--display:"gelica","Recoleta","Fraunces","Cooper Black",Georgia,serif;--ui:"Geist","Inter","Segoe UI",system-ui,sans-serif}
+*{box-sizing:border-box}body{margin:0;background:var(--cream);color:var(--ink);font:20px/1.5 var(--display);min-width:1200px}
+a,button{font:inherit;color:inherit}button:focus-visible,summary:focus-visible{outline:3px solid var(--ink);outline-offset:4px}
+.page{max-width:1200px;margin:0 auto;padding:16px 48px 0;position:relative}
+.top{display:flex;align-items:center;height:64px}
+.mark{width:32px;height:32px}
+.nav{margin-left:auto;font:400 18px var(--ui);display:flex;gap:28px;align-items:center}
+.pill{background:var(--cream);border:1.5px solid var(--ink);border-radius:20px;padding:10px 28px;font:500 16px var(--display);cursor:pointer;box-shadow:rgba(0,0,0,.25) 0 1px 2px 0}
+.pill[disabled]{opacity:.35;cursor:default}
+.dots{display:flex;gap:10px;margin:40px 0 0;font:400 16px var(--ui);align-items:center}
+.dots button{width:14px;height:14px;border-radius:50%;border:1.5px solid var(--ink);background:var(--cream);padding:0;cursor:pointer}
+.dots button.on{background:var(--ink)}.dots button.learn{border-radius:3px;transform:rotate(45deg)}
+.dots span{margin-left:12px;color:var(--muted)}
+.hero{display:grid;grid-template-columns:1.25fr .75fr;gap:64px;margin-top:40px;min-height:540px}
+.cap{font:400 24px var(--display);color:var(--sienna);transform:rotate(-2deg);display:inline-block;margin:0 0 8px}
+h1{font:600 96px/1.04 var(--display);color:var(--cocoa);margin:0;text-transform:lowercase;letter-spacing:0}
+.lede{font-size:22px;max-width:620px;margin:28px 0 0;color:var(--cocoa)}
+.mk{position:relative;white-space:nowrap}.mk svg{position:absolute;left:-2%;bottom:-8px;width:104%;height:12px}
+.quote{font:400 18px/1.6 var(--ui);color:var(--muted);margin:28px 0 0;max-width:560px;padding-left:18px;border-left:2px solid var(--ink)}
+.side{position:relative;padding-top:48px}
+.card{border:1.5px solid var(--ink);border-radius:12px;padding:28px 32px;background:var(--cream);box-shadow:rgba(0,0,0,.06) 0 2px 20px 0}
+.ba{display:grid;grid-template-columns:1fr;gap:18px}
+.ba .f{font:400 16px var(--ui);color:var(--muted);text-transform:lowercase}
+.ba .was{font-size:20px;color:var(--muted);text-decoration:line-through;text-decoration-thickness:1.5px}
+.ba .now{font:600 28px/1.25 var(--display);color:var(--cocoa)}
+.label{position:absolute;right:-14px;top:-6px;transform:rotate(4deg);background:#fff;border:1px solid var(--ink);border-radius:8px;padding:10px 14px;font:400 16px var(--display);width:250px}
+.label b{display:block;font-size:13px;font-family:var(--ui);font-weight:500;text-transform:lowercase;color:var(--muted)}
+.label li{margin:4px 0}.label ul{margin:4px 0 0;padding-left:18px}
+.sticker{position:absolute;pointer-events:none}
+.learnbox{margin-top:64px;display:grid;grid-template-columns:.8fr 1.2fr;gap:64px;align-items:start;padding-bottom:24px}
+h2{font:600 46px/1.15 var(--display);color:var(--cocoa);margin:0;text-transform:lowercase}
+.mean{font-size:22px;color:var(--cocoa);margin:0}
+details{margin-top:28px;border-top:1.5px solid var(--ink);padding-top:20px}
+summary{cursor:pointer;font:600 24px var(--display);color:var(--cocoa);list-style:none}summary::before{content:"→ "}
+details[open] summary::before{content:"↓ "}
+details p{font-size:20px;margin:12px 0 0;background:var(--dew);padding:16px 20px;border-radius:12px}
+.flag{margin-top:24px;font:400 18px/1.5 var(--ui);border:1.5px dashed var(--ink);border-radius:12px;padding:14px 18px}
+.next{display:flex;gap:16px;margin:48px 0 0;align-items:center}
+.next small{font:400 16px var(--display);color:var(--cocoa)}
+footer{margin-top:96px;background:var(--orange);border-radius:56px 56px 0 0;padding:36px 48px;font:400 18px var(--display);color:var(--ink)}
+footer b{font-weight:600}
+</style></head><body>
+<div class="page">
+<div class="top">
+<svg class="mark" viewBox="0 0 32 32" aria-label="home"><path d="M8 28V12a3 3 0 0 1 6 0v6l2-1a3 3 0 0 1 4 1l1 1a3 3 0 0 1 4 2v5a4 4 0 0 1-4 4H12a4 4 0 0 1-4-2z" fill="none" stroke="#171717" stroke-width="1.8" stroke-linejoin="round"/><path d="M11 4v3M5 7l2 2M17 7l-2 2" stroke="#171717" stroke-width="1.8" stroke-linecap="round"/></svg>
+<div class="nav"><span>northwind · senior backend engineer</span><a class="pill" style="text-decoration:none" href="proto-brief.html">see the full brief</a></div></div>
+
+<div class="dots" id="dots" aria-label="story chapters"></div>
+
+<section class="hero">
+<div>
+<p class="cap" id="cap"></p>
+<h1 id="h1"></h1>
+<p class="lede" id="lede"></p>
+<p class="quote" id="quote"></p>
+</div>
+<div class="side">
+<div class="card"><div class="ba" id="ba"></div></div>
+<div class="label" id="label"></div>
+<svg class="sticker" style="left:-36px;top:8px;transform:rotate(-12deg)" width="54" height="70" viewBox="0 0 54 70" aria-hidden="true"><path d="M30 2 6 40h16l-6 28 32-42H30l6-24z" fill="#3b82f6" stroke="#171717" stroke-width="2" stroke-linejoin="round"/></svg>
+<svg class="sticker" style="right:20px;bottom:-30px;transform:rotate(9deg)" width="46" height="46" viewBox="0 0 46 46" aria-hidden="true"><path d="M23 3l4 15 15 5-15 4-4 16-4-16-15-4 15-5z" fill="#22c55e" stroke="#171717" stroke-width="2" stroke-linejoin="round"/></svg>
+</div>
+</section>
+
+<section class="learnbox">
+<h2>what this means for your next call</h2>
+<div><p class="mean" id="mean"></p><div id="flag"></div>
+<details id="check"><summary id="q"></summary><p id="a"></p></details>
+<div class="next"><button class="pill" id="prev">← earlier</button><button class="pill" id="nxt">next change →</button><small id="pos"></small></div>
+</div></section>
+</div>
+<footer><b>reading mode</b> · one change at a time, written for the recruiter. Prototype with fictional data; nothing is saved or sent.</footer>
+<script>
+const C=[
+{d:'02 oct',src:'job description',cap:'where we started',h:'a backend engineer who knows go.',lede:'The JD lists tools: Go, Postgres, five years, remote in the EU, €70–80k. It doesn’t say why the role exists or what success looks like.',quote:'“Senior Backend Engineer, Go/Postgres, 5+ years, remote EU, €70–80k.” (JD email)',ba:[['must-have',null,'Go, Postgres, 5+ years'],['budget',null,'€70–80k']],ask:['Why is the role open now?','What does success look like at 12 months?'],mean:'Treat this as a first draft. Source broadly, but go into the kickoff with the two questions on the label.',q:'What does this JD not tell us yet?',a:'Why they’re hiring now, and what the person must achieve. Those decide who is actually a fit.'},
+{d:'05 oct',src:'kickoff call',cap:'from the kickoff with the CTO',h:'go is no longer the point.',mk:'the point',lede:'After the Series A, Northwind needs someone who owns production incidents end to end and leads a squad of three within a year. Go can be learned.',quote:'“Go is nice, but reliability matters more. Someone who owns incidents end to end.” (CTO, kickoff transcript)',ba:[['must-have','Go, Postgres, 5+ years','owns production incidents'],['trainable',null,'Go'],['in 12 months',null,'leads a squad of 3']],ask:['Who runs the technical round?','Is the university preference a hard filter?'],flag:'⚑ The CTO also said “ideally a top-10 university”. We follow the client, but this can exclude strong people, so confirm with them before using it as a filter.',mean:'Stop screening for Go keywords. Ask for stories: the last outage they owned, what they decided, and what they changed afterwards.',q:'A candidate has perfect Go but has never been on call. Strong fit?',a:'Not yet. Go is trainable; incident ownership is the must-have. Probe for any production responsibility before deciding.'},
+{d:'21 oct',src:'news · synthetic',cap:'nothing to change, good to know',h:'northwind is growing into rail.',mk:'growing',lede:'They announced rail freight and a new AI routing team. The brief stays the same, but the story you tell candidates gets better.',quote:'“Northwind expands into rail freight and plans an AI routing team.” (synthetic news article)',ba:[['company direction','road freight','road + rail, AI team coming']],ask:['Will this hire work with the new AI team?'],mean:'Use it in your pitch: a growing company with a new team to work alongside. Don’t change who you screen for.',q:'Does this news change the must-haves?',a:'No. It’s context for your pitch. Only the client can change the criteria.'},
+{d:'03 nov',src:'founder email',cap:'from the founder’s email',h:'the budget got tighter.',mk:'tighter',lede:'The board wants profitability. The start moves to Q1, the cap is €72k, and the founder asks whether someone more mid-level could grow into the role. That last part isn’t confirmed yet.',quote:'“Push the start to Q1 and cap at €72k. Could someone more mid-level grow into it?” (founder, email)',ba:[['budget','€70–80k','up to €72k'],['start','as soon as possible','Q1'],['seniority','senior','senior, maybe strong mid?']],ask:['Is mid-level accepted, or only being discussed?','Do finalists above €72k stay in?'],flag:'⚑ “Strong mid” and “leads a squad of 3 in 12 months” pull in different directions. Raise it with the client.',mean:'Don’t drop your two finalists above €72k yet. A mid-level person still has to show real incident ownership, and that requirement didn’t move.',q:'Should you reject the €75k finalist today?',a:'No. The mid-level idea isn’t confirmed and the budget may stretch for the right person. Ask the client first.'},
+{d:'10 nov',src:'client feedback',learn:true,cap:'the client said no to marco',h:'we missed system design.',mk:'system design',lede:'Marco was strong on incidents but couldn’t design the rail-routing data model in the client’s technical round. The brief doesn’t change. Our screening does.',quote:'“We need someone who designs systems, not only fixes them.” (CTO, rejection feedback)',ba:[['brief','v4','still v4: no change'],['check before submitting',null,'+ system design depth']],ask:['Does system design now count as a must-have?'],mean:'Before you submit someone, ask for a system they designed from scratch, the trade-offs, and what they would change now. If you can’t judge the answer, ask for a technical screen.',q:'Our screening note said “sounded solid on a payments redesign”. What went wrong?',a:'We asked, but read the answer as stronger than it was. “Sounded solid” has no trade-offs or detail. Next time, write down one concrete design decision they made.'}];
+let i=3;const $=s=>document.getElementById(s),E=(t,x,c)=>{const e=document.createElement(t);if(x!=null)e.textContent=x;if(c)e.className=c;return e};
+function wave(){const s=document.createElementNS('http://www.w3.org/2000/svg','svg');s.setAttribute('viewBox','0 0 200 12');s.setAttribute('preserveAspectRatio','none');s.setAttribute('aria-hidden','true');const p=document.createElementNS(s.namespaceURI,'path');p.setAttribute('d','M2 8 C40 3 70 11 110 6 S170 4 198 7');p.setAttribute('fill','none');p.setAttribute('stroke','#ff6f1e');p.setAttribute('stroke-width','3');p.setAttribute('stroke-linecap','round');s.append(p);return s}
+function draw(){const c=C[i];$('cap').textContent=c.cap+' · '+c.d;const h=$('h1');h.replaceChildren();if(c.mk&&c.h.includes(c.mk)){const [a,b]=c.h.split(c.mk);const m=E('span',c.mk,'mk');m.append(wave());h.append(a,m,b)}else h.textContent=c.h;
+$('lede').textContent=c.lede;$('quote').textContent=c.quote;const ba=$('ba');ba.replaceChildren();c.ba.forEach(([f,w,n])=>{const d=E('div');d.append(E('div',f,'f'));if(w)d.append(E('div',w,'was'));d.append(E('div',n,'now'));ba.append(d)});
+const l=$('label');l.replaceChildren(E('b','still to ask northwind'));const ul=E('ul');c.ask.forEach(q=>ul.append(E('li',q)));l.append(ul);
+$('mean').textContent=c.mean;$('flag').replaceChildren();if(c.flag)$('flag').append(E('div',c.flag,'flag'));$('q').textContent='check yourself: '+c.q;$('a').textContent=c.a;$('check').open=false;
+$('prev').disabled=i===0;$('nxt').disabled=i===C.length-1;$('pos').textContent=(i+1)+' of '+C.length+(c.learn?' · lesson from client feedback':' · brief v'+(i+1));
+const d=$('dots');d.replaceChildren();C.forEach((x,j)=>{const b=E('button',null,(j===i?'on ':'')+(x.learn?'learn':''));b.setAttribute('aria-label',x.d+' '+x.src);b.onclick=()=>{i=j;draw()};d.append(b)});d.append(E('span',c.d+' · '+c.src))}
+$('prev').onclick=()=>{i--;draw()};$('nxt').onclick=()=>{i++;draw()};draw();
+</script></body></html>

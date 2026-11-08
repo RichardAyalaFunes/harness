@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Role brief · Northwind</title>
+<style>
+:root{--cream:#fdfbf9;--dew:#f7efe9;--ink:#171717;--cocoa:#2b1a07;--orange:#ff6f1e;--sienna:#ce500a;--muted:#6b5d50;
+--display:"gelica","Recoleta","Fraunces","Cooper Black",Georgia,serif;--ui:"Geist","Inter","Segoe UI",system-ui,sans-serif}
+*{box-sizing:border-box}body{margin:0;background:var(--cream);color:var(--ink);font:20px/1.6 var(--display);min-width:1200px}
+button,a{font:inherit;color:inherit}button:focus-visible,a:focus-visible{outline:3px solid var(--ink);outline-offset:4px}
+.page{max-width:1200px;margin:0 auto;padding:16px 48px 0}
+.top{display:flex;align-items:center;height:64px;font:400 18px var(--ui)}.top a{margin-left:auto}
+.pill{background:var(--cream);border:1.5px solid var(--ink);border-radius:20px;padding:10px 28px;font:500 16px var(--display);cursor:pointer;box-shadow:rgba(0,0,0,.25) 0 1px 2px 0;text-decoration:none}
+.pill.on{background:var(--ink);color:var(--cream)}
+h1{font:600 88px/1.05 var(--display);color:var(--cocoa);margin:48px 0 0;text-transform:lowercase}
+.sub{font-size:22px;color:var(--cocoa);margin:20px 0 0;max-width:720px}
+.since{display:flex;gap:12px;align-items:center;margin:36px 0 0;font:400 16px var(--ui);flex-wrap:wrap}
+.since span{margin-right:8px}
+.sheet{display:grid;grid-template-columns:1fr 300px;gap:56px;margin-top:56px}
+.brief{border:1.5px solid var(--ink);border-radius:12px;padding:48px 56px;background:var(--cream);box-shadow:rgba(0,0,0,.06) 0 2px 20px 0;position:relative}
+.brief h2{font:600 28px var(--display);color:var(--cocoa);margin:36px 0 8px;text-transform:lowercase}.brief h2:first-child{margin-top:0}
+.brief p{margin:0;font-size:22px;line-height:1.65;color:var(--cocoa)}
+.ch{background:linear-gradient(transparent 72%,rgba(255,111,30,.55) 72%,rgba(255,111,30,.55) 90%,transparent 90%);cursor:pointer;border:0;padding:0;font-weight:600}
+.ch.sel{outline:2px solid var(--ink);outline-offset:3px;border-radius:2px}
+.margin{position:relative}
+.note{position:absolute;left:0;width:300px;transform:rotate(-1.5deg)}
+.note .hand{font:400 24px/1.3 var(--display);color:var(--sienna)}
+.note .was{font:400 16px/1.5 var(--ui);color:var(--muted);margin-top:6px}
+.note svg{position:absolute;left:-52px;top:10px}
+.stick{position:relative;transform:rotate(3deg);margin-bottom:24px;background:#fff;border:1px solid var(--ink);border-radius:8px;padding:10px 14px;font:400 16px var(--display);width:240px}
+.stick b{display:block;font:500 13px var(--ui);color:var(--muted);text-transform:lowercase}.stick ul{margin:4px 0 0;padding-left:18px}
+.remember{margin:80px 0 0;display:grid;grid-template-columns:.8fr 1.2fr;gap:64px}
+.remember h2{font:600 46px/1.15 var(--display);color:var(--cocoa);margin:0;text-transform:lowercase}
+.remember ol{margin:0;padding:0;list-style:none;counter-reset:r}.remember li{counter-increment:r;font-size:22px;color:var(--cocoa);padding:18px 0 18px 64px;border-top:1.5px solid var(--ink);position:relative}
+.remember li::before{content:counter(r);position:absolute;left:0;top:10px;width:44px;height:44px;border:1.5px solid var(--ink);border-radius:50%;display:grid;place-items:center;font:600 20px var(--display)}
+footer{margin-top:96px;background:var(--orange);border-radius:56px 56px 0 0;padding:36px 48px;font:400 18px var(--display)}
+</style></head><body>
+<div class="page">
+<div class="top"><span>northwind · senior backend engineer · recruiter: ana</span><a class="pill" href="proto-story.html">read it as a story</a></div>
+<h1>who northwind needs, as of <span id="asof"></span>.</h1>
+<p class="sub">The brief in plain words. Highlighted phrases changed since the date you pick. Click one to see what it replaced and why.</p>
+<div class="since" id="since"><span>show changes since</span></div>
+
+<div class="sheet">
+<article class="brief" id="brief">
+<h2>the company</h2><p id="p-co"></p>
+<h2>the person</h2><p id="p-person"></p>
+<h2>the deal</h2><p id="p-deal"></p>
+<h2>before you submit anyone</h2><p id="p-verify"></p>
+</article>
+<aside><div class="stick" id="stick"></div><div class="margin" id="margin"></div></aside>
+</div>
+
+<section class="remember"><h2>three things to remember</h2><ol id="rem"></ol></section>
+</div>
+<footer><b>brief mode</b> · the current truth on one page, with changes in the margin. Prototype with fictional data; nothing is saved or sent.</footer>
+<script>
+const $=s=>document.getElementById(s),E=(t,x,c)=>{const e=document.createElement(t);if(x!=null)e.textContent=x;if(c)e.className=c;return e};
+// each slot: value history [date index, value, source, why]
+const D=['02 oct','05 oct','21 oct','03 nov','10 nov'];
+const S={
+co:[[0,'a 55-person road freight software company that just raised its Series A',''],[2,'a 55-person freight software company, fresh from its Series A, now expanding into rail with an AI routing team on the way','synthetic news, 21 oct','Expansion news. Use it in your pitch; it doesn’t change criteria.']],
+must:[[0,'Go, Postgres and five years of experience','JD'],[1,'someone who owns production incidents end to end','CTO, kickoff 05 oct','“Go is nice, but reliability matters more.”']],
+train:[[0,'',''],[1,'Go can be learned on the job','CTO, kickoff 05 oct','Go moved from must-have to trainable.']],
+grow:[[0,'',''],[1,'Within a year they lead a squad of three','CTO, kickoff 05 oct','12-month outcome from the kickoff.']],
+sen:[[0,'senior','JD'],[3,'senior, possibly a strong mid-level (not confirmed)','founder email, 03 nov','“Could someone more mid-level grow into it?” Ask before acting on it.']],
+pay:[[0,'€70–80k','JD'],[3,'up to €72k','founder email, 03 nov','Board wants profitability.']],
+start:[[0,'as soon as possible','JD'],[3,'in Q1','founder email, 03 nov','Start date pushed back.']],
+ver:[[0,'Check they have real Postgres experience in production',''],[1,'Ask for the last outage they owned: what they decided and what changed afterwards','kickoff 05 oct','Follows the new must-have.'],[4,'Ask for the last outage they owned, and for a system they designed from scratch with its trade-offs','client rejected Marco, 10 nov','Client feedback: no brief change, but our screening missed design depth.']]};
+const ASK=[[0,'Why is the role open now?'],[1,'Who runs the technical round?'],[1,'Is the “top-10 university” wish a hard filter? ⚑ possible bias, confirm it’s job-related'],[3,'Is mid-level accepted, or only discussed?'],[4,'Does system design now count as a must-have?']];
+const REM=[[1,'Screen for incident stories, not Go keywords.'],[3,'Don’t drop finalists above €72k until the client confirms.'],[4,'Write down one concrete design decision for every candidate you submit.'],[0,'Ask why the role exists before sourcing widely.']];
+let now=4,since=2,sel=null;
+function val(k){const h=S[k];let v=h[0];h.forEach(x=>{if(x[0]<=now)v=x});return v}
+function prevVal(k){const h=S[k];let v=null;h.forEach(x=>{if(x[0]<=since)v=x});return v}
+function frag(k){const v=val(k);if(!v[1])return null;const p=prevVal(k);if(v[0]>since){const b=E('button',v[1],'ch'+(sel===k?' sel':''));b.onclick=()=>{sel=sel===k?null:k;draw()};b.dataset.k=k;return b}return document.createTextNode(v[1])}
+function put(id,parts){const p=$(id);p.replaceChildren();parts.forEach(x=>{if(x==null)return;p.append(typeof x==='string'?document.createTextNode(x):x)})}
+function draw(){$('asof').textContent=D[now];
+put('p-co',['Northwind is ',frag('co'),'.']);
+const t=frag('train'),g=frag('grow');
+put('p-person',['We’re looking for ',frag('must'),'. ',t?t:null,t?'. ':'',g?g:null,g?'. ':'','Level: ',frag('sen'),'.']);
+put('p-deal',['Budget ',frag('pay'),', starting ',frag('start'),'. Remote in the EU.']);
+put('p-verify',[frag('ver'),'.']);
+const st=$('stick');st.replaceChildren(E('b','still to ask northwind'));const ul=E('ul');ASK.filter(a=>a[0]<=now).slice(-3).forEach(a=>ul.append(E('li',a[1])));st.append(ul);
+const m=$('margin');m.replaceChildren();
+document.querySelectorAll('.brief .ch').forEach(b=>{const k=b.dataset.k;if(sel&&sel!==k)return;const v=val(k),p=prevVal(k);const n=E('div',null,'note');n.style.top=Math.max(0,b.offsetTop-6-$('stick').offsetHeight-24)+'px';
+n.innerHTML='<svg width="48" height="20" viewBox="0 0 48 20" aria-hidden="true"><path d="M46 12 C30 2 16 18 3 9" fill="none" stroke="#171717" stroke-width="1.5" stroke-linecap="round"/><path d="M8 4 3 9l6 3" fill="none" stroke="#171717" stroke-width="1.5" stroke-linecap="round"/></svg>';
+n.append(E('div',v[3]||'changed '+D[v[0]],'hand'),E('div',(p&&p[1]?'was: '+p[1]:'new')+' · '+(v[2]||''),'was'));m.append(n)});
+// de-overlap notes
+let last=-999;[...m.children].forEach(n=>{let t=parseFloat(n.style.top);if(t<last+120)t=last+120;n.style.top=t+'px';last=t});m.style.minHeight=(last+150)+'px';
+const r=$('rem');r.replaceChildren();REM.filter(x=>x[0]<=now).sort((a,b)=>b[0]-a[0]).slice(0,3).forEach(x=>r.append(E('li',x[1])));
+const s=$('since');[...s.querySelectorAll('button')].forEach(b=>b.remove());D.slice(0,now).forEach((d,j)=>{const b=E('button',j===0?'the start ('+d+')':d,'pill'+(j===since?' on':''));b.onclick=()=>{since=j;sel=null;draw()};s.append(b)})}
+draw();window.addEventListener('load',draw);
+</script></body></html>

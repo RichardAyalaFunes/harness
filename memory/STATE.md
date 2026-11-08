@@ -2,7 +2,7 @@
 
 Updated: 2026-11-07 · Claude (client-context chat). Stage: client-context answers recorded; plan next.
 
-LATEST: the human chose A timeline + B version table + an open-unknowns checklist (lifecycle strip dropped). A high-fidelity desktop prototype is in _work/2026-11-07-client-context/prototype-hifi.html: click-checked, plus a 1440px screenshot. New scope (prompts/client-context/009-user.md): client reject/advance decisions become learning signals. They change the "verify before submitting" focus and teach the recruiter, without a new brief version unless criteria change. Candidate scoring and screening generation are out of scope. Awaiting the human's pick among feedback-loop options F1–F3 (chat 010). Open: recalibration trigger threshold. Next: objective map for the chain → plan-gate peer review → JD research → mock data.
+LATEST: the human found prototype-hifi too dense and off-style (prompts/client-context/011-user.md). There are two reading-first versions in the ui-style-reference look, cross-linked: proto-story.html (one change per page: big headline, before→after card, "still to ask" label, "what this means", reveal-style self-check) and proto-brief.html (the current brief as prose, phrases changed since a chosen date highlighted, margin notes with source, "three things to remember"). Both were click-checked and screenshotted at 1440px. Rule-13 stages are kept off the reading screens. prototype-hifi.html is superseded. Awaiting the human's pick. Still open: F1–F3 (recommended F3+F1) and the recalibration trigger. Next: objective map → plan-gate peer review → JD research → mock data.
 
 Earlier baton (Codex):
 
