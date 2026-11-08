@@ -183,12 +183,12 @@ test('stage 5 fails visibly when a study item has no study entry; forced rerun a
   env.cleanup();
 });
 
-test('OpenAI provider is a stub: stage 2 fails with "not configured", never replaced by replay', async () => {
+test('OpenAI provider without a key: stage 2 fails visibly, never replaced by replay', async () => {
   const env = makeEnv();
   const r = env.add('o1', {}, 'Text.\n');
   const res = await runSource(env.db, r.row_id, { model: createOpenAIModel() });
   assert.equal(res.failedAt, 2);
-  assert.match(errorsOf(env, r.row_id, 2).join(), /not configured/);
+  assert.match(errorsOf(env, r.row_id, 2).join(), /OPENAI_API_KEY is not set/);
   env.cleanup();
 });
 

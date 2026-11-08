@@ -225,6 +225,10 @@ async function callModel(db, model, row) {
   const roles = targetRoles(db, row);
   const brief = row.scope === 'role' ? compactBrief(currentVersion(db, row.role_id)) : { roles: Object.fromEntries(roles.map((r) => [r, compactBrief(currentVersion(db, r))])) };
   const input = { source: { id: row.source_id, channel: row.channel, date: row.date, author: row.author, role: row.role_ref, candidate: row.candidate, decision: row.decision }, brief, body: text };
+  if (row.channel === 'client-decision' && row.candidate) {
+    const scr = findScreening(db, row.role_id, row.candidate, row.date);
+    if (scr) input.screening = { source_id: scr.source_id, date: scr.date, body: truncateForModel(scr.body, MAX_CONTEXT_CHARS).text };
+  }
   try { return { raw: await model.extract(input), model: model.name, input_chars: JSON.stringify(input).length }; }
   catch (e) { return { error: e.message, model: model.name }; }
 }

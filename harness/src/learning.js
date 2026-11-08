@@ -32,7 +32,7 @@ export function draftItems({ changes, study, baseline, sourceId }) {
       const nowMust = c.op !== 'remove' && (c.weight ?? c.old_weight) === 'must';
       if (nowMust && c.old_weight !== 'must') addStudy(c, `New must-have: ${c.value}`);
       else if (c.old_weight === 'must' && !nowMust) {
-        items.push({ kind: 'ack', field: c.field, title: `No longer required: ${c.old_value ?? labelOf(c.field)}`, detail: { ...base, now: c.op === 'remove' ? 'removed' : c.weight } });
+        items.push({ kind: 'ack', field: c.field, title: c.op === 'remove' ? `No longer required: ${c.old_value ?? labelOf(c.field)}` : `No longer a must-have: ${c.old_value ?? labelOf(c.field)} is now ${c.weight === 'nice' ? 'nice to have' : c.weight}`, detail: { ...base, now: c.op === 'remove' ? 'removed' : c.weight } });
       }
     }
   }

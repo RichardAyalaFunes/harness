@@ -9,6 +9,8 @@ import { diff, matrix } from './brief.js';
 import { listCandidates, moveCandidate } from './candidates.js';
 import { approveProposal, rejectProposal, approveReview, rejectReview } from './approvals.js';
 import { completeItem } from './learning.js';
+import { loadEnv } from './model/index.js';
+loadEnv();
 
 const MIME = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.css': 'text/css; charset=utf-8', '.svg': 'image/svg+xml' };
 const HEADERS = {

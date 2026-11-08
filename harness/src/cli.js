@@ -10,6 +10,8 @@ import { teamStatus } from './learning.js';
 import { approveProposal, rejectProposal, approveReview, rejectReview } from './approvals.js';
 import { stagesView } from './views.js';
 import { runChecks } from './consistency.js';
+import { loadEnv } from './model/index.js';
+loadEnv();
 
 const [cmd, ...rest] = process.argv.slice(2);
 const flags = {};

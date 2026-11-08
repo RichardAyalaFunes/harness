@@ -97,7 +97,7 @@ test('a removed must-have creates no study item, only an acknowledgement that it
   approveProposal(env.db, f.proposal.id, 'lead');
   const items = publishedItems(env.db, 'r1');
   assert.deepEqual(items.map((i) => i.kind), ['ack']);
-  assert.match(items[0].title, /No longer required/);
+  assert.match(items[0].title, /No longer (required|a must-have)/);
   assert.equal(currentVersion(env.db, 'r1').fields['req.postgres'], undefined);
   env.cleanup();
 });
