@@ -202,3 +202,17 @@ table.stg code{font-size:12px;white-space:pre-wrap;word-break:break-word}
 .seg{flex-wrap:wrap}.search{display:none}
 .title{font-size:26px}.big{font-size:40px}
 }
+
+/* Medium widths: avoid cramped five-column boards, squeezed tiles and overlapping candidate cards */
+.cand{flex-wrap:wrap}
+.cand .who{flex:1 1 100px}
+.cand .mv{flex:1 1 100%;text-align:center;white-space:nowrap}
+.kpi b{white-space:nowrap}
+@media (max-width:1280px){
+.hero{grid-template-columns:1fr}
+.kpis{grid-template-columns:repeat(4,minmax(0,1fr))}
+.board{grid-template-columns:repeat(3,minmax(0,1fr))}.col{min-height:200px}
+.two{grid-template-columns:1fr}
+}
+@media (max-width:900px){.board{grid-template-columns:1fr}.kpis{grid-template-columns:repeat(2,1fr)}}
+.list li{flex-wrap:wrap}.list li>div,.list li>span{min-width:0;overflow-wrap:anywhere}.list.cov li{align-items:flex-start}
