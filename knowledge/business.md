@@ -59,6 +59,11 @@ Recommended option accepted for C1, C2, C4–C18; C3 proposal accepted. Notes th
 - **V3 yes:** the stage-and-evidence rule goes into AGENTS.md (rule 13).
 - **Presentation intent (draft, for the end):** readme.html becomes the human's presentation. Message: the owner has built RAG systems (the human wrote "RAC"; interpreted as RAG, to confirm) and app integrations many times. They omitted them from this MVP on purpose because integrations depend on each client's tools and are easy to learn. The point of this submission is the reasoning: what changed, why it matters, and how the recruiter's judgment follows. Final wording is the owner's.
 
+## Scope and team adjustments (prompts/client-context/023-user.md, 2026-11-08)
+- Out of scope (stated explicitly): using session transcripts to judge whether candidates match the role. Transcripts are used only to review the recruiter's screening against the brief.
+- No gate on moving candidates: submitting or moving to the next stage is never blocked by a form. Checks are triggered by brief changes and client decisions, not per candidate. "Before you submit" is renamed "What to verify in screenings" and is a reference only.
+- Team view: several recruiters per role; each completes the Stay current steps once per brief change. The position shows how many are up to date (e.g. 2/4 on v4), with a per-recruiter list and a (mock) reminder.
+
 ## Decisions before implementation (prompts/client-context/021-user.md, 2026-11-08)
 - Feedback loop: F3 (screening-gap review after a client decision) + F1 (verify-before-submit list) now; F2 (field primers) later.
 - Recalibration by change type: budget, start and restrictions = acknowledge only (checkbox, no test). Must-haves = study (free text) only when something new must be learned; removing a criterion (A,B,C to A,B) needs no study. Level changes = study, since expected depth per skill changes.
