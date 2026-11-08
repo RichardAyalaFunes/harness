@@ -1,0 +1,2 @@
+# Assistant final response — high-fi merged prototype and feedback-loop options F1–F3
+Summary: prototype-hifi.html (timeline + version table + open unknowns + teach-ana lesson with required check answers; client-rejection diamond event with screening-gap classification, no new version). Options F1 verify-focus, F2 field-primer cards, F3 gap retrospective; recommendation F3+F1, with F2 later. Full text in chat.

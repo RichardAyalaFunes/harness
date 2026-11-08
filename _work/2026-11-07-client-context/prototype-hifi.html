@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Role brief · Northwind</title>
+<style>
+:root{--cream:#fdfbf9;--dew:#f7efe9;--ink:#171717;--cocoa:#2b1a07;--orange:#ff6f1e;--sienna:#ce500a;--muted:#5c534b;--sh-card:rgba(0,0,0,.06) 0 2px 20px 0;--sh-btn:rgba(0,0,0,.25) 0 1px 2px 0}
+*{box-sizing:border-box}body{margin:0;background:var(--cream);color:var(--ink);font:16px/1.5 ui-rounded,"Segoe UI",system-ui,sans-serif;min-width:1280px}
+h1,h2,h3{color:var(--cocoa);font-weight:600;text-transform:lowercase;margin:0}h1{font-size:46px;line-height:1.1}h2{font-size:24px;line-height:1.3}h3{font-size:18px}
+.wrap{max-width:1320px;margin:0 auto;padding:24px 32px 0}
+.top{display:flex;align-items:center;gap:16px;margin-bottom:20px}.mark{width:32px;height:32px;border:1.5px solid var(--ink);border-radius:50%;display:grid;place-items:center;font-weight:700}
+.pill{font:inherit;font-size:15px;font-weight:500;background:var(--cream);color:var(--ink);border:1.5px solid var(--ink);border-radius:20px;padding:8px 22px;cursor:pointer;box-shadow:var(--sh-btn)}
+.pill[disabled]{opacity:.45;cursor:not-allowed}.pill.sel{outline:2px solid var(--ink);outline-offset:2px}
+button:focus-visible,input:focus-visible,textarea:focus-visible,[tabindex]:focus-visible{outline:3px solid var(--ink);outline-offset:3px}
+.right{margin-left:auto}.muted{color:var(--muted)}.small{font-size:14px}
+.hl{background:linear-gradient(transparent 70%,var(--orange) 70%,var(--orange) 85%,transparent 85%)}
+.card{background:var(--cream);border:1.5px solid var(--ink);border-radius:12px;padding:24px;box-shadow:var(--sh-card)}
+.tint{background:var(--dew)}
+.tag{display:inline-block;border:1px solid var(--ink);border-radius:20px;padding:2px 12px;font-size:13px;margin:0 6px 6px 0;background:var(--cream)}
+.tag.dark{background:var(--ink);color:var(--cream)}
+.grid{display:grid;grid-template-columns:1fr 380px;gap:24px;margin-top:24px}
+/* timeline */
+.tl{position:relative;display:flex;margin:28px 0 8px}.tl::before{content:"";position:absolute;left:24px;right:24px;top:27px;border-top:1.5px solid var(--ink)}
+.ev{flex:1;background:none;border:0;font:inherit;color:inherit;cursor:pointer;text-align:center;position:relative;padding:0 6px}
+.dot{display:block;margin:0 auto 8px;width:56px;height:56px;border:1.5px solid var(--ink);border-radius:50%;background:var(--cream);line-height:53px;font-weight:600}
+.ev.minor .dot{border-style:dashed}.ev.critical .dot{border-width:4px;line-height:48px}
+.ev.learn .dot{border-radius:12px;transform:rotate(45deg);width:44px;height:44px;margin-top:6px;margin-bottom:14px;line-height:41px}.ev.learn .dot span{display:inline-block;transform:rotate(-45deg)}
+.ev[aria-pressed=true] .dot{background:var(--ink);color:var(--cream)}
+.ev b{display:block;font-size:14px;font-weight:600}.ev i{display:block;font-style:normal;font-size:13px;color:var(--muted)}
+.legend{display:flex;gap:20px;font-size:13px;color:var(--muted);margin-top:4px}
+/* table */
+table{border-collapse:separate;border-spacing:0;width:100%;font-size:14px}th,td{padding:10px 12px;border-bottom:1px solid #cfc6bd;text-align:left;vertical-align:top}
+thead th{font-weight:600;color:var(--cocoa);border-bottom:1.5px solid var(--ink)}tbody th{font-weight:600;width:150px;color:var(--cocoa)}
+td.cur,th.cur{background:var(--dew)}td.chg{font-weight:600}td.chg::after{content:" ●";color:var(--ink)}
+td.old{color:var(--muted)}tr.learnrow th,tr.learnrow td{border-top:1.5px dashed var(--ink)}
+.diff div{padding:8px 0;border-bottom:1px solid #cfc6bd}.diff s{color:var(--muted)}
+.quote{border-left:3px solid var(--orange);padding:8px 14px;margin:12px 0;background:var(--dew);border-radius:0 8px 8px 0}
+.flag{border:1.5px solid var(--ink);border-radius:8px;padding:8px 12px;margin-top:10px;background:var(--cream)}.flag::before{content:"⚑ ";font-weight:700}
+/* side */
+.side{display:flex;flex-direction:column;gap:24px}
+.chk{display:flex;gap:10px;align-items:flex-start;padding:10px 0;border-bottom:1px solid #cfc6bd;font-size:14px}.chk input{width:20px;height:20px;margin-top:2px;accent-color:#171717}
+.chk.done span{text-decoration:line-through;color:var(--muted)}.chk small{display:block;color:var(--muted)}
+input[type=text],textarea{font:inherit;font-size:14px;width:100%;padding:10px 12px;border:1.5px solid var(--ink);border-radius:8px;background:var(--cream);color:var(--ink)}textarea{min-height:64px;resize:vertical}
+.row{display:flex;gap:10px;align-items:center}.gap{margin-top:14px}
+.gapgrid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-top:12px}.gapgrid>div{border:1.5px solid var(--ink);border-radius:12px;padding:14px;font-size:14px}.gapgrid>div.on{background:var(--ink);color:var(--cream)}
+footer{margin-top:48px;background:var(--orange);border-radius:56px 56px 0 0;padding:28px 48px;color:var(--ink);font-size:14px}
+</style></head><body>
+<div class="wrap">
+<div class="top"><div class="mark" aria-hidden="true">✎</div><span class="muted small">brightpath talent (fictional agency) · role briefs</span>
+<span class="right small muted">prototype · fictional data · nothing is saved or sent</span></div>
+
+<section class="card">
+<div class="row"><div><span class="tag dark">northwind freight tech · 55 people · series a</span><span class="tag">recruiter: ana</span><span class="tag">account lead: you</span></div>
+<div class="right row"><button class="pill" id="roleBE" aria-pressed="true">senior backend engineer</button><button class="pill" disabled title="prototype covers one role">ai agent engineer</button></div></div>
+<h1 style="margin-top:12px">what does northwind <span class="hl">actually</span> need now?</h1>
+<p class="muted" style="margin:6px 0 0">Every client touchpoint is read against the current brief. Circles create a new brief version. Diamonds are client feedback: a lesson for the team, not necessarily a new version.</p>
+<div class="tl" id="tl"></div>
+<div class="legend"><span>◯ dashed = minor</span><span>◯ solid = material</span><span>◯ thick = critical</span><span>◇ client feedback / learning signal</span></div>
+</section>
+
+<div class="grid">
+<main class="side">
+<section class="card"><div class="row"><h2 id="evTitle"></h2><span class="right tag" id="evSev"></span></div>
+<p class="muted small" id="evMeta"></p><div class="quote" id="evQuote"></div><div class="diff" id="evDiff"></div><div id="evExtra"></div></section>
+<section class="card"><div class="row"><h2>what we know, by version</h2><span class="right small muted">● = changed from previous version</span></div>
+<table id="tbl" class="gap"></table></section>
+</main>
+<aside class="side">
+<section class="card"><div class="row"><h2>open unknowns</h2><span class="right tag" id="openCount"></span></div>
+<p class="small muted">Questions for the client. Each one stays open until it's answered.</p><div id="open"></div>
+<label class="small gap" style="display:block" for="newQ">add a question for the client</label>
+<div class="row" style="margin-top:6px"><input type="text" id="newQ" placeholder="e.g. who runs the technical round?"><button class="pill" id="addQ">add</button></div></section>
+<section class="card tint"><h2>teach ana</h2><p class="small" id="lesson"></p>
+<div id="checks"></div><button class="pill gap" id="done">mark lesson understood</button><p class="small" id="doneMsg" role="status"></p></section>
+</aside></div>
+</div>
+<footer><b>prototype scope:</b> one role, synthetic sources, mocked AI output. The real harness writes each version, question and lesson answer to JSONL as evidence (rule 13). Candidate scoring is out of scope.</footer>
+<script>
+const $=s=>document.querySelector(s),E=(t,x,c)=>{const e=document.createElement(t);if(x!=null)e.textContent=x;if(c)e.className=c;return e};
+const FIELDS=['budget','must-have','trainable','seniority','12-month outcome','company direction','restriction','urgency'];
+const VER={v1:{budget:'€70–80k','must-have':'Go, Postgres, 5+ yrs',trainable:'—',seniority:'senior','12-month outcome':'—','company direction':'road freight SaaS',restriction:'—',urgency:'high'}};
+VER.v2={...VER.v1,'must-have':'owns production incidents; Postgres',trainable:'Go','12-month outcome':'leads a squad of 3',restriction:'top-10 university ⚑'};
+VER.v3={...VER.v2,'company direction':'road + rail; AI routing team planned'};
+VER.v4={...VER.v3,budget:'≤ €72k',seniority:'senior or strong mid (unconfirmed)',urgency:'medium'};
+const EV=[
+{id:'v1',k:'material',d:'02 oct',ch:'email · JD',t:'job description received',q:'“Senior Backend Engineer, Go/Postgres, 5+ years, remote EU, €70–80k.”',open:['Why is the role open now?','What does success look like at 6 and 12 months?'],lesson:'This is the starting brief. A JD names tools, not outcomes. Go into the kickoff with the two open questions.',checks:['What two things does this JD not tell us yet?']},
+{id:'v2',k:'material',d:'05 oct',ch:'kickoff call · transcript',t:'kickoff with the CTO',q:'CTO: “After the Series A we need someone who owns incidents end to end and leads a squad of 3 within a year. Go is nice, but reliability matters more. Ideally from a top-10 university.”',flag:'Possible bias: a university filter may exclude strong people and isn’t clearly job-related. We follow the client, but raise it with them before applying it as a hard filter.',open:['Is the university preference a hard filter?','Who runs the technical round?'],lesson:'Go moved from must-have to trainable. “Owns incidents” is now the core skill. Probe it with stories: what broke, what they decided, what they changed afterwards.',checks:['What is now trainable, and what is the must-have?','Give one question that tests incident ownership.']},
+{id:'v3',k:'minor',d:'21 oct',ch:'news · synthetic',t:'expansion news',q:'“Northwind expands into rail freight and plans an AI routing team.”',open:['Will this hire work with the new AI team?'],lesson:'Context only: no criteria changed. Use it when you pitch the role: growth and a new team to work with.',checks:['How would you use this news in a candidate call?']},
+{id:'v4',k:'critical',d:'03 nov',ch:'email · founder',t:'budget and timing change',q:'Founder: “The board wants profitability. Push the start to Q1 and cap at €72k. Could someone more mid-level grow into it?”',flag:'Contradiction to check: “strong mid” vs. “leads a squad of 3 within 12 months”.',open:['Is mid-level accepted, or only being discussed?','Do current finalists above €72k stay in the process?'],lesson:'Big shift, but not fully confirmed. Don’t drop the two finalists above €72k yet. A mid-level person must still show real incident ownership, and that requirement didn’t move.',checks:['Why not reject the €75k finalist today?','What must a mid-level candidate still prove?']},
+{id:'f1',k:'learn',d:'10 nov',ch:'client feedback · ATS',t:'client rejected “marco”',q:'CTO: “Strong on incidents, but he couldn’t design the rail-routing data model in our technical round. We need someone who designs systems, not only fixes them.”',learn:true,gap:1,verify:'system design: can they model a new domain from scratch?',open:['Does system design now count as a must-have?'],lesson:'No new brief version: the must-haves still hold. But our screening said “good enough” on something the client tests hard. Before submitting, check design depth: ask for a system they designed, the trade-offs, and what they would change now. If you can’t judge the answer, flag it for a technical screen.',checks:['What did our screening miss with Marco?','How will you check design depth on your next call?']}];
+let cur=3;const done=new Set(),open=[],extra=[];
+EV.forEach(e=>e.open.forEach(q=>open.push({q,from:e.id,ev:e.id})));
+function tl(){const t=$('#tl');t.replaceChildren();EV.forEach((e,i)=>{const b=E('button',null,'ev '+e.k);b.setAttribute('aria-pressed',i===cur);const dot=E('span',null,'dot');dot.append(E('span',e.learn?'!':e.id));b.append(dot,E('b',e.d),E('i',e.t));b.onclick=()=>{cur=i;draw()};t.append(b)})}
+function upto(){let v='v1';for(let i=0;i<=cur;i++)if(!EV[i].learn)v=EV[i].id;return v}
+function table(){const t=$('#tbl');t.replaceChildren();const cv=upto();const vs=['v1','v2','v3','v4'];const h=E('tr');h.append(E('th',''));vs.forEach(v=>{const e=EV.find(x=>x.id===v);const th=E('th',v+' · '+e.d);if(v===cv)th.className='cur';h.append(th)});const th=E('thead');th.append(h);t.append(th);const tb=E('tbody');
+FIELDS.forEach(f=>{const r=E('tr');r.append(E('th',f));vs.forEach((v,j)=>{const val=VER[v][f];const c=E('td',val);const prev=j?VER[vs[j-1]][f]:null;if(j&&prev!==val)c.classList.add('chg');if(v===cv)c.classList.add('cur');if(vs.indexOf(v)>vs.indexOf(cv)){c.textContent='';}r.append(c)});tb.append(r)});
+const lr=E('tr','', 'learnrow');lr.append(E('th','verify before submitting'));vs.forEach(v=>{const c=E('td',v==='v4'&&cur>=4?'+ system design depth (from client feedback, 10 nov)':v==='v2'?'incident ownership':'');if(v===cv)c.classList.add('cur');if(v==='v4'&&cur>=4)c.classList.add('chg');lr.append(c)});tb.append(lr);t.append(tb)}
+function detail(){const e=EV[cur];$('#evTitle').textContent=e.t;$('#evSev').textContent=e.learn?'learning signal · no new version':e.k+' change · creates '+e.id;$('#evMeta').textContent=e.d+' · '+e.ch;$('#evQuote').textContent=e.q;const d=$('#evDiff');d.replaceChildren();const x=$('#evExtra');x.replaceChildren();
+if(!e.learn){const i=EV.findIndex(z=>z.id===e.id);const prevId=EV.slice(0,i).filter(z=>!z.learn).pop();const pv=prevId?VER[prevId.id]:null;let n=0;FIELDS.forEach(f=>{const a=pv?pv[f]:'—',b=VER[e.id][f];if(a!==b){n++;const r=E('div');r.append(E('b',f+': '),E('s',a),' → ',E('span',b));d.append(r)}});if(!n)d.append(E('div','No field changed.'))}
+else{x.append(E('h3','where did our screening fall short?'));const g=E('div',null,'gapgrid');[['not asked','We never checked it in screening.'],['asked, misjudged','We asked, but read the answer as stronger than it was.'],['client criterion unknown','The client never told us. This becomes a client question.']].forEach(([a,b],i)=>{const c=E('div',null,i===e.gap?'on':'');c.append(E('b',a),E('br'),E('span',b));g.append(c)});x.append(g);x.append(E('p','Our screening note on Marco: “walked through a payments redesign, sounded solid.” The note gives no trade-offs or depth, so this is “asked, misjudged”. Added to “verify before submitting”: '+e.verify,'small gap'))}
+if(e.flag)x.prepend(E('div',e.flag,'flag'))}
+function side(){const o=$('#open');o.replaceChildren();const vis=open.filter(z=>EV.findIndex(e=>e.id===z.ev)<=cur);vis.forEach(z=>{const l=E('label',null,'chk'+(z.done?' done':''));const c=E('input');c.type='checkbox';c.checked=!!z.done;c.onchange=()=>{z.done=c.checked;side()};const s=E('span',z.q);s.append(E('small','raised '+(EV.find(e=>e.id===z.ev)||{}).d+(z.mine?' · added by you':'')));l.append(c,s);o.append(l)});$('#openCount').textContent=vis.filter(z=>!z.done).length+' open';
+const e=EV[cur];$('#lesson').textContent=e.lesson;const ch=$('#checks');ch.replaceChildren();e.checks.forEach((q,i)=>{const l=E('label',q,'small');l.style.display='block';l.style.marginTop='10px';l.htmlFor='ck'+i;const t=E('textarea');t.id='ck'+i;t.placeholder='ana answers here…';t.oninput=chk;ch.append(l,t)});chk();$('#doneMsg').textContent=done.has(e.id)?'✓ Ana completed this lesson. Answers stored as evidence (mock).':''}
+function chk(){const all=[...document.querySelectorAll('#checks textarea')].every(t=>t.value.trim().length>3);$('#done').disabled=!all&&!done.has(EV[cur].id);$('#done').title=all?'':'Every check question needs an answer first'}
+$('#done').onclick=()=>{done.add(EV[cur].id);$('#doneMsg').textContent='✓ Ana completed this lesson. Answers stored as evidence (mock).'};
+$('#addQ').onclick=()=>{const v=$('#newQ').value.trim();if(!v)return;open.push({q:v,ev:EV[cur].id,mine:true});$('#newQ').value='';side()};
+function draw(){tl();detail();table();side()}draw();
+</script></body></html>

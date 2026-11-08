@@ -59,6 +59,12 @@ Recommended option accepted for C1, C2, C4–C18; C3 proposal accepted. Notes th
 - **V3 yes:** the stage-and-evidence rule goes into AGENTS.md (rule 13).
 - **Presentation intent (draft, for the end):** readme.html becomes the human's presentation. Message: the owner has built RAG systems (the human wrote "RAC"; interpreted as RAG, to confirm) and app integrations many times. They omitted them from this MVP on purpose because integrations depend on each client's tools and are easy to learn. The point of this submission is the reasoning: what changed, why it matters, and how the recruiter's judgment follows. Final wording is the owner's.
 
+## Prototype choice and client-feedback loop (prompts/client-context/009-user.md, 2026-11-07)
+- UI direction: A's timeline + B's "what we know, by version" table + the open-unknowns checklist on the right. B's search-lifecycle strip was unclear: dropped. Next artifact: high-fidelity, desktop-only, in the docs/ui-style-reference.md style (prototype-hifi.html).
+- Client decisions (reject, or advance a candidate) are the strongest feedback. A rejection need not create a new profile version when criteria did not change. It still produces a learning signal: what our screening must verify next time.
+- In scope: refining screening via a rubric of what to verify, and teaching recruiters to be field experts. Out of scope: validating or scoring candidates, and generating screening scripts. The rubric and candidate questions do not need to be exposed; the focus is recruiter learning.
+- Open: option for the feedback loop (F1–F3, offered in chat 010).
+
 ## Interview stage and prototypes (prompts/client-context/007-user.md, 2026-11-07)
 - RAG confirmed (not "RAC").
 - The chain continues into interviews: screening, cultural-fit and similar sessions (simulated) produce transcripts of questions and answers. The harness evaluates each question's context and objective, and the rubric itself, against the current client need: are we asking what matters to this client now?

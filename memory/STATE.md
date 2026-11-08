@@ -2,7 +2,7 @@
 
 Updated: 2026-11-07 · Claude (client-context chat). Stage: client-context answers recorded; plan next.
 
-LATEST: RAG confirmed. The chain now extends to interviews: screening and culture-fit transcripts are checked for whether our questions and rubric fit the current client need (prompts/client-context/007-user.md). Three low-fi desktop prototypes are in _work/2026-11-07-client-context/prototypes.html: A timeline, B version table + Gantt strip, C guided rule-13 checklist. They have click checks via JS only; no visual screenshot (timed out). Awaiting the human's choice or mix. Open: recalibration trigger threshold (default: every change). Next: prototype feedback → objective map for the chain → plan-gate peer review → JD research → mock data.
+LATEST: the human chose A timeline + B version table + an open-unknowns checklist (lifecycle strip dropped). A high-fidelity desktop prototype is in _work/2026-11-07-client-context/prototype-hifi.html: click-checked, plus a 1440px screenshot. New scope (prompts/client-context/009-user.md): client reject/advance decisions become learning signals. They change the "verify before submitting" focus and teach the recruiter, without a new brief version unless criteria change. Candidate scoring and screening generation are out of scope. Awaiting the human's pick among feedback-loop options F1–F3 (chat 010). Open: recalibration trigger threshold. Next: objective map for the chain → plan-gate peer review → JD research → mock data.
 
 Earlier baton (Codex):
 
