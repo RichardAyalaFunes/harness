@@ -72,7 +72,7 @@
       },
       {
         "criterion": "req.system-design",
-        "status": "not_asked"
+        "status": "not_applicable_historical"
       }
     ],
     "overweighted": [

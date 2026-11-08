@@ -10,3 +10,7 @@ __pycache__/
 .claude/settings.local.json
 *.local.json
 artifacts/local/
+
+# harness (rebuildable SQLite db)
+harness/harness.db*
+harness/node_modules/

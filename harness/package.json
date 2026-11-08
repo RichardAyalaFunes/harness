@@ -1,0 +1,13 @@
+{
+  "name": "radhires-harness",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Keep recruiters current with client needs: SQLite pipeline, checks, CLI and web UI (replay model).",
+  "engines": { "node": ">=24.12" },
+  "scripts": {
+    "start": "node --disable-warning=ExperimentalWarning src/server.js",
+    "harness": "node --disable-warning=ExperimentalWarning src/cli.js",
+    "test": "node --disable-warning=ExperimentalWarning --test \"test/*.test.js\""
+  }
+}
