@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8"><title>Mock ATS · role intelligence</title>
 <style>
-:root{--ink:#16181d;--ink2:#4b5160;--muted:#8a8f9c;--glass:rgba(255,255,255,.58);--glass2:rgba(255,255,255,.86);--edge:rgba(255,255,255,.9);
+:root{--ink:#16181d;--ink2:#4b5160;--muted:#6b7180;--glass:rgba(255,255,255,.58);--glass2:rgba(255,255,255,.86);--edge:rgba(255,255,255,.9);
 --yellow:#f8c65a;--yellowsoft:#fdeec7;--blue:#bcd5ef;--red:#d9536a;--green:#2f9e66;--shadow:0 12px 40px rgba(40,55,80,.09);
 --font:"Outfit","Segoe UI Variable Display","Segoe UI",system-ui,sans-serif}
 *{box-sizing:border-box}
@@ -90,11 +90,24 @@ main{min-width:0}
 /* check */
 .q{padding:18px 20px;margin-bottom:14px}
 .q p{margin:0 0 12px;font-weight:600;font-size:16px}.q .qn{color:var(--muted);font-weight:500;margin-right:6px}
-.opts{display:flex;flex-wrap:wrap;gap:8px}
-.opt{padding:9px 16px;border-radius:14px;background:var(--glass2);border:1px solid #e6e8ec;font-size:14px;text-align:left}
-.opt.sel{background:var(--ink);color:#fff;border-color:var(--ink)}
-.opt.right{background:#dff3e8;border-color:#bfe5cf;color:#1d6b43}.opt.wrong{background:#fbe1e6;border-color:#f2c3cd;color:#a8324a}
-textarea{width:100%;min-height:70px;border-radius:14px;border:1px solid #e6e8ec;background:var(--glass2);padding:10px 14px;font:inherit;font-size:14px;resize:vertical}
+.opts{display:grid;gap:10px}
+.opt{display:flex;align-items:center;gap:14px;width:100%;min-height:52px;padding:10px 16px;border-radius:16px;background:#fff;border:1.5px solid #d3d8e0;font-size:15px;text-align:left;box-shadow:0 1px 2px rgba(40,55,80,.06);transition:border-color .12s,background .12s}
+.opt:hover:not([disabled]){border-color:var(--ink);background:#fafbfc}
+.opt .rad{flex:none;width:22px;height:22px;border-radius:50%;border:2px solid #9aa1ad;display:grid;place-items:center;background:#fff}
+.opt .let{flex:none;width:26px;height:26px;border-radius:8px;background:#eef0f3;color:var(--ink2);font-size:12px;font-weight:700;display:grid;place-items:center}
+.opt .txt{flex:1}.opt .lab{flex:none;font-size:12px;font-weight:600;display:flex;align-items:center;gap:6px}
+.opt.sel{border:2px solid var(--ink);padding:9.5px 15.5px;font-weight:600}
+.opt.sel .rad{border-color:var(--ink)}.opt.sel .rad::after{content:"";width:10px;height:10px;border-radius:50%;background:var(--ink)}
+.opt.sel .let{background:var(--ink);color:#fff}
+.opt[disabled]{cursor:default}
+.opt.right{background:#dff3e8;border:2px solid #7cc39b;color:#1d6b43;font-weight:600}.opt.right .rad{border-color:#1d6b43;background:#1d6b43;color:#fff}.opt.right .let{background:#bfe5cf;color:#1d6b43}
+.opt.wrong{background:#fbe1e6;border:2px solid #e59aa9;color:#a8324a;font-weight:600}.opt.wrong .rad{border-color:#a8324a;background:#a8324a;color:#fff}.opt.wrong .let{background:#f2c3cd;color:#a8324a}
+.opt.dim{opacity:.55;box-shadow:none}
+.opt .rad svg{width:12px;height:12px}
+.qhead{display:flex;justify-content:space-between;align-items:baseline;gap:12px}.qhint{font-size:12px;color:var(--muted);white-space:nowrap}
+.q.answered .qhint{color:var(--green)}
+.submitbar{display:flex;align-items:center;gap:16px;margin-top:6px}.pill[disabled]{opacity:.4;cursor:not-allowed}
+textarea{width:100%;min-height:80px;border-radius:16px;border:1.5px solid #d3d8e0;background:#fff;padding:10px 14px;font:inherit;font-size:14px;resize:vertical}
 .fb{margin-top:12px;padding:10px 14px;border-radius:14px;background:rgba(255,255,255,.7);font-size:14px;color:var(--ink2)}
 .fb b.ok{color:var(--green)}.fb b.bad{color:var(--red)}.fb b.part{color:#9a6a00}
 .score{font-size:64px;font-weight:600;letter-spacing:-.02em;line-height:1}.score small{font-size:24px;color:var(--muted)}
@@ -154,7 +167,7 @@ function tab(t){S.tab=t;draw()}
 function topBar(){const n=POS.reduce((a,p)=>a+p.unrev,0);return `<div class="topbar"><div class="hello">Hi <b>Ana</b>, welcome back</div>
 <div class="search glass">${ic.search} Search positions</div>
 <button class="round glass" aria-label="${n} unreviewed brief changes">${ic.bell}<span class="dot">${n}</span></button></div>`}
-function draw(){$('main').innerHTML=topBar()+(S.view==='list'?list():position())}
+function draw(){$('main').innerHTML=topBar()+(S.view==='list'?list():position());const t=$('t4');if(t)t.value=S.ans[4]||'';progress()}
 function spark(t){const w=260,h=44,m=Math.max(...t),pts=t.map((v,i)=>[i*w/(t.length-1),h-4-(v/m)*(h-10)]);return `<svg class="spark" viewBox="0 0 ${w} ${h}" preserveAspectRatio="none" width="100%"><polyline fill="none" stroke="#e0b347" stroke-width="2.5" stroke-linejoin="round" points="${pts.map(p=>p.join(',')).join(' ')}"/>${pts.map(p=>`<circle cx="${p[0]}" cy="${p[1]}" r="3" fill="#fff" stroke="#e0b347" stroke-width="2"/>`).join('')}</svg>`}
 function list(){const total=POS.reduce((a,p)=>a+p.unrev,0);return `<section class="glass hero" style="grid-template-columns:1fr auto">
 <div><p class="h1">Open positions</p><div class="big">${POS.length} searches</div><div style="margin-top:10px;display:flex;gap:8px"><span class="chip y">${total} brief changes to review</span><span class="chip g">1 knowledge check due</span></div></div>
@@ -195,13 +208,19 @@ ${F.map(r=>`<tr><td><span class="grp">${r[0]}</span>${r[1]}</td>${r[2].map((c,i)
 function score(q,i){const a=S.ans[i];if(q.open){const t=(a||'').toLowerCase(),inc=['incident','outage','on-call'].some(k=>t.includes(k)),des=t.includes('design');return inc&&des?1:inc||des?.5:0}return a===q.a?1:0}
 function scoreTotal(){return Q.reduce((a,q,i)=>a+score(q,i),0)}
 function pick(i,j){if(S.done)return;S.ans[i]=j;draw()}
+function has(i){const a=S.ans[i];return Q[i].open?!!(a&&a.trim()):a!==undefined}
+function progress(){const n=Q.filter((q,i)=>has(i)).length,b=$('sub'),p=$('prog');if(b)b.disabled=n<Q.length;if(p)p.textContent=n<Q.length?n+' of '+Q.length+' answered':'All answered';}
+const ICK='<svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2.5 6.2 5 8.5l4.5-5"/></svg>',IX='<svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m3 3 6 6M9 3 3 9"/></svg>';
+function opt(q,i,j,o,d){const mine=S.ans[i]===j,L='ABC'[j];let c='opt',rad='',lab='';
+if(d){if(j===q.a){c+=' right';rad=ICK;lab=mine?'Your answer · correct':'Correct answer'}else if(mine){c+=' wrong';rad=IX;lab='Your answer'}else c+=' dim'}else if(mine)c+=' sel';
+return `<button class="${c}" role="radio" aria-checked="${mine}" ${d?'disabled':''} onclick="pick(${i},${j})"><span class="rad">${rad}</span><span class="let">${L}</span><span class="txt">${o}</span>${lab?`<span class="lab">${lab}</span>`:''}</button>`}
 function submitQ(){const t=$('t4');if(t)S.ans[4]=t.value;S.done=true;draw()}
 function check(){const d=S.done;return `<div class="two"><div>
 <section class="glass panel" style="margin-bottom:14px"><h3>Knowledge check · brief v4</h3><div class="sub" style="margin:0">Answer without opening the brief. Questions come from what changed and from the must-haves. It shows what to re-read; it says nothing about candidates.</div></section>
-${Q.map((q,i)=>`<div class="glass q"><p><span class="qn">${i+1}/5</span>${q.p}</p>
-${q.open?`<textarea id="t${i}" ${d?'disabled':''} placeholder="Write a sentence or two">${S.ans[i]||''}</textarea>`:`<div class="opts">${q.o.map((o,j)=>{let c='opt';if(d){if(j===q.a)c+=' right';else if(S.ans[i]===j)c+=' wrong'}else if(S.ans[i]===j)c+=' sel';return `<button class="${c}" onclick="pick(${i},${j})">${o}</button>`}).join('')}</div>`}
+${Q.map((q,i)=>`<div class="glass q ${has(i)?'answered':''}" id="q${i}"><div class="qhead"><p><span class="qn">${i+1}/5</span>${q.p}</p><span class="qhint">${d?'':q.open?'Free text':has(i)?'✓ Answered':'Choose one'}</span></div>
+${q.open?`<textarea id="t${i}" ${d?'disabled':''} placeholder="Write a sentence or two" aria-label="Your answer" oninput="S.ans[${i}]=this.value;progress()"></textarea>`:`<div class="opts" role="radiogroup" aria-label="Question ${i+1}">${q.o.map((o,j)=>opt(q,i,j,o,d)).join('')}</div>`}
 ${d?`<div class="fb">${(s=>`<b class="${s===1?'ok':s?'part':'bad'}">${s===1?'Correct':s?'Partly':'Missed'}</b>`)(score(q,i))} · ${q.why} <span class="sub">· ${q.src}</span></div>`:''}</div>`).join('')}
-${d?`<button class="pill light" onclick="S.ans={};S.done=false;draw()">Retake</button>`:`<button class="pill dark" onclick="submitQ()">Check my answers</button>`}
+${d?`<button class="pill light" onclick="S.ans={};S.done=false;draw()">Retake</button>`:`<div class="submitbar"><button class="pill dark" id="sub" onclick="submitQ()">Check my answers</button><span class="sub" id="prog"></span></div>`}
 <p class="stub">Stub: the free-text answer is scored by keyword match here. The harness would use the model with the brief as the reference.</p></div>
 <div style="position:sticky;top:24px">${d?result():`<section class="glass panel"><h3>Your result</h3><div class="score">–<small> / 5</small></div><div class="sub" style="margin-top:8px">Last check: 2 / 5 on v3. Three fields changed since.</div></section>`}
 <section class="glass panel"><h3>Your last screening</h3><div class="sub">D. Ruiz · transcript 06 nov · 11 questions</div>
@@ -210,5 +229,5 @@ ${[['Incident ownership','asked','g'],['Postgres under load','asked','g'],['Even
 function result(){const s=Q.map((q,i)=>score(q,i)),miss=Q.filter((q,i)=>s[i]<1);return `<section class="glass panel"><h3>Your result</h3><div class="score">${scoreTotal()}<small> / 5</small></div>
 <div class="seg5">${s.map(x=>`<i class="${x===1?'y':x?'h':''}"></i>`).join('')}</div>
 ${miss.length?`<div class="sub">Re-read in the brief</div><ul class="list">${miss.map((q,i)=>`<li><span class="num">${i+1}</span><div>${q.f}<small>${q.src}</small></div></li>`).join('')}</ul><button class="pill light" onclick="tab('brief')" style="margin-top:6px">Open role brief</button>`:'<div class="sub">You are up to date with v4.</div>'}</section>`}
-const h=location.hash.slice(1);if(['pipeline','brief','changes','check'].includes(h)){S.view='pos';S.pos='nw-be';S.tab=h}if(location.search.includes('demo')){S.ans={0:1,1:0,2:1,3:1,4:'I check they owned an outage on-call'};S.done=true}draw();
+const h=location.hash.slice(1);if(['pipeline','brief','changes','check'].includes(h)){S.view='pos';S.pos='nw-be';S.tab=h}if(location.search.includes('partial'))S.ans={0:1,1:0};if(location.search.includes('demo')){S.ans={0:1,1:0,2:1,3:1,4:'I check they owned an outage on-call'};S.done=true}draw();
 </script></body></html>

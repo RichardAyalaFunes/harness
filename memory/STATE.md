@@ -2,7 +2,7 @@
 
 Updated: 2026-11-07 · Claude (client-context chat). Stage: client-context answers recorded; plan next.
 
-LATEST: the human chose prototype A and asked for a high-fidelity, desktop, light version in a frosted-glass modern style from a reference image (prompts/client-context/017-user.md). Built _work/2026-11-07-client-context/proto-ats-a-hifi.html (positions dashboard, position hero with KPIs, segmented tabs: Pipeline, Role brief, Changes = timeline + version table + client decisions, Knowledge check = 5 questions + result + last-screening coverage). Checked with headless Edge screenshots at 1440px (evidence/ folder) and a syntax check; free-text scoring is a keyword stub; ?demo#check shows an answered state. Open: whether the glass style replaces docs/ui-style-reference.md everywhere (designs.md unchanged); F1-F3; recalibration trigger. Next: objective map, then plan-gate peer review, JD research, mock data.
+LATEST: the human confirmed the frosted-glass style for everything (designs.md updated; docs/ui-style-reference.md is history) and asked for clearer knowledge-check options (prompts/client-context/019-user.md). proto-ats-a-hifi.html now shows options as solid white rows with radio, letter, border and hover; selected, correct and wrong states use icons and labels as well as colour; the submit button waits for all answers. Checked by headless Edge screenshots (evidence/hifi-check-answering.png, evidence/hifi-check.png) and a scripted run (gating, scoring). Free-text scoring remains a keyword stub. Open: F1-F3, recalibration trigger. Next: objective map, then plan-gate peer review, JD research, mock data.
 
 Earlier baton (Codex):
 

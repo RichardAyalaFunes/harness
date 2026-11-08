@@ -1,0 +1,2 @@
+# Assistant message 020 (summary of visible reply)
+Made the glass style the standard in designs.md (with a rule that selectable items need a visible control and non-colour state cues). Redesigned the knowledge-check options: stacked white rows with radio, letter, border and hover; clear selected, correct and wrong states with labels; submit enabled only when all answers are in. Verified by screenshots and a scripted run.

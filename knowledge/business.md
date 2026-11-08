@@ -61,7 +61,8 @@ Recommended option accepted for C1, C2, C4–C18; C3 proposal accepted. Notes th
 
 ## Prototype A chosen; glass visual style (prompts/client-context/017-user.md, 2026-11-08)
 - The human chose prototype A (tabs inside the position: Pipeline, Role brief, Changes, Knowledge check).
-- Visual direction for the product UI: light frosted-glass cards, large radii, soft blue/yellow backdrop, yellow pills for changes, large numerals, dark selected tab. Desktop, light theme. This supersedes docs/ui-style-reference.md for the product UI; designs.md is not yet updated (pending confirmation that it also applies to question/decision pages).
+- Visual direction for the product UI: light frosted-glass cards, large radii, soft blue/yellow backdrop, yellow pills for changes, large numerals, dark selected tab. Desktop, light theme. Confirmed 2026-11-08 (prompts/client-context/019-user.md): use it everywhere; designs.md updated, docs/ui-style-reference.md kept as history.
+- Knowledge-check feedback (019): unselected options were hard to tell apart and did not look selectable. Now full-width option rows on solid white with a radio, a letter, a border and hover; selected = dark border and filled radio; results label "Your answer" / "Correct answer" with icons and dim the rest; the check button stays disabled until all five are answered.
 - Artifact: _work/2026-11-07-client-context/proto-ats-a-hifi.html; screenshots in the same folder under evidence/.
 
 ## Role information inside a mock ATS (prompts/client-context/015-user.md, 2026-11-07)
