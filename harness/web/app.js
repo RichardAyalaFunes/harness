@@ -53,15 +53,53 @@ function route() {
   const m = location.hash.match(/^#\/role\/([\w-]+)(?:\/(\w+))?/);
   return m ? { role: m[1], tab: m[2] || 'pipeline' } : { role: null };
 }
+// Motion: a new screen shows a short skeleton then rises in; a new tab slides in from the side of the tab
+// you clicked; re-renders after an action (same screen) do not animate. Reduced-motion users get no movement.
+const TAB_ORDER = ['pipeline', 'brief', 'changes', 'current'];
+const REDUCED = matchMedia('(prefers-reduced-motion: reduce)');
+const wait = (ms) => new Promise((res) => setTimeout(res, REDUCED.matches ? 0 : ms));
+let last = { role: undefined, tab: undefined };
+const skeleton = () => h('div', { class: 'skel', 'aria-busy': 'true', 'aria-label': 'Loading' },
+  h('div', { class: 'sk sk-hero' }), h('div', { class: 'sk sk-bar' }), h('div', { class: 'skrow' }, h('div', { class: 'sk sk-card' }), h('div', { class: 'sk sk-card' }), h('div', { class: 'sk sk-card' })));
 async function render() {
   const r = route();
   const main = $('main');
+  const newScreen = r.role !== last.role;
+  const newTab = !newScreen && r.tab !== last.tab;
+  const dir = newTab ? Math.sign(TAB_ORDER.indexOf(r.tab) - TAB_ORDER.indexOf(last.tab)) : 0;
+  const fromTab = last.tab;
+  last = { role: r.role, tab: r.tab };
   try {
-    const view = r.role ? await roleScreen(r.role, r.tab) : await positionsScreen();
+    let view;
+    if (newScreen) {
+      if (main.childNodes.length) main.replaceChildren(banner(), skeleton());
+      [view] = await Promise.all([r.role ? roleScreen(r.role, r.tab) : positionsScreen(), wait(main.childNodes.length ? 260 : 0)]);
+    } else {
+      const old = main.querySelector('.view');
+      if (newTab && old && !REDUCED.matches) { old.style.setProperty('--dir', dir); old.classList.add('view-out'); }
+      [view] = await Promise.all([r.role ? roleScreen(r.role, r.tab) : positionsScreen(), newTab ? wait(140) : null]);
+    }
     main.replaceChildren(banner(), view);
+    if (newScreen) view.classList.add('screen-in');
+    const v = main.querySelector('.view');
+    if (newTab && v) { v.style.setProperty('--dir', dir); v.classList.add('view-in'); }
+    moveIndicator(main, newTab ? fromTab : null);
   } catch (e) {
     main.replaceChildren(h('div', { class: 'errbox', role: 'alert' }, `Could not load: ${e.message}`));
   }
+}
+// Sliding pill behind the active tab: starts under the previous tab, glides to the new one.
+function moveIndicator(main, fromTab) {
+  const seg = main.querySelector('.seg'); if (!seg) return;
+  const ind = seg.querySelector('.ind');
+  const at = (b) => { ind.style.width = `${b.offsetWidth}px`; ind.style.transform = `translateX(${b.offsetLeft}px)`; };
+  const on = seg.querySelector('button.on'); if (!on) return;
+  const from = fromTab && seg.querySelector(`button[data-tab="${fromTab}"]`);
+  ind.style.transition = 'none';
+  at(from || on);
+  ind.getBoundingClientRect();
+  ind.style.transition = '';
+  at(on);
 }
 window.addEventListener('hashchange', render);
 const rerender = () => render();
@@ -106,8 +144,8 @@ async function roleScreen(roleId, tab) {
         kpi('Candidates', cands.length, 'Candidates in this position, across all pipeline stages.'),
         kpi('Awaiting approval', pend, 'Changes to the role brief, or lessons from a client decision, that the lead recruiter must approve before the team sees them.'),
         kpi('Team up to date', `${d.team.filter((t) => t.up_to_date).length} of ${d.team.length}`, 'Recruiters on this position who completed every step in Stay current.'))),
-    h('div', { class: 'glass seg', role: 'tablist' }, tabs.map(([id, label, dot, tip]) => h('button', { role: 'tab', title: tip, 'aria-selected': String(id === tab), class: id === tab ? 'on' : '', onclick: () => { location.hash = `#/role/${roleId}/${id}`; } }, label, dot ? h('span', { class: 'n', title: 'needs attention' }) : null))),
-    body());
+    h('div', { class: 'glass seg', role: 'tablist' }, h('span', { class: 'ind', 'aria-hidden': 'true' }), tabs.map(([id, label, dot, tip]) => h('button', { role: 'tab', 'data-tab': id, title: tip, 'aria-selected': String(id === tab), class: id === tab ? 'on' : '', onclick: () => { location.hash = `#/role/${roleId}/${id}`; } }, label, dot ? h('span', { class: 'n', title: 'needs attention' }) : null))),
+    h('div', { class: 'view' }, body()));
 }
 const kpi = (label, v, tip) => h('div', { class: 'tile kpi' }, h('small', null, label, tip ? hint(tip) : null), h('b', null, v));
 
@@ -138,14 +176,24 @@ function briefTab(d) {
   const isCur = sel.n === cur;
   const fields = isCur ? d.brief.fields : sel.fields;
   const groups = [...new Set(fields.map((f) => f.group))];
-  const pick = (n) => { state.ver[d.role.id] = n; render(); };
+  const pick = async (n) => {
+    if (n === sel.n) return;
+    const target = new Map((n === cur ? d.brief.fields : d.versions.find((v) => v.n === n).fields).map((f) => [f.field, f.value + '|' + (f.weight || '')]));
+    // Rows that do not exist in the target version collapse out; then the target renders and new or changed rows ease in.
+    document.querySelectorAll('.rows .r[data-field]').forEach((el) => { if (!target.has(el.dataset.field)) el.classList.add('leaving'); });
+    document.querySelectorAll('.rows').forEach((el) => el.classList.add('swapping'));
+    state.verPrev = new Map(fields.map((f) => [f.field, f.value + '|' + (f.weight || '')]));
+    await wait(200);
+    state.ver[d.role.id] = n; await render();
+    state.verPrev = null;
+  };
   return h('div', { class: 'two' },
     h('div', { class: 'glass panel' },
       h('h3', null, isCur ? 'Role brief' : `Role brief as of ${fmtDate(sel.effective_date)}`, hint('The approved picture of what the client needs. It changes only when the lead recruiter approves a change in the Changes tab.')),
       isCur ? h('p', { class: 'sub' }, `Current. Last updated ${fmtDate(sel.effective_date)} after: ${SRC[sel.source_id] ? SRC[sel.source_id].title : sel.source_id}. Highlighted rows changed in that update.`)
         : h('div', { class: 'oldver' }, h('span', null, h('b', null, 'Older version. '), `This is how the brief looked after ${srcName(sel.source_id)}. It is no longer current.`), h('button', { class: 'pill dark', onclick: () => pick(cur) }, 'Back to current')),
       groups.map((g) => h('div', null, h('span', { class: 'grp' }, g),
-        h('div', { class: 'rows' }, fields.filter((f) => f.group === g).map((f) => h('div', { class: `r${f.changed_in_version === sel.n ? ' chg' : ''}` },
+        h('div', { class: 'rows' }, fields.filter((f) => f.group === g).map((f) => h('div', { 'data-field': f.field, class: `r${f.changed_in_version === sel.n ? ' chg' : ''}${state.verPrev ? (!state.verPrev.has(f.field) ? ' entering' : state.verPrev.get(f.field) !== f.value + '|' + (f.weight || '') ? ' changing' : ' settle') : ''}` },
           h('div', { class: 'k' }, f.label), h('div', { class: 'v' }, f.value, h('div', { class: 'chips' }, statusChips(f)),
             f.bias ? h('small', null, f.bias.note) : null, h('small', null, `${srcName(f.source_id)} · “${f.quote}”`)))))))),
     h('div', null, h('div', { class: 'glass panel' }, h('h3', null, 'History', hint('Each time an approved client change updated this brief. Click one to see the brief as it was then.')),
