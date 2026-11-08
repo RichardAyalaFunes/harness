@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Role change · Low-fi prototypes</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#fdfbf9;color:#171717;font:15px/1.5 system-ui,sans-serif;min-width:1200px}
+header{padding:16px 24px;border-bottom:1.5px solid #171717;display:flex;gap:24px;align-items:center}
+h1{font-size:20px;margin:0;font-weight:600}h2{font-size:18px;margin:0 0 8px}h3{font-size:15px;margin:0 0 6px}
+.tabs button,.btn{font:inherit;background:#fdfbf9;border:1.5px solid #171717;border-radius:20px;padding:6px 16px;cursor:pointer;color:#171717}
+.tabs button[aria-selected=true],.btn.on{background:#171717;color:#fdfbf9}
+button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid #171717;outline-offset:2px}
+.proto{display:none;padding:20px 24px}.proto.on{display:block}
+.note{border:1px dashed #171717;padding:8px 12px;margin-bottom:14px;background:#f7efe9}
+.box{border:1.5px solid #171717;border-radius:8px;padding:12px;background:#fdfbf9}
+.grey{background:#f7efe9}.row{display:flex;gap:14px}.col{display:flex;flex-direction:column;gap:12px}
+.chip{display:inline-block;border:1px solid #171717;border-radius:20px;padding:0 8px;font-size:12px;margin-right:4px}
+.sev-critical{border-width:3px}.sev-material{border-width:2px;border-style:solid}.sev-minor{border-style:dashed}
+.del{text-decoration:line-through}.add{font-weight:700}.mk{font-weight:700}
+table{border-collapse:collapse;width:100%}td,th{border:1px solid #171717;padding:6px 8px;vertical-align:top;text-align:left;font-size:13px}th{background:#f7efe9}
+td.ch{cursor:pointer;font-weight:700}td.ch::before{content:"● "}td.sel{outline:3px solid #171717;outline-offset:-3px}
+.tl{display:flex;align-items:flex-start;position:relative;margin:10px 0 18px}.tl::before{content:"";position:absolute;left:0;right:0;top:22px;border-top:2px solid #171717}
+.ev{position:relative;flex:1;text-align:center;cursor:pointer;background:none;border:0;font:inherit;color:inherit;padding:0 4px}
+.ev .dot{display:block;width:44px;height:44px;margin:0 auto 4px;border:2px solid #171717;border-radius:50%;background:#fdfbf9;line-height:40px;font-weight:700}
+.ev[aria-pressed=true] .dot{background:#171717;color:#fdfbf9}.ev small{display:block;font-size:12px}
+.stages{display:flex;gap:6px;margin:8px 0 14px}.stg{flex:1;border:1.5px solid #171717;border-radius:6px;padding:6px;font-size:12px;cursor:pointer;background:#fdfbf9;font-family:inherit;text-align:left;color:inherit}
+.stg.done::before{content:"✓ "}.stg.cur{background:#171717;color:#fdfbf9}.stg.lock{border-style:dashed;cursor:not-allowed;color:#6b6b6b}
+input[type=text],textarea{font:inherit;width:100%;border:1.5px solid #171717;border-radius:8px;padding:6px 8px;background:#fdfbf9}
+ul{margin:4px 0;padding-left:18px}.q{display:flex;gap:8px;align-items:flex-start;border-bottom:1px dotted #171717;padding:6px 0}
+.small{font-size:12px}.right{margin-left:auto}.w30{width:30%}.w40{width:40%}.w70{width:70%}.grow{flex:1}
+.queue button{display:block;width:100%;text-align:left;font:inherit;background:#fdfbf9;border:1.5px solid #171717;border-radius:8px;padding:8px;margin-bottom:8px;cursor:pointer;color:inherit}.queue button.on{border-width:3px}
+.gantt td{height:26px;padding:2px}.bar{background:#171717;height:14px;border-radius:7px}.bar.alt{background:repeating-linear-gradient(45deg,#171717 0 4px,#fdfbf9 4px 8px);border:1px solid #171717}
+</style></head>
+<body>
+<header><h1>role change · low-fi prototypes</h1>
+<nav class="tabs" role="tablist"><button role="tab" aria-selected="true" data-p="A">A · timeline</button> <button role="tab" aria-selected="false" data-p="B">B · version table</button> <button role="tab" aria-selected="false" data-p="C">C · guided checklist</button></nav>
+<span class="small right">Wireframes only · fictional data · desktop · nothing is saved or sent</span></header>
+
+<!-- ============ A ============ -->
+<section class="proto on" id="A">
+<div class="note"><b>A · Timeline first.</b> The recruiter thinks in client touchpoints. Pick an event on the line: the right panel shows how the profile changed, what is still unknown, and a short lesson for the recruiter. Best for answering "what happened, when?".</div>
+<div class="row"><div class="box grow"><h2>Northwind Freight Tech · Senior Backend Engineer</h2><span class="chip">profile v4 · as of 03 Nov</span><span class="chip">2 client questions pending</span><span class="chip">recruiter lesson pending</span>
+<div class="tl" id="tlA"></div>
+<div class="small">Line style = severity: dashed = minor · solid = material · thick = critical</div></div></div>
+<div class="row" style="margin-top:14px">
+ <div class="box w40 col"><div><h3>what changed in <span id="aV">v4</span></h3><div id="aDiff"></div></div><div><h3>source</h3><div id="aSrc" class="grey box small"></div></div></div>
+ <div class="box w30 col"><h3>pending for the client</h3><div id="aPend"></div><label class="small" for="aNew">ask the client something new</label><input id="aNew" type="text" placeholder="type a question…"><button class="btn" id="aAdd">add to client questions</button></div>
+ <div class="box w30 col"><h3>teach the recruiter</h3><div id="aTeach" class="small"></div><button class="btn" id="aSend">send lesson to Ana (recruiter)</button><div id="aMsg" class="small" role="status"></div></div>
+</div></section>
+
+<!-- ============ B ============ -->
+<section class="proto" id="B">
+<div class="note"><b>B · Version table.</b> Rows are what we know about the role and columns are profile versions. ● marks a cell that changed. Click it to see why. Strip below: the search's life as a Gantt-style bar. Best for answering "what do we believe now vs. before?".</div>
+<div class="row"><div class="box w70"><h2>Senior Backend Engineer · what we know, by version</h2><table id="tblB"></table>
+<h3 style="margin-top:14px">search lifecycle</h3><table class="gantt" id="ganttB"></table><div class="small">solid = active search · striped = on hold, waiting on client</div></div>
+<div class="col w30"><div class="box"><h3>cell detail</h3><div id="bDet" class="small">Click a ● cell.</div></div>
+<div class="box"><h3>open unknowns</h3><div id="bPend"></div></div>
+<div class="box"><h3>recruiter check: Ana</h3><div class="small">3 quick questions after v4. Ana answers before the next screening call.</div><ol class="small" id="bQuiz"></ol><button class="btn" id="bQ">mark as reviewed with Ana</button><div id="bMsg" class="small" role="status"></div></div></div></div></section>
+
+<!-- ============ C ============ -->
+<section class="proto" id="C">
+<div class="note"><b>C · Guided checklist (rule 13).</b> Every new client item becomes a task that moves through fixed stages. A stage unlocks only when the previous one has its evidence. Best for "what do I need to do next, and is anything missing?".</div>
+<div class="row"><div class="box w30 queue"><h3>my queue</h3><div id="cQ"></div></div>
+<div class="box grow"><h2 id="cT"></h2><div class="stages" id="cS"></div><div id="cBody"></div><div class="row" style="margin-top:12px"><button class="btn" id="cBack">← back</button><button class="btn right" id="cNext">complete stage →</button></div><div id="cMsg" class="small" role="status"></div></div></div></section>
+
+<script>
+const $=s=>document.querySelector(s);const E=(t,txt,c)=>{const e=document.createElement(t);if(txt!=null)e.textContent=txt;if(c)e.className=c;return e};
+document.querySelectorAll('.tabs button').forEach(b=>b.onclick=()=>{document.querySelectorAll('.tabs button').forEach(x=>x.setAttribute('aria-selected',x===b));document.querySelectorAll('.proto').forEach(p=>p.classList.toggle('on',p.id===b.dataset.p))});
+// shared fictional data
+const EV=[
+{id:'v1',d:'02 Oct',ch:'email',t:'JD received',sev:'minor',src:'“Senior Backend Engineer, Go/Postgres, 5+ yrs, remote EU, €70–80k.”',diff:[['budget','—','€70–80k'],['must-have','—','Go, Postgres, 5+ yrs'],['location','—','remote EU']],pend:['Why is the role open now?','What does success look like at 6 / 12 months?'],teach:'Baseline brief. Read the JD and note the two open unknowns before sourcing.'},
+{id:'v2',d:'05 Oct',ch:'kickoff',t:'Kickoff call',sev:'material',src:'CTO: “After the Series A we need someone who owns incidents end to end and leads a squad of 3 within a year. Go is nice, but reliability matters more.”',diff:[['must-have','Go, Postgres, 5+ yrs','owns production incidents; Postgres'],['trainable','—','Go'],['12-month outcome','—','leads squad of 3'],['restriction','—','prefers top-10 university ⚑ possible bias: confirm it is job-related']],pend:['Is the university preference a hard filter?','Who interviews for incident ownership?'],teach:'Go moved from must-have to trainable. Screen for incident stories, not keywords. ⚑ University preference recorded; raise it with the client, do not filter on your own.'},
+{id:'v3',d:'21 Oct',ch:'news',t:'Funding news',sev:'minor',src:'Synthetic news: “Northwind expands into rail freight, plans AI routing team.”',diff:[['company trajectory','road freight','road + rail, AI routing team planned']],pend:['Will this role support the new AI team?'],teach:'Context only. Mention the expansion when you pitch candidates. No criteria changed.'},
+{id:'v4',d:'03 Nov',ch:'email',t:'Founder email',sev:'critical',src:'Founder: “Board wants profitability. Push start to Q1, cap at €72k. Could someone more mid-level grow into it?”',diff:[['budget','€70–80k','≤ €72k'],['start date','ASAP','Q1'],['seniority','senior','senior or strong mid ⟵ under review'],['urgency','high','medium']],pend:['Is mid-level accepted, or only discussed?','Do current finalists above €72k stay in the process?'],teach:'Big shift. Two of your shortlisted people ask for more than €72k. Do not reject them yet: the client has not confirmed. Re-read the incident-ownership must-have: a mid-level person must still show it.'},
+{id:'i1',d:'06 Nov',ch:'interview',t:'Screening review',sev:'material',src:'Screening transcript (synthetic): 7 of 9 questions were about Go syntax; 1 was about incidents.',diff:[['rubric fit','—','questions do not match the v2+ must-have']],pend:['Can the CTO join the second round?'],teach:'Your questions tested Go, which is now trainable. Swap in: “Walk me through the last outage you owned. What did you decide?”'}];
+// ---- A
+let pendA=[];function drawA(i){const e=EV[i];$('#aV').textContent=e.id;const d=$('#aDiff');d.replaceChildren();e.diff.forEach(([f,a,b])=>{const p=E('div',null,'small');p.append(E('b',f+': '),E('span',a,'del'),' → ',E('span',b,'add'));d.append(p)});$('#aSrc').textContent=e.d+' · '+e.ch+' · '+e.src;pendA=[...e.pend];listA();$('#aTeach').textContent=e.teach;$('#aMsg').textContent='';document.querySelectorAll('#tlA .ev').forEach((b,j)=>b.setAttribute('aria-pressed',j===i))}
+function listA(){const p=$('#aPend');p.replaceChildren();pendA.forEach(q=>{const r=E('label',null,'q');const c=E('input');c.type='checkbox';r.append(c,E('span',q));p.append(r)})}
+EV.forEach((e,i)=>{const b=E('button',null,'ev');b.setAttribute('aria-pressed','false');const dot=E('span',e.id,'dot');dot.style.borderStyle=e.sev==='minor'?'dashed':'solid';dot.style.borderWidth=e.sev==='critical'?'4px':'2px';b.append(dot,E('small',e.d),E('small',e.t));b.onclick=()=>drawA(i);$('#tlA').append(b)});
+$('#aAdd').onclick=()=>{const v=$('#aNew').value.trim();if(v){pendA.push(v);listA();$('#aNew').value=''}};
+$('#aSend').onclick=()=>$('#aMsg').textContent='Mock: lesson queued for Ana. She confirms with 2 check questions, shown in B and C.';drawA(3);
+// ---- B
+const F=['budget','must-have','trainable','seniority','12-month outcome','restriction','urgency'];
+const V={v1:{budget:'€70–80k','must-have':'Go, Postgres, 5+ yrs',trainable:'—',seniority:'senior','12-month outcome':'—',restriction:'—',urgency:'high'}};
+V.v2={...V.v1,'must-have':'owns incidents; Postgres',trainable:'Go','12-month outcome':'leads squad of 3',restriction:'top-10 uni ⚑'};V.v3={...V.v2};V.v4={...V.v3,budget:'≤ €72k',seniority:'senior or strong mid ?',urgency:'medium'};
+const why={v2:2,v3:2,v4:4};
+(function(){const t=$('#tblB');const h=E('tr');h.append(E('th','field'));['v1 · 02 Oct · JD','v2 · 05 Oct · kickoff','v3 · 21 Oct · news','v4 · 03 Nov · email'].forEach(x=>h.append(E('th',x)));t.append(h);
+F.forEach(f=>{const r=E('tr');r.append(E('th',f));['v1','v2','v3','v4'].forEach((v,j)=>{const prev=j?V['v'+j][f]:null;const c=E('td',V[v][f]);if(j&&prev!==V[v][f]){c.className='ch';c.tabIndex=0;c.onclick=c.onkeydown=ev=>{if(ev.type==='keydown'&&ev.key!=='Enter')return;document.querySelectorAll('#tblB td').forEach(x=>x.classList.remove('sel'));c.classList.add('sel');const e=EV[why[v]-1]||EV[j];const det=$('#bDet');det.replaceChildren(E('b',f+': '),E('span',prev,'del'),' → ',E('span',V[v][f],'add'),E('br'),E('br'),E('span','why: '+e.d+' · '+e.ch+' · '+e.src))}}r.append(c)});t.append(r)});
+const g=$('#ganttB');const hh=E('tr');hh.append(E('th',''));['Oct w1','w2','w3','w4','Nov w1','w2'].forEach(x=>hh.append(E('th',x)));g.append(hh);
+[['sourcing',[1,1,1,1,0,0]],['screening',[0,0,1,1,1,0]],['on hold: budget',[0,0,0,0,2,2]]].forEach(([n,a])=>{const r=E('tr');r.append(E('th',n));a.forEach(x=>{const c=E('td');if(x)c.append(E('div',null,x===2?'bar alt':'bar'));r.append(c)});g.append(r)});
+const p=$('#bPend');['Mid-level accepted? (since v4)','University preference a hard filter? (since v2) ⚑','Finalists above €72k stay? (since v4)'].forEach(q=>{const r=E('label',null,'q');const c=E('input');c.type='checkbox';r.append(c,E('span',q));p.append(r)});
+['What is now trainable, and what is still a must-have?','Why not reject the €75k finalist today?','Which question replaces your Go-syntax questions?'].forEach(q=>$('#bQuiz').append(E('li',q)));
+$('#bQ').onclick=()=>$('#bMsg').textContent='Mock: recorded as reviewed. Real version stores the answers as evidence.'})();
+// ---- C
+const ST=['analyse change','questions','answers','revalidate','human review','publish to ATS','teach recruiter','rubric check'];
+const TASKS=[{n:'Founder email · 03 Nov',sev:'critical',ev:3,at:4},{n:'Screening transcript · 06 Nov',sev:'material',ev:4,at:0},{n:'Funding news · 21 Oct',sev:'minor',ev:2,at:8,skip:[1,2]}];
+let cur=0,view=4;
+function body(t,s){const e=EV[t.ev];const b=$('#cBody');b.replaceChildren();const box=E('div',null,'box grey');b.append(box);
+ const add=(...x)=>box.append(...x);
+ if(t.skip&&t.skip.includes(s)){add(E('b','skipped'),E('p','Allowed for minor, context-only changes (workflow rule). Reason recorded: no criteria changed.','small'));return}
+ if(s===0){add(E('h3','what changed (AI draft)'));e.diff.forEach(([f,a,c])=>{const p=E('div',null,'small');p.append(E('b',f+': '),E('span',a,'del'),' → ',E('span',c,'add'));add(p)});add(E('p','severity: '+t.sev+' · evidence file: role-events.jsonl#'+e.id,'small'))}
+ if(s===1){add(E('h3','questions the AI generated (file: questions/'+e.id+'.json)'));e.pend.forEach(q=>add(E('div','□ '+q,'q small')));const i=E('input');i.type='text';i.placeholder='add your own question…';add(i)}
+ if(s===2){add(E('h3','answers: who can answer?'));e.pend.forEach(q=>{const r=E('div',null,'q small');r.append(E('span',q,'grow'),E('span','found in sources? no → ask client','chip'));add(r)});add(E('p','Stage stays open until each question has an answer or is marked “ask client”.','small'))}
+ if(s===3){add(E('h3','revalidate'));add(E('p','Does the new profile contradict anything? ⚠ seniority “strong mid” vs. must-have “leads squad in 12 months”: flag for the client.','small'))}
+ if(s===4){add(E('h3','your review'));add(E('p','Accept, edit or reject each change before it becomes profile v4.','small'));e.diff.forEach(([f,a,c])=>{const r=E('div',null,'q small');r.append(E('span',f+': '+c,'grow'));['accept','edit','reject'].forEach(x=>r.append(E('button',x,'btn')));add(r)})}
+ if(s===5){add(E('h3','publish (mock ATS)'));add(E('p','ATS note + task “re-confirm budget with founder” · client email draft with 2 open questions (not sent).','small'))}
+ if(s===6){add(E('h3','teach the recruiter'));add(E('p',e.teach,'small'));add(E('p','Ana answers 2 check questions → stored as evidence → stage done.','small'))}
+ if(s===7){add(E('h3','rubric check: are we asking what matters now?'));const tb=E('table');[['question asked','objective','fits profile v4?'],['“Explain goroutines vs threads”','Go depth','✗ Go is trainable'],['“Tell me about an outage you owned”','incident ownership','✓ must-have'],['“Why our company?”','motivation','~ fine, low priority']].forEach((r,i)=>{const tr=E('tr');r.forEach(c=>tr.append(E(i?'td':'th',c)));tb.append(tr)});add(tb)}}
+function drawC(){const t=TASKS[cur];$('#cT').textContent=t.n+' · '+t.sev;const s=$('#cS');s.replaceChildren();ST.forEach((n,i)=>{const b=E('button',(i+1)+'. '+n,'stg');if(i<t.at)b.classList.add('done');if(i===view)b.classList.add('cur');if(i>t.at){b.classList.add('lock');b.title='locked: previous stage has no evidence yet'}b.onclick=()=>{if(i<=t.at){view=i;drawC()}else $('#cMsg').textContent='Locked: finish “'+ST[t.at]+'” first.'};s.append(b)});body(t,view);$('#cNext').disabled=view!==t.at||t.at>=ST.length;$('#cNext').textContent=t.at>=ST.length?'all stages done ✓':'complete stage →'}
+$('#cNext').onclick=()=>{const t=TASKS[cur];t.at++;view=Math.min(t.at,ST.length-1);$('#cMsg').textContent='Mock: evidence check passed, stage recorded.';drawC()};
+$('#cBack').onclick=()=>{if(view>0){view--;drawC()}};
+TASKS.forEach((t,i)=>{const b=E('button');b.append(E('b',t.n),E('br'),E('span',t.sev+' · stage '+Math.min(t.at+1,8)+'/8','small'));b.onclick=()=>{cur=i;view=Math.min(t.at,7);document.querySelectorAll('.queue button').forEach((x,j)=>x.classList.toggle('on',j===i));$('#cMsg').textContent='';drawC()};$('#cQ').append(b)});
+$('#cQ').firstChild.classList.add('on');drawC();
+</script></body></html>

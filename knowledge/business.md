@@ -59,6 +59,12 @@ Recommended option accepted for C1, C2, C4–C18; C3 proposal accepted. Notes th
 - **V3 yes:** the stage-and-evidence rule goes into AGENTS.md (rule 13).
 - **Presentation intent (draft, for the end):** readme.html becomes the human's presentation. Message: the owner has built RAG systems (the human wrote "RAC"; interpreted as RAG, to confirm) and app integrations many times. They omitted them from this MVP on purpose because integrations depend on each client's tools and are easy to learn. The point of this submission is the reasoning: what changed, why it matters, and how the recruiter's judgment follows. Final wording is the owner's.
 
+## Interview stage and prototypes (prompts/client-context/007-user.md, 2026-11-07)
+- RAG confirmed (not "RAC").
+- The chain continues into interviews: screening, cultural-fit and similar sessions (simulated) produce transcripts of questions and answers. The harness evaluates each question's context and objective, and the rubric itself, against the current client need: are we asking what matters to this client now?
+- Recalibration trigger threshold: still unanswered. Default: every profile change.
+- Prototypes: three low-fidelity, desktop-only, workflow-focused wireframes (no shadows, animation or responsiveness). Show navigation, how the user sees what changed between profile versions, pending questions for the client, asking questions, and teaching the recruiter what changed. Artifact: _work/2026-11-07-client-context/prototypes.html.
+
 ## Confirmed by the human — client context (prompts/client-context/001-user.md, 2026-11-07)
 - A JD alone is insufficient. Understand the client's current state and trajectory, what the team expects of the company and what the company expects of the team, and expectations at 6/9/12/18 months, usually gathered in a kickoff.
 - Clients are small to medium companies with at most about 80–100 people.

@@ -2,7 +2,7 @@
 
 Updated: 2026-11-07 · Claude (client-context chat). Stage: client-context answers recorded; plan next.
 
-LATEST: V1–V3 answered (prompts/client-context/005-user.md). Scope is one chain: client signal → role-profile delta → recruiter recalibration (calibration is back in scope). Lawful restrictions are followed while possible bias is flagged. Two clients, three roles. AGENTS.md rule 13 (stage-and-evidence) passed the Codex pre-merge recheck (_work/2026-11-07-client-context/premerge-rule13*.codex.md). Open: which severity levels trigger recalibration (until confirmed, every change does); confirm RAC = RAG. readme.html will become the owner's presentation at the end. UI style: docs/ui-style-reference.md plus the designs.md adaptations. Next: rewrite the objective map for the chain, define the workflow stages and checks, run the plan-gate peer review, research JD samples, build mock data.
+LATEST: RAG confirmed. The chain now extends to interviews: screening and culture-fit transcripts are checked for whether our questions and rubric fit the current client need (prompts/client-context/007-user.md). Three low-fi desktop prototypes are in _work/2026-11-07-client-context/prototypes.html: A timeline, B version table + Gantt strip, C guided rule-13 checklist. They have click checks via JS only; no visual screenshot (timed out). Awaiting the human's choice or mix. Open: recalibration trigger threshold (default: every change). Next: prototype feedback → objective map for the chain → plan-gate peer review → JD research → mock data.
 
 Earlier baton (Codex):
 
