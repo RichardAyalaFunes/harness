@@ -59,6 +59,12 @@ Recommended option accepted for C1, C2, C4–C18; C3 proposal accepted. Notes th
 - **V3 yes:** the stage-and-evidence rule goes into AGENTS.md (rule 13).
 - **Presentation intent (draft, for the end):** readme.html becomes the human's presentation. Message: the owner has built RAG systems (the human wrote "RAC"; interpreted as RAG, to confirm) and app integrations many times. They omitted them from this MVP on purpose because integrations depend on each client's tools and are easy to learn. The point of this submission is the reasoning: what changed, why it matters, and how the recruiter's judgment follows. Final wording is the owner's.
 
+## UI direction after reading prototypes (prompts/client-context/013-user.md, 2026-11-07)
+- Base: proto-brief (current brief, changes since a chosen date). proto-story is dropped.
+- The editorial look read as selling, not understanding. Wanted: plain hierarchy, tables for structure, factual headings.
+- Never summarise a profile in a headline: a role is many criteria with weights, restrictions, expectations and open unknowns.
+- Current artifact: _work/2026-11-07-client-context/proto-brief-v2.html. proto-story.html and proto-brief.html are superseded; palette from docs/ui-style-reference.md kept, stickers/rotations/large display type removed.
+
 ## UI feedback on prototype-hifi (prompts/client-context/011-user.md, 2026-11-07)
 - Too much information in one space and too many visible stages. The UI is for learning and reading: one idea at a time, catching what the user is looking for.
 - The style did not follow docs/ui-style-reference.md closely enough. Wanted: its editorial feel (large lowercase display type, generous space, handwritten-style captions, sticker accents).

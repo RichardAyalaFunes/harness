@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Role brief · Northwind</title>
+<style>
+:root{--cream:#fdfbf9;--dew:#f7efe9;--ink:#171717;--cocoa:#2b1a07;--orange:#ff6f1e;--sienna:#ce500a;--muted:#6b5d50;--line:#e4dad1;
+--display:"gelica","Recoleta","Fraunces",Georgia,serif;--ui:"Geist","Inter","Segoe UI",system-ui,sans-serif}
+*{box-sizing:border-box}
+body{margin:0;background:var(--cream);color:var(--ink);font:16px/1.55 var(--ui);min-width:1200px}
+button{font:inherit;color:inherit}button:focus-visible,summary:focus-visible{outline:3px solid var(--ink);outline-offset:3px}
+.page{max-width:1160px;margin:0 auto;padding:32px 48px 64px}
+header{border-bottom:1.5px solid var(--ink);padding-bottom:20px}
+.crumb{font-size:14px;color:var(--muted)}
+h1{font:600 34px/1.2 var(--display);color:var(--cocoa);margin:6px 0 0}
+.meta{display:flex;gap:28px;margin-top:14px;font-size:14px;color:var(--muted)}.meta b{color:var(--ink);font-weight:600}
+.since{display:flex;gap:10px;align-items:center;margin:20px 0 0;font-size:14px;flex-wrap:wrap}
+.pill{background:var(--cream);border:1.5px solid var(--ink);border-radius:20px;padding:6px 18px;font-size:14px;cursor:pointer}
+.pill.on{background:var(--ink);color:var(--cream)}
+.layout{display:grid;grid-template-columns:1fr 300px;gap:48px;margin-top:36px}
+h2{font:600 22px/1.3 var(--display);color:var(--cocoa);margin:40px 0 4px}main>h2:first-child{margin-top:0}
+.lead{margin:0 0 12px;color:var(--muted);font-size:15px;max-width:640px}
+table{width:100%;border-collapse:collapse;font-size:15px}
+th{text-align:left;font-weight:600;font-size:12px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);padding:8px 12px;border-bottom:1.5px solid var(--ink)}
+td{padding:11px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+td.k{width:190px;color:var(--muted)}
+tr.chg td:first-child{box-shadow:inset 4px 0 0 var(--orange)}
+.was{display:block;margin-top:3px;font-size:13px;color:var(--muted)}.was s{color:var(--muted)}
+.src{font-size:13px;color:var(--muted);white-space:nowrap}
+.tag{display:inline-block;font-size:12px;font-weight:600;border:1px solid var(--ink);border-radius:10px;padding:0 8px;margin-left:6px;white-space:nowrap}
+.tag.unconf{border-style:dashed}.tag.flag{border-color:var(--sienna);color:var(--sienna)}
+.kind{font-size:13px;font-weight:600;white-space:nowrap}
+.none{color:var(--muted);font-style:italic}
+.changes td{font-size:15px}.changes .arrow{color:var(--muted);padding:0 6px}
+.empty{padding:14px 12px;color:var(--muted);border-bottom:1px solid var(--line)}
+aside{position:sticky;top:24px;align-self:start}
+.box{border:1.5px solid var(--ink);border-radius:12px;padding:18px 20px;background:var(--cream);margin-bottom:20px}
+.box h3{font:600 17px var(--display);color:var(--cocoa);margin:0 0 8px}
+.box ol,.box ul{margin:0;padding-left:20px;font-size:15px}.box li{margin:6px 0}
+.box .s{display:block;font-size:12px;color:var(--muted)}
+.box.dew{background:var(--dew);border-color:var(--dew)}
+footer{margin-top:56px;border-top:1px solid var(--line);padding-top:14px;font-size:13px;color:var(--muted)}
+</style></head><body>
+<div class="page">
+<header>
+<div class="crumb">Northwind Freight Tech · role brief</div>
+<h1>Senior Backend Engineer</h1>
+<div class="meta"><span>Version <b id="ver"></b></span><span>Last change <b id="last"></b></span><span>Recruiter <b>Ana</b></span><span>Sources <b>JD, kickoff, news, 1 email, 1 client decision</b></span></div>
+<div class="since" id="since"><span>Mark changes since</span></div>
+</header>
+
+<div class="layout">
+<main>
+<h2>What changed</h2>
+<p class="lead" id="chlead"></p>
+<table class="changes"><thead><tr><th>Date</th><th>Field</th><th>Change</th><th>Source</th></tr></thead><tbody id="changes"></tbody></table>
+
+<div id="sections"></div>
+
+<h2>Client decisions</h2>
+<p class="lead">Each decision is a learning signal. It changes the brief only when the client changes a criterion.</p>
+<table><thead><tr><th>Date</th><th>Decision</th><th>Client's reason</th><th>Effect</th></tr></thead><tbody id="decisions"></tbody></table>
+</main>
+
+<aside>
+<div class="box"><h3>Open questions for Northwind</h3><ol id="ask"></ol></div>
+<div class="box dew"><h3>Before your next call</h3><ol id="rem"></ol></div>
+</aside>
+</div>
+<footer>Prototype with fictional data. Nothing is saved or sent. Orange bar = changed since the marked date.</footer>
+</div>
+<script>
+const $=s=>document.getElementById(s),E=(t,x,c)=>{const e=document.createElement(t);if(x!=null)e.textContent=x;if(c)e.className=c;return e};
+const D=['02 oct','05 oct','21 oct','03 nov','10 nov'];
+const VER={0:'v1',1:'v2',2:'v3',3:'v4'};
+// history entries: [dateIndex, value, source, status]  status: '' | 'unconf' | 'flag'
+const SEC=[
+{t:'Company context',lead:'Why the role exists and what is around it.',cols:['Topic','Current understanding','Source'],rows:[
+ {f:'Company',h:[[0,'Road-freight routing software, 55 people, Series A raised in September','JD']]},
+ {f:'Direction',h:[[0,'Grow the road product','JD'],[2,'Expanding into rail; an AI routing team is planned','news, 21 oct']]},
+ {f:'Team',h:[[1,'6 backend engineers, reports to the CTO, shared on-call rota','kickoff']]},
+ {f:'Why open now',h:[[0,'Not discussed yet','—']]}]},
+{t:'Requirements',lead:'Each criterion separately, with its weight. No single line summarises the profile.',cols:['Criterion','Weight','Source'],kind:true,rows:[
+ {f:'Owns production incidents end to end',h:[[1,'Must-have','CTO, kickoff']]},
+ {f:'5+ years building backend services in production',h:[[0,'Must-have','JD']]},
+ {f:'Postgres under real load',h:[[0,'Must-have','JD']]},
+ {f:'Event-driven systems (queues, retries, idempotency)',h:[[0,'Must-have','JD']]},
+ {f:'System design depth',h:[[4,'Proposed must-have, not confirmed','client decision, 10 nov','unconf']]},
+ {f:'Go',h:[[0,'Must-have','JD'],[1,'Trainable on the job','CTO, kickoff']]},
+ {f:'Logistics or routing domain',h:[[0,'Nice to have','JD']]},
+ {f:'Kubernetes',h:[[0,'Nice to have','JD']]}]},
+{t:'Restrictions',lead:'Client rules we follow. Rules that may be discriminatory are flagged and not applied until confirmed as job-related.',cols:['Rule','Status','Source'],rows:[
+ {f:'Do not approach staff of partner company Carrio',h:[[1,'Applied','CTO, kickoff']]},
+ {f:'Prefers top-10 university graduates',h:[[1,'Not applied: possible bias, ask if job-related','CTO, kickoff','flag']]}]},
+{t:'Expectations over time',lead:'What success looks like after the hire, from the kickoff.',cols:['When','Expected outcome','Source'],rows:[
+ {f:'6 months',h:[[1,'Owns on-call for the routing service','kickoff']]},
+ {f:'12 months',h:[[1,'Leads a squad of three','kickoff']]},
+ {f:'18 months',h:[[0,'Not discussed yet','—']]}]},
+{t:'Offer and logistics',lead:'',cols:['Item','Current','Source'],rows:[
+ {f:'Level',h:[[0,'Senior','JD'],[3,'Senior; strong mid-level mentioned, not confirmed','founder email','unconf']]},
+ {f:'Budget',h:[[0,'€70–80k','JD'],[3,'Up to €72k','founder email']]},
+ {f:'Start',h:[[0,'As soon as possible','JD'],[3,'Q1','founder email']]},
+ {f:'Location',h:[[0,'Remote, EU time zones','JD']]}]}];
+const ASK=[[0,'Why is the role open now?'],[1,'Is the university preference job-related? If not, it stays unapplied.'],[3,'Is mid-level accepted, or only discussed?'],[4,'Does system design become a must-have?'],[1,'What is expected at 18 months?']];
+const REM=[[1,'Screen for incident ownership stories, not Go keywords.'],[3,'Keep finalists above €72k until the client confirms the cap.'],[4,'For each submission, note one design decision the candidate made and its trade-off.']];
+const DEC=[[4,'Rejected Marco after the technical round','“Weak on system design.”','No new version. Added design depth to what we verify; asked the client whether it is a must-have.']];
+const now=4;let since=2;
+function cur(h){let v=null;h.forEach(x=>{if(x[0]<=now)v=x});return v}
+function at(h,d){let v=null;h.forEach(x=>{if(x[0]<=d)v=x});return v}
+function draw(){
+ const lastV=Math.max(...SEC.flatMap(s=>s.rows.flatMap(r=>r.h.map(x=>x[0]))).filter(d=>VER[d]));
+ $('ver').textContent=VER[lastV];$('last').textContent=D[now];
+ const ch=[];
+ const host=$('sections');host.replaceChildren();
+ SEC.forEach(s=>{host.append(E('h2',s.t));if(s.lead)host.append(E('p',s.lead,'lead'));
+  const tb=E('table'),th=E('thead'),tr=E('tr');s.cols.forEach(c=>tr.append(E('th',c)));th.append(tr);tb.append(th);const bd=E('tbody');
+  s.rows.forEach(r=>{const v=cur(r.h);if(!v)return;const p=at(r.h,since);const changed=v[0]>since;
+   if(changed)ch.push({d:v[0],f:r.f,was:p?p[1]:null,now:v[1],src:v[2]});
+   const row=E('tr',null,changed?'chg':'');row.append(E('td',r.f,'k'));
+   const val=E('td');const span=E('span',v[1],s.kind?'kind':(v[1].startsWith('Not discussed')?'none':''));val.append(span);
+   if(v[3]==='unconf')val.append(E('span','unconfirmed','tag unconf'));if(v[3]==='flag')val.append(E('span','⚑ check','tag flag'));
+   if(changed){const w=E('span',null,'was');w.append(document.createTextNode(p?'was ':'new since '+D[since]),p?E('s',p[1]):'',document.createTextNode(' · changed '+D[v[0]]));val.append(w)}
+   row.append(val,E('td',v[2],'src'));bd.append(row)});
+  tb.append(bd);host.append(tb)});
+ const c=$('changes');c.replaceChildren();ch.sort((a,b)=>a.d-b.d);
+ $('chlead').textContent=ch.length?ch.length+' change'+(ch.length>1?'s':'')+' since '+D[since]+'. Each row below is also marked in the brief.':'';
+ if(!ch.length){const r=E('tr');const td=E('td','No changes since '+D[since]+'.','empty');td.colSpan=4;r.append(td);c.append(r)}
+ ch.forEach(x=>{const r=E('tr');r.append(E('td',D[x.d],'src'),E('td',x.f));const t=E('td');
+  if(x.was){t.append(E('s',x.was));t.append(E('span','→','arrow'))}else t.append(E('span','added: ','src'));t.append(E('b',x.now));r.append(t,E('td',x.src,'src'));c.append(r)});
+ const a=$('ask');a.replaceChildren();ASK.filter(x=>x[0]<=now).forEach(x=>{const li=E('li',x[1]);li.append(E('span','raised '+D[x[0]],'s'));a.append(li)});
+ const m=$('rem');m.replaceChildren();REM.filter(x=>x[0]<=now).forEach(x=>m.append(E('li',x[1])));
+ const d=$('decisions');d.replaceChildren();DEC.filter(x=>x[0]<=now).forEach(x=>{const r=E('tr');r.append(E('td',D[x[0]],'src'),E('td',x[1]),E('td',x[2]),E('td',x[3]));d.append(r)});
+ const s=$('since');[...s.querySelectorAll('button')].forEach(b=>b.remove());
+ D.slice(0,now).forEach((dd,j)=>{const b=E('button',j===0?'start ('+dd+')':dd,'pill'+(j===since?' on':''));b.setAttribute('aria-pressed',j===since);b.onclick=()=>{since=j;draw()};s.append(b)});
+}
+draw();
+</script></body></html>

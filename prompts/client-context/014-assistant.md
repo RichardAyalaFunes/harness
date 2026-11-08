@@ -1,0 +1,2 @@
+# Assistant message 014 (summary of visible reply)
+Built _work/2026-11-07-client-context/proto-brief-v2.html: proto-brief's structure with table hierarchy, factual header, no headline summary of the profile, no stickers or decorative type. Requirements are listed per criterion with weight and confirmation status; unknowns appear as "not discussed yet". Checked by script at 1440px. Asked whether this direction is right before moving to the objective map.
