@@ -1,6 +1,6 @@
 // Read models for the JSON API (and the CLI). Everything shown in the UI comes from SQLite through these functions.
 import { unjson } from './db.js';
-import { currentVersion, listVersions, briefFields, matrix, labelOf, groupOf } from './brief.js';
+import { currentVersion, listVersions, getVersion, briefFields, matrix, labelOf, groupOf } from './brief.js';
 import { itemsFor, teamStatus } from './learning.js';
 import { listCandidates, STAGES } from './candidates.js';
 import { stageRows } from './pipeline.js';
@@ -86,7 +86,7 @@ export function roleView(db, roleId, me = ME) {
     role: { id: role.id, title: role.title, client: { id: role.client_id, name: role.client_name }, lead: role.lead_id },
     me, stages: STAGES,
     brief: cur ? { version: cur.n, effective_date: cur.effective_date, source_id: cur.source_id, fields: briefFields(cur) } : null,
-    versions: listVersions(db, roleId), matrix: matrix(db, roleId),
+    versions: listVersions(db, roleId).map((v) => ({ ...v, fields: briefFields(getVersion(db, roleId, v.n)) })), matrix: matrix(db, roleId),
     timeline: timelineView(db, role, proposals, reviews), proposals, reviews, team: teamStatus(db, roleId),
     items, my_progress: { done: items.filter((i) => i.completion).length, total: items.length },
     verify: {

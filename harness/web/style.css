@@ -65,7 +65,7 @@ main{min-width:0}
 .panel h3{font-size:18px;font-weight:600;margin:0 0 2px}.panel .sub{margin-bottom:12px}
 .rows .r{display:grid;grid-template-columns:220px 1fr;gap:16px;align-items:center;padding:12px 16px;border-radius:16px}
 .rows .r:nth-child(odd){background:rgba(255,255,255,.55)}
-.rows .r .k{color:var(--muted);font-size:14px}.rows .r .v{font-weight:500}
+.rows .r>.k{color:var(--muted);font-size:14px}.rows .r .v{font-weight:500}
 .rows .r.chg{background:var(--yellowsoft)}
 .was{display:block;font-size:12px;color:var(--muted);font-weight:400}.was s{color:var(--red)}
 .list{margin:0;padding:0;list-style:none}.list li{display:flex;gap:12px;padding:10px 0;border-bottom:1px solid rgba(0,0,0,.05);font-size:14px}.list li:last-child{border:0}
@@ -216,3 +216,37 @@ table.stg code{font-size:12px;white-space:pre-wrap;word-break:break-word}
 }
 @media (max-width:900px){.board{grid-template-columns:1fr}.kpis{grid-template-columns:repeat(2,1fr)}}
 .list li{flex-wrap:wrap}.list li>div,.list li>span{min-width:0;overflow-wrap:anywhere}.list.cov li{align-items:flex-start}
+
+/* Readability pass: chips, hints, version history, processing steps, compare groups, audio button */
+.chip{line-height:1.4}
+.chip.k{background:var(--ink);color:#fff}
+.chip.b{background:#dfeaf7;color:#1f4a7a;border:1px solid #9fbfe0}
+.chip.ys{border:1px solid #e9c46a}
+.chip.g{border:1px solid #cfd4dc}
+.hint{display:inline-grid;place-items:center;width:17px;height:17px;margin-left:6px;border-radius:50%;background:#e3e7ee;color:var(--ink2);font-size:11px;font-weight:700;cursor:help;position:relative;vertical-align:middle;text-transform:none;letter-spacing:0}
+.hint:hover,.hint:focus-visible{background:var(--ink);color:#fff;outline:none}
+.hint::after{content:attr(data-tip);position:absolute;left:50%;top:calc(100% + 8px);transform:translateX(-50%);width:max-content;max-width:280px;padding:9px 12px;border-radius:12px;background:var(--ink);color:#fff;font-size:12.5px;font-weight:400;line-height:1.45;text-align:left;white-space:normal;box-shadow:0 8px 24px rgba(0,0,0,.18);opacity:0;pointer-events:none;transition:opacity .12s;z-index:20}
+.hint:hover::after,.hint:focus-visible::after{opacity:1}
+.oldver{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap;padding:12px 16px;margin:8px 0 6px;border-radius:16px;background:#dfeaf7;color:#1f4a7a;font-size:14px}
+.list.vers li{padding:4px 0;border:0}
+.verb{display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;padding:10px 12px;border-radius:14px;border:1.5px solid #d3d8e0;background:#fff;text-align:left}
+.verb:hover{border-color:var(--ink)}
+.verb.on{border:2px solid var(--ink);padding:9.5px 11.5px}
+.verb b{display:block;font-size:14px}.verb small{display:block;color:var(--muted);font-size:12px}
+.verb .go{font-size:12px;font-weight:600;color:var(--ink2);white-space:nowrap}
+ol.stg{list-style:none;margin:10px 0 0;padding:0;display:grid;gap:6px}
+ol.stg li{display:grid;grid-template-columns:26px 1fr;gap:10px;align-items:start;padding:10px 12px;border-radius:14px;background:rgba(255,255,255,.7);font-size:13.5px;color:var(--ink2)}
+ol.stg li b{color:var(--ink);font-size:14px}
+ol.stg .mark{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;font-weight:700;font-size:12px;background:#eef0f3;color:var(--muted)}
+ol.stg li.passed .mark{background:#dff3e8;color:#1d6b43}ol.stg li.failed .mark{background:#fbe1e6;color:#a8324a}ol.stg li.pending .mark{background:var(--yellowsoft);color:#6b4b00}
+ol.stg li.skipped{background:transparent}
+details.raw{margin-top:10px}details.raw summary{cursor:pointer;color:var(--muted);font-size:12px}
+details.raw code{display:block;white-space:pre-wrap;word-break:break-word;font-size:11.5px;color:var(--muted);margin-top:6px;max-height:260px;overflow:auto}
+.cmp tr.grprow th{padding:18px 4px 2px;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink);background:none;border-bottom:2px solid var(--ink);text-align:left}
+.cmp thead th{font-size:12px;color:var(--muted)}
+.answer textarea{padding-right:14px}
+.micb{position:static;width:auto;height:38px;margin-top:8px;padding:0 14px;border-radius:19px;display:inline-flex;align-items:center;gap:8px;background:#fff;border:1.5px dashed #b8bec8;color:var(--ink2);font-size:13px;font-weight:600;cursor:not-allowed}
+.micb svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.micb em{font-style:normal;font-size:11px;padding:1px 7px;border-radius:8px;background:#eef0f3;color:var(--muted)}
+.hint::after{display:none}.hint:hover::after,.hint:focus-visible::after{display:block}
+.kpi .hint::after,.panel h3 .hint::after{left:auto;right:-8px;transform:none}
