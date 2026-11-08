@@ -113,6 +113,21 @@ textarea{width:100%;min-height:80px;border-radius:16px;border:1.5px solid #d3d8e
 .score{font-size:64px;font-weight:600;letter-spacing:-.02em;line-height:1}.score small{font-size:24px;color:var(--muted)}
 .seg5{display:flex;gap:6px;margin:14px 0}.seg5 i{flex:1;height:10px;border-radius:5px;background:#e3e6eb}.seg5 i.y{background:var(--ink)}.seg5 i.h{background:var(--yellow)}
 .cov{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid rgba(0,0,0,.05);font-size:14px}.cov:last-child{border:0}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}.step{display:flex;gap:10px;align-items:center;padding:10px 12px;border-radius:16px;background:rgba(255,255,255,.7);border:1px solid #e6e8ec}
+.step b{display:block;font-size:14px}.step small{font-size:12px;color:var(--muted)}.sn{flex:none;width:28px;height:28px;border-radius:50%;background:#eef0f3;display:grid;place-items:center;font-weight:700;font-size:13px}.sn svg{width:14px;height:14px}
+.step.ok .sn{background:#dff3e8;color:#1d6b43}
+.opt.ack .txt b{display:block;font-weight:600}.opt.ack .txt small{display:block;font-size:12px;color:var(--muted);font-weight:400}
+.box{flex:none;width:22px;height:22px;border-radius:7px;border:2px solid #9aa1ad;background:#fff;display:grid;place-items:center}.box svg{width:13px;height:13px}
+.opt.sel .box{background:var(--ink);border-color:var(--ink);color:#fff}
+.prompt{font-weight:600;font-size:16px;margin:14px 0 10px}
+.answer{position:relative}.answer textarea{padding-right:60px}.micb{position:absolute;right:10px;top:10px;width:40px;height:40px;border-radius:50%;background:#eef0f3;color:#9aa1ad;display:grid;place-items:center;cursor:not-allowed}
+.pt{display:flex;gap:8px;padding:4px 0;font-size:14px;color:var(--muted)}.pt.y{color:#1d6b43;font-weight:600}
+.covgrid{margin:8px 0 4px}
+.subm{display:block;margin-top:6px;font-size:12px;font-weight:600;padding:4px 10px;border-radius:10px;background:var(--ink);color:#fff}
+.overlay{position:fixed;inset:0;background:rgba(22,24,29,.25);display:none;place-items:center;z-index:9}.overlay.on{display:grid}
+.mbox{width:620px;max-width:92vw;padding:24px 26px;background:rgba(255,255,255,.92)}
+.linkb{text-decoration:underline;font-weight:600;padding:0}
+.pop{position:fixed;left:50%;bottom:32px;transform:translateX(-50%);display:none;align-items:center;gap:14px;padding:14px 18px;z-index:10}.pop.on{display:flex}
 .stub{font-size:12px;color:var(--muted);margin-top:14px}
 </style></head><body>
 <div class="app">
@@ -124,6 +139,8 @@ textarea{width:100%;min-height:80px;border-radius:16px;border:1.5px solid #d3d8e
 <div class="foot">Fictional data · prototype</div>
 </aside>
 <main id="main"></main>
+<div class="overlay" id="modal" onclick="if(event.target===this)closeM()"></div>
+<div class="glass pop" id="pop" role="status"><span>Audio answers are not part of this MVP. Please write your answer.</span><button class="pill light" onclick="document.getElementById('pop').classList.remove('on')">OK</button></div>
 </div>
 <script>
 const $=s=>document.getElementById(s);
@@ -152,25 +169,25 @@ const F=[
 ['Offer','Start',['ASAP','=','=','Q1']]];
 const EV=[['02 oct','JD received','v1',6],['05 oct','Kickoff call','v2',16],['21 oct','Rail expansion news','v3',47],['03 nov','Founder email','v4',76],['10 nov','Client rejected D. Ruiz','no new version',94,1]];
 const ASK=[['Why is the role open now?','raised 02 oct'],['Is the university preference job-related?','raised 05 oct'],['Is mid-level accepted, or only discussed?','raised 03 nov'],['Does system design become a must-have?','raised 10 nov'],['What is expected at 18 months?','raised 05 oct']];
-const Q=[
-{f:'Go',p:'A strong candidate has never used Go. What do you do?',o:['Reject: Go is a must-have','Keep: Go is trainable, check incident ownership','Ask the client first'],a:1,src:'kickoff · 05 oct',why:'Go moved from must-have to trainable in v2.'},
-{f:'Budget',p:'Your best finalist expects €76k. What do you do?',o:['Drop them: the cap is €72k','Submit as normal: range is €70–80k','Keep them and confirm the cap with the client'],a:2,src:'founder email · 03 nov',why:'The cap fell to €72k in v4. Keep strong finalists until the client confirms.'},
-{f:'Restrictions',p:'Which client rule do we apply today?',o:['Top-10 universities only','No staff from partner Carrio','Both'],a:1,src:'kickoff · 05 oct',why:'The university preference is flagged as possible bias and not applied.'},
-{f:'Level',p:'Is a strong mid-level candidate in scope?',o:['Yes, confirmed','Not confirmed: ask before submitting','No'],a:1,src:'founder email · 03 nov',why:'Mentioned in the email, not confirmed.'},
-{f:'Must-haves',p:'In your own words: what must a submission show, beyond the stack?',open:true,keys:['incident','outage','on-call','design'],src:'kickoff · 05 oct; client decision · 10 nov',why:'Expected: owning production incidents end to end and, since 10 nov, evidence of system design trade-offs.'}];
-const S={view:'list',pos:null,tab:'pipeline',ans:{},done:false};
-const ic={bell:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 16V11a6 6 0 1 1 12 0v5l1.5 2h-15z"/><path d="M10 20a2 2 0 0 0 4 0"/></svg>',
+const ACK=[{k:'budget',t:'Budget is now up to €72k',was:'€70–80k',src:'founder email · 03 nov'},{k:'start',t:'Start moves to Q1',was:'as soon as possible',src:'founder email · 03 nov'}];
+const STUDY={p:'Senior was the level; a strong mid-level is now discussed. For incident ownership, what would a strong mid-level need to show, and where would you still expect a senior?',
+pts:['Has owned real incidents, not only joined them (on-call, outage)','Explains what they decided and what changed after (post-mortem, follow-up)','Senior gap: leading others or designing for failure (lead, design)'],keys:[['on-call','outage','incident'],['post-mortem','postmortem','decided','changed','follow'],['lead','design','mentor']],src:'Sources: kickoff · 05 oct (must-have), founder email · 03 nov (level).'};
+const COV=[['Incident ownership','asked','g'],['Postgres under load','asked','g'],['Event-driven systems','briefly','ys'],['System design','not asked','r'],['Go (trainable)','4 of 11 questions','r']];
+const VER=[{k:'design',t:'A system they designed, with one trade-off they chose',why:'Client rejected on design depth; your screening did not ask.',src:'10 nov'},{k:'go',t:'Spend at most one question on Go',why:'Go is trainable since v2; 4 of 11 questions went to it.',src:'10 nov'}];
+const BASEV=[{t:'The last production incident they owned end to end',src:'must-have · kickoff 05 oct'},{t:'Salary expectation against the €72k cap',src:'founder email · 03 nov'}];
+const S={view:'list',pos:null,tab:'pipeline',ack:{},study:'',studyDone:false,rev:'',revDone:false,verify:{}};
+const ic={mic:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg>',bell:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 16V11a6 6 0 1 1 12 0v5l1.5 2h-15z"/><path d="M10 20a2 2 0 0 0 4 0"/></svg>',
 search:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>',
 spark:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3b2a00" stroke-width="2" stroke-linecap="round"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M6 6l2.5 2.5M15.5 15.5 18 18M6 18l2.5-2.5M15.5 8.5 18 6"/></svg>'};
-function go(v,id){S.view=v;if(id){S.pos=id;S.tab='pipeline';S.ans={};S.done=false}draw();scrollTo(0,0)}
+function go(v,id){S.view=v;if(id){S.pos=id;S.tab='pipeline'}draw();scrollTo(0,0)}
 function tab(t){S.tab=t;draw()}
 function topBar(){const n=POS.reduce((a,p)=>a+p.unrev,0);return `<div class="topbar"><div class="hello">Hi <b>Ana</b>, welcome back</div>
 <div class="search glass">${ic.search} Search positions</div>
 <button class="round glass" aria-label="${n} unreviewed brief changes">${ic.bell}<span class="dot">${n}</span></button></div>`}
-function draw(){$('main').innerHTML=topBar()+(S.view==='list'?list():position());const t=$('t4');if(t)t.value=S.ans[4]||'';progress()}
+function draw(){$('main').innerHTML=topBar()+(S.view==='list'?list():position());const a=$('tstudy');if(a)a.value=S.study;const b=$('trev');if(b)b.value=S.rev;progress()}
 function spark(t){const w=260,h=44,m=Math.max(...t),pts=t.map((v,i)=>[i*w/(t.length-1),h-4-(v/m)*(h-10)]);return `<svg class="spark" viewBox="0 0 ${w} ${h}" preserveAspectRatio="none" width="100%"><polyline fill="none" stroke="#e0b347" stroke-width="2.5" stroke-linejoin="round" points="${pts.map(p=>p.join(',')).join(' ')}"/>${pts.map(p=>`<circle cx="${p[0]}" cy="${p[1]}" r="3" fill="#fff" stroke="#e0b347" stroke-width="2"/>`).join('')}</svg>`}
 function list(){const total=POS.reduce((a,p)=>a+p.unrev,0);return `<section class="glass hero" style="grid-template-columns:1fr auto">
-<div><p class="h1">Open positions</p><div class="big">${POS.length} searches</div><div style="margin-top:10px;display:flex;gap:8px"><span class="chip y">${total} brief changes to review</span><span class="chip g">1 knowledge check due</span></div></div>
+<div><p class="h1">Open positions</p><div class="big">${POS.length} searches</div><div style="margin-top:10px;display:flex;gap:8px"><span class="chip y">${total} brief changes to review</span><span class="chip g">1 stay-current check due</span></div></div>
 <div class="sub" style="max-width:300px">Open a position to see its pipeline, the current role brief, how it changed, and whether you're up to date.</div></section>
 <h2 style="font-size:18px;font-weight:600;margin:28px 4px 14px">Your positions</h2>
 <div class="cards">${POS.map(p=>`<article class="glass pos" onclick="go('pos','${p.id}')" tabindex="0" onkeydown="if(event.key==='Enter')go('pos','${p.id}')">
@@ -180,16 +197,16 @@ function list(){const total=POS.reduce((a,p)=>a+p.unrev,0);return `<section clas
 <div style="display:flex;justify-content:space-between;align-items:center;margin-top:12px"><span class="sub">Brief changes over time</span>${p.check?`<span class="chip g">check ${p.check}</span>`:'<span class="chip r">check due</span>'}</div>
 ${spark(p.trend)}</article>`).join('')}</div>`}
 function position(){const p=POS.find(x=>x.id===S.pos),full=p.id==='nw-be';
-const T=[['pipeline','Pipeline'],['brief','Role brief'],['changes','Changes',p.unrev],['check','Knowledge check',!p.check]];
+const T=[['pipeline','Pipeline'],['brief','Role brief'],['changes','Changes',p.unrev],['check','Stay current',doneCount()<3]];
 return `<section class="glass hero"><div><div class="crumb"><button onclick="go('list')">Positions</button> / ${p.co}</div>
 <div class="title">${p.t}</div><div class="sub" style="margin-top:4px">Recruiter Ana · client contact: CTO · remote EU</div></div>
 <div class="kpis"><div class="tile kpi"><small>Brief</small><b>${p.ver}</b></div><div class="tile kpi"><small>To review</small><b>${p.unrev}</b></div>
-<div class="tile kpi"><small>Your check</small><b>${S.done?scoreTotal()+'/5':p.check?p.check.replace(' ',''):'due'}</b></div><div class="tile kpi"><small>Candidates</small><b>${p.stages.reduce((a,b)=>a+b)}</b></div></div></section>
+<div class="tile kpi"><small>Stay current</small><b>${doneCount()}/3</b></div><div class="tile kpi"><small>Candidates</small><b>${p.stages.reduce((a,b)=>a+b)}</b></div></div></section>
 <div class="seg glass">${T.map(([k,l,n])=>`<button class="${S.tab===k?'on':''}" onclick="tab('${k}')">${l}${n?'<span class="n"></span>':''}</button>`).join('')}</div>
 ${!full&&S.tab!=='pipeline'?`<div class="glass panel"><h3>No detailed data in this prototype</h3><div class="sub">Open Northwind · Senior Backend Engineer to see this tab.</div></div>`:({pipeline:pipe,brief,changes,check})[S.tab](p)}`}
-function pipe(p){let n=0;return `${p.unrev?`<div class="glass alert"><div class="ic">${ic.spark}</div><div><b>Brief changed to ${p.ver} on 03 nov</b><div class="sub">Budget, start date and level changed. Review before submitting more candidates.</div></div>
-<div class="act"><button class="pill light" onclick="tab('changes')">See changes</button><button class="pill dark" onclick="tab('check')">Take the check</button></div></div>`:''}
-<div class="board">${STAGES.map((s,i)=>`<div class="glass col"><h4>${s}<span>${p.stages[i]}</span></h4>${Array.from({length:p.stages[i]},()=>{const nm=NAMES[n%12],c=AV[n%6];n++;return `<div class="tile cand"><div class="av" style="background:${c}">${nm.split(' ').map(x=>x[0]).join('').replace('.','')}</div><div><b>${nm}</b><small>${2+n} days in stage</small></div></div>`}).join('')}</div>`).join('')}</div>
+function pipe(p){let n=0;return `${p.unrev?`<div class="glass alert"><div class="ic">${ic.spark}</div><div><b>Brief changed to ${p.ver} on 03 nov</b><div class="sub">Budget and start changed (confirm), level changed (study), and the client rejected D. Ruiz (review).</div></div>
+<div class="act"><button class="pill light" onclick="tab('changes')">See changes</button><button class="pill dark" onclick="tab('check')">Stay current</button></div></div>`:''}
+<div class="board">${STAGES.map((s,i)=>`<div class="glass col"><h4>${s}<span>${p.stages[i]}</span></h4>${Array.from({length:p.stages[i]},()=>{const nm=NAMES[n%12],c=AV[n%6];n++;return `<div class="tile cand"><div class="av" style="background:${c}">${nm.split(' ').map(x=>x[0]).join('').replace('.','')}</div><div><b>${nm}</b><small>${2+n} days in stage</small>${i===1?`<button class="subm" onclick="openSubmit('${nm}')">Submit to client →</button>`:''}</div></div>`}).join('')}</div>`).join('')}</div>
 <p class="stub">Fake candidates. The harness does not score or validate candidates.</p>`}
 function cur(r){let v=r[2][0];r[2].forEach(x=>{if(x!=='=')v=x});return v}
 function prev(r){let v=null;r[2].slice(0,3).forEach(x=>{if(x!=='=')v=x});return v}
@@ -205,29 +222,45 @@ ${EV.map(e=>`<div class="ev ${e[4]?'dec':''}" style="left:${e[3]}%"><div class="
 ${F.map(r=>`<tr><td><span class="grp">${r[0]}</span>${r[1]}</td>${r[2].map((c,i)=>`<td class="${c==='='?'same':i?'c':''}">${c==='='?'same':c}</td>`).join('')}</tr>`).join('')}</tbody></table></section>
 <section class="glass panel"><h3>Client decisions</h3><div class="sub">Each one teaches us what to verify. It changes the brief only when the client changes a criterion.</div>
 <div class="rows"><div class="r"><div class="k">10 nov · rejected D. Ruiz</div><div class="v">“Weak on system design.” <span class="chip g">◆ learning signal</span><span class="was">No new version. Design depth added to what to verify; question sent to the client.</span></div></div></div></section>`}
-function score(q,i){const a=S.ans[i];if(q.open){const t=(a||'').toLowerCase(),inc=['incident','outage','on-call'].some(k=>t.includes(k)),des=t.includes('design');return inc&&des?1:inc||des?.5:0}return a===q.a?1:0}
-function scoreTotal(){return Q.reduce((a,q,i)=>a+score(q,i),0)}
-function pick(i,j){if(S.done)return;S.ans[i]=j;draw()}
-function has(i){const a=S.ans[i];return Q[i].open?!!(a&&a.trim()):a!==undefined}
-function progress(){const n=Q.filter((q,i)=>has(i)).length,b=$('sub'),p=$('prog');if(b)b.disabled=n<Q.length;if(p)p.textContent=n<Q.length?n+' of '+Q.length+' answered':'All answered';}
 const ICK='<svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2.5 6.2 5 8.5l4.5-5"/></svg>',IX='<svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m3 3 6 6M9 3 3 9"/></svg>';
-function opt(q,i,j,o,d){const mine=S.ans[i]===j,L='ABC'[j];let c='opt',rad='',lab='';
-if(d){if(j===q.a){c+=' right';rad=ICK;lab=mine?'Your answer · correct':'Correct answer'}else if(mine){c+=' wrong';rad=IX;lab='Your answer'}else c+=' dim'}else if(mine)c+=' sel';
-return `<button class="${c}" role="radio" aria-checked="${mine}" ${d?'disabled':''} onclick="pick(${i},${j})"><span class="rad">${rad}</span><span class="let">${L}</span><span class="txt">${o}</span>${lab?`<span class="lab">${lab}</span>`:''}</button>`}
-function submitQ(){const t=$('t4');if(t)S.ans[4]=t.value;S.done=true;draw()}
-function check(){const d=S.done;return `<div class="two"><div>
-<section class="glass panel" style="margin-bottom:14px"><h3>Knowledge check · brief v4</h3><div class="sub" style="margin:0">Answer without opening the brief. Questions come from what changed and from the must-haves. It shows what to re-read; it says nothing about candidates.</div></section>
-${Q.map((q,i)=>`<div class="glass q ${has(i)?'answered':''}" id="q${i}"><div class="qhead"><p><span class="qn">${i+1}/5</span>${q.p}</p><span class="qhint">${d?'':q.open?'Free text':has(i)?'✓ Answered':'Choose one'}</span></div>
-${q.open?`<textarea id="t${i}" ${d?'disabled':''} placeholder="Write a sentence or two" aria-label="Your answer" oninput="S.ans[${i}]=this.value;progress()"></textarea>`:`<div class="opts" role="radiogroup" aria-label="Question ${i+1}">${q.o.map((o,j)=>opt(q,i,j,o,d)).join('')}</div>`}
-${d?`<div class="fb">${(s=>`<b class="${s===1?'ok':s?'part':'bad'}">${s===1?'Correct':s?'Partly':'Missed'}</b>`)(score(q,i))} · ${q.why} <span class="sub">· ${q.src}</span></div>`:''}</div>`).join('')}
-${d?`<button class="pill light" onclick="S.ans={};S.done=false;draw()">Retake</button>`:`<div class="submitbar"><button class="pill dark" id="sub" onclick="submitQ()">Check my answers</button><span class="sub" id="prog"></span></div>`}
-<p class="stub">Stub: the free-text answer is scored by keyword match here. The harness would use the model with the brief as the reference.</p></div>
-<div style="position:sticky;top:24px">${d?result():`<section class="glass panel"><h3>Your result</h3><div class="score">–<small> / 5</small></div><div class="sub" style="margin-top:8px">Last check: 2 / 5 on v3. Three fields changed since.</div></section>`}
-<section class="glass panel"><h3>Your last screening</h3><div class="sub">D. Ruiz · transcript 06 nov · 11 questions</div>
-${[['Incident ownership','asked','g'],['Postgres under load','asked','g'],['Event-driven systems','briefly','ys'],['System design','not asked','r'],['Go (trainable)','4 of 11 questions','r']].map(c=>`<div class="cov"><span>${c[0]}</span><span class="chip ${c[2]}">${c[1]}</span></div>`).join('')}
-<div class="fb">Your questions treated Go as a must-have, which v2 removed. The client then rejected on design depth.</div></section></div></div>`}
-function result(){const s=Q.map((q,i)=>score(q,i)),miss=Q.filter((q,i)=>s[i]<1);return `<section class="glass panel"><h3>Your result</h3><div class="score">${scoreTotal()}<small> / 5</small></div>
-<div class="seg5">${s.map(x=>`<i class="${x===1?'y':x?'h':''}"></i>`).join('')}</div>
-${miss.length?`<div class="sub">Re-read in the brief</div><ul class="list">${miss.map((q,i)=>`<li><span class="num">${i+1}</span><div>${q.f}<small>${q.src}</small></div></li>`).join('')}</ul><button class="pill light" onclick="tab('brief')" style="margin-top:6px">Open role brief</button>`:'<div class="sub">You are up to date with v4.</div>'}</section>`}
-const h=location.hash.slice(1);if(['pipeline','brief','changes','check'].includes(h)){S.view='pos';S.pos='nw-be';S.tab=h}if(location.search.includes('partial'))S.ans={0:1,1:0};if(location.search.includes('demo')){S.ans={0:1,1:0,2:1,3:1,4:'I check they owned an outage on-call'};S.done=true}draw();
+function has(){return !!(S.study&&S.study.trim())}
+function progress(){const b=$('studysub');if(b)b.disabled=!has();const r=$('revsub');if(r)r.disabled=!(S.rev&&S.rev.trim())}
+function stepDone(k){return k==='ack'?ACK.every(a=>S.ack[a.k]):k==='study'?S.studyDone:S.revDone}
+function doneCount(){return ['ack','study','review'].filter(stepDone).length}
+function mic(){$('pop').classList.add('on')}
+function hits(t,keys){t=(t||'').toLowerCase();return keys.map(k=>k.some(w=>t.includes(w)))}
+function check(){const st=[['ack','Confirm','Facts you only need to know'],['study','Study','What changed in what to look for'],['review','Review a screening','Learn from the client decision']];
+return `<div class="two"><div>
+<section class="glass panel" style="margin-bottom:14px"><h3>Stay current · brief v4</h3><div class="sub" style="margin:0">Three short steps, created by what changed and by the client's last decision. Nothing here judges candidates.</div>
+<div class="steps">${st.map((s,i)=>`<div class="step ${stepDone(s[0])?'ok':''}"><span class="sn">${stepDone(s[0])?ICK:i+1}</span><div><b>${s[1]}</b><small>${s[2]}</small></div></div>`).join('')}</div></section>
+<section class="glass panel"><div class="qhead"><h3>1 · Confirm you know</h3><span class="qhint">${ACK.filter(a=>S.ack[a.k]).length} of ${ACK.length}</span></div><div class="sub">Facts that changed. No test: tick to confirm you have read them.</div>
+<div class="opts">${ACK.map(a=>`<button class="opt ack ${S.ack[a.k]?'sel':''}" role="checkbox" aria-checked="${!!S.ack[a.k]}" onclick="S.ack['${a.k}']=!S.ack['${a.k}'];draw()"><span class="box">${S.ack[a.k]?ICK:''}</span><span class="txt"><b>${a.t}</b><small>was ${a.was} · ${a.src}</small></span></button>`).join('')}</div></section>
+<section class="glass panel"><div class="qhead"><h3>2 · Study</h3><span class="qhint">${S.studyDone?'✓ Done':'Free text'}</span></div>
+<div class="sub">Triggered because the <b>level</b> changed: a mid-level candidate is now discussed. Explain in your own words.</div>
+<p class="prompt">${STUDY.p}</p>
+<div class="answer"><textarea id="tstudy" ${S.studyDone?'disabled':''} placeholder="Write a few sentences, as you would explain it to a colleague" aria-label="Your explanation" oninput="S.study=this.value;progress()"></textarea>
+<button class="micb" aria-disabled="true" aria-label="Record audio (not in this MVP)" onclick="mic()">${ic.mic}</button></div>
+${S.studyDone?`<div class="fb"><div class="sub" style="margin-bottom:6px">What a complete answer covers</div>${STUDY.pts.map((p,i)=>`<div class="pt ${hits(S.study,STUDY.keys)[i]?'y':''}"><span>${hits(S.study,STUDY.keys)[i]?'✓':'○'}</span>${p}</div>`).join('')}<div class="sub" style="margin-top:6px">${STUDY.src}</div></div>`:`<div class="submitbar"><button class="pill dark" id="studysub" onclick="S.studyDone=true;draw()">Compare with the brief</button></div>`}</section>
+<section class="glass panel"><div class="qhead"><h3>3 · Review a screening</h3><span class="qhint">${S.revDone?'✓ Done':'After a client decision'}</span></div>
+<div class="sub">Northwind rejected <b>D. Ruiz</b> on 10 nov: “Weak on system design.” Your screening of 06 nov, compared with the current brief:</div>
+<div class="covgrid">${COV.map(c=>`<div class="cov"><span>${c[0]}</span><span class="chip ${c[2]}">${c[1]}</span></div>`).join('')}</div>
+<p class="prompt">What would you verify next time, before submitting?</p>
+<div class="answer"><textarea id="trev" ${S.revDone?'disabled':''} placeholder="One or two things you would ask or check" aria-label="What you would verify" oninput="S.rev=this.value;progress()"></textarea><button class="micb" aria-disabled="true" aria-label="Record audio (not in this MVP)" onclick="mic()">${ic.mic}</button></div>
+${S.revDone?`<div class="fb"><div class="sub" style="margin-bottom:8px">Add to <b>Before you submit</b> for this role</div><div class="opts">${VER.map(v=>`<button class="opt ack ${S.verify[v.k]?'sel':''}" role="checkbox" aria-checked="${!!S.verify[v.k]}" onclick="S.verify['${v.k}']=!S.verify['${v.k}'];draw()"><span class="box">${S.verify[v.k]?ICK:''}</span><span class="txt"><b>${v.t}</b><small>${v.why}</small></span></button>`).join('')}</div></div>`:`<div class="submitbar"><button class="pill dark" id="revsub" onclick="S.revDone=true;VER.forEach(v=>S.verify[v.k]=true);draw()">See suggested checks</button></div>`}</section>
+<p class="stub">Stub: answers are compared by keyword here. The harness will use the model with the brief as the reference (later, via the OpenAI API).</p></div>
+<div style="position:sticky;top:24px"><section class="glass panel"><h3>Your progress</h3><div class="score">${doneCount()}<small> / 3</small></div><div class="seg5">${['ack','study','review'].map(k=>`<i class="${stepDone(k)?'y':''}"></i>`).join('')}</div>
+<div class="sub">${doneCount()===3?'Up to date with v4.':'Finish the steps before submitting more candidates.'}</div></section>
+<section class="glass panel"><h3>Before you submit</h3><div class="sub">Checked on every submission to Northwind.</div><ul class="list">${verifyList().map((v,i)=>`<li><span class="num">${i+1}</span><div>${v.t}<small>${v.src}</small></div></li>`).join('')}</ul></section></div></div>`}
+function verifyList(){return [...BASEV,...VER.filter(v=>S.verify[v.k]).map(v=>({t:v.t,src:'from screening review · '+v.src}))]}
+let SUBM=null;
+function openSubmit(n){SUBM={n,t:{}};drawModal()}
+function drawModal(){const m=$('modal'),L=verifyList(),ok=L.every((v,i)=>SUBM.t[i]);
+m.innerHTML=`<div class="glass mbox" role="dialog" aria-modal="true" aria-label="Submit candidate"><div class="qhead"><h3>Submit ${SUBM.n} to Northwind</h3><button class="round glass" aria-label="Close" onclick="closeM()">✕</button></div>
+<div class="sub">Tick each point your screening notes cover. Anything you can't tick, ask the candidate first.</div>
+<div class="opts" style="margin-top:12px">${L.map((v,i)=>`<button class="opt ack ${SUBM.t[i]?'sel':''}" role="checkbox" aria-checked="${!!SUBM.t[i]}" onclick="SUBM.t[${i}]=!SUBM.t[${i}];drawModal()"><span class="box">${SUBM.t[i]?ICK:''}</span><span class="txt"><b>${v.t}</b><small>${v.src}</small></span></button>`).join('')}</div>
+${doneCount()<3?`<div class="fb">You have ${3-doneCount()} step(s) left in <b>Stay current</b>. <button class="linkb" onclick="closeM();tab('check')">Open it</button></div>`:''}
+<div class="submitbar" style="margin-top:14px"><button class="pill dark" ${ok?'':'disabled'} onclick="SUBM.sent=true;drawModal()">Submit to client</button><button class="pill light" onclick="closeM()">Ask the candidate first</button>
+${SUBM.sent?'<span class="chip g">Mock: not sent anywhere</span>':''}</div></div>`;m.classList.add('on')}
+function closeM(){$('modal').classList.remove('on')}
+const h=location.hash.slice(1);if(['pipeline','brief','changes','check'].includes(h)){S.view='pos';S.pos='nw-be';S.tab=h}if(location.search.includes('demo')){S.ack={budget:true,start:true};S.study='They must have been on-call and owned an outage, and explain what they decided.';S.studyDone=true;S.rev='Ask about a system they designed.';S.revDone=true;VER.forEach(v=>S.verify[v.k]=true)}if(location.search.includes('submit'))setTimeout(()=>{openSubmit('S. Haddad');SUBM.t={0:true,1:true};drawModal()},50);draw();
 </script></body></html>

@@ -1,0 +1,2 @@
+# Assistant message 022 (summary of visible reply)
+Added the F3+F1 workflow to prototype A: "Stay current" tab with Confirm (checkboxes for budget/start), Study (free text for level change, disabled audio button with an out-of-scope notice) and Review a screening (client rejection, coverage, suggested checks); accepted checks feed a "Before you submit" checklist required when submitting a candidate. Recorded all answers. Answered: raw sources stay as files, SQLite holds structured data plus file metadata and hashes.

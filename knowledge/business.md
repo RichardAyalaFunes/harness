@@ -59,6 +59,15 @@ Recommended option accepted for C1, C2, C4–C18; C3 proposal accepted. Notes th
 - **V3 yes:** the stage-and-evidence rule goes into AGENTS.md (rule 13).
 - **Presentation intent (draft, for the end):** readme.html becomes the human's presentation. Message: the owner has built RAG systems (the human wrote "RAC"; interpreted as RAG, to confirm) and app integrations many times. They omitted them from this MVP on purpose because integrations depend on each client's tools and are easy to learn. The point of this submission is the reasoning: what changed, why it matters, and how the recruiter's judgment follows. Final wording is the owner's.
 
+## Decisions before implementation (prompts/client-context/021-user.md, 2026-11-08)
+- Feedback loop: F3 (screening-gap review after a client decision) + F1 (verify-before-submit list) now; F2 (field primers) later.
+- Recalibration by change type: budget, start and restrictions = acknowledge only (checkbox, no test). Must-haves = study (free text) only when something new must be learned; removing a criterion (A,B,C to A,B) needs no study. Level changes = study, since expected depth per skill changes.
+- Study answers are free text. An audio button is shown disabled; clicking it explains audio is outside this MVP.
+- Mock data scope confirmed: Northwind Senior Backend (~8 events), Kestrel Founding Engineer (~5), Northwind AI Agent Engineer (thin).
+- Model provider: OpenAI API, wired only at the end for testing; until then prompts and workflows run without a live model (stubs/replay).
+- Storage: SQLite replaces JSONL as the store for structured data (supersedes C11). Raw source documents (transcripts, emails, messages, notes) stay as files; SQLite stores their metadata, path and hash. README must document setup (pnpm/npm install, Node version) and the SQLite choice.
+- Workflow in prototype A: tab "Stay current" = 1 Confirm, 2 Study, 3 Review a screening; accepted review checks feed "Before you submit", enforced when submitting a candidate from Screening.
+
 ## Prototype A chosen; glass visual style (prompts/client-context/017-user.md, 2026-11-08)
 - The human chose prototype A (tabs inside the position: Pipeline, Role brief, Changes, Knowledge check).
 - Visual direction for the product UI: light frosted-glass cards, large radii, soft blue/yellow backdrop, yellow pills for changes, large numerals, dark selected tab. Desktop, light theme. Confirmed 2026-11-08 (prompts/client-context/019-user.md): use it everywhere; designs.md updated, docs/ui-style-reference.md kept as history.

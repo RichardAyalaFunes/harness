@@ -2,7 +2,7 @@
 
 Updated: 2026-11-07 · Claude (client-context chat). Stage: client-context answers recorded; plan next.
 
-LATEST: the human confirmed the frosted-glass style for everything (designs.md updated; docs/ui-style-reference.md is history) and asked for clearer knowledge-check options (prompts/client-context/019-user.md). proto-ats-a-hifi.html now shows options as solid white rows with radio, letter, border and hover; selected, correct and wrong states use icons and labels as well as colour; the submit button waits for all answers. Checked by headless Edge screenshots (evidence/hifi-check-answering.png, evidence/hifi-check.png) and a scripted run (gating, scoring). Free-text scoring remains a keyword stub. Open: F1-F3, recalibration trigger. Next: objective map, then plan-gate peer review, JD research, mock data.
+LATEST: the human answered the pre-implementation questions (prompts/client-context/021-user.md; see knowledge/business.md "Decisions before implementation"): F3+F1 now, F2 later; acknowledge vs study triggers by change type; free-text study with disabled audio button; three mock roles confirmed; OpenAI API only at the end; SQLite for structured data with raw sources as files; README must document install. proto-ats-a-hifi.html now has "Stay current" (Confirm, Study, Review a screening) and a "Submit to client" checklist from Screening. Checked by headless Edge screenshots (evidence/). Next: P-prime objective map and workflow stages with checks, then plan-gate Codex review, JD research, mock data, harness.
 
 Earlier baton (Codex):
 
