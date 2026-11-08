@@ -35,3 +35,7 @@ New mock fact covering bias: Kestrel's 27 Oct email asks for "under 35" (age, pr
 12. **Lawful restrictions (accepted).** An approved applied restriction (no-poach) is shown in the brief only. It never scores candidates or gates the pipeline; a test asserts this.
 
 Added tests: v1-screening/v2-later-must-have case; decision with no version (approve, reject, visibility); decision dated before all transcripts; same-date transcripts; role mismatch.
+
+
+## Gate result
+Plan gate: PASS on third Codex pass (plan-review3.codex.md, gpt-5.6-terra). Earlier FAILs (plan-review-2, plan-rereview) resolved by plan-revision.claude.md. First attempt plan-review.codex.md failed to run (model id gpt-6.1-terra not available to this account; used gpt-5.6-terra, the Terra model in the Codex model list).
