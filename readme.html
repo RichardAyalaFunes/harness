@@ -1,1 +1,97 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Harness assessment · Workspace</title><style>*{box-sizing:border-box}body{margin:0;background:#f4f5f0;color:#182c29;font:16px/1.6 system-ui,sans-serif}main{max-width:1100px;margin:auto;padding:40px 22px 80px}h1{font-size:clamp(2rem,5vw,3.4rem);line-height:1.12;max-width:850px}h2{line-height:1.25}a{color:#146452}header{margin-bottom:32px}.tag{font-size:.85rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#146452}.muted{color:#526560}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}.card,fieldset{background:#fff;border:1px solid #cbd7d0;border-radius:12px;padding:24px;margin:0 0 22px;min-width:0}legend{font-size:1.15rem;font-weight:700;padding:0 8px}label{display:block;margin:14px 0 8px;font-weight:650}select,textarea,input{font:inherit;width:100%;max-width:100%;padding:12px;border:1px solid #82998f;border-radius:6px;background:#fff;color:#182c29}textarea{min-height:95px}button,.button{display:inline-block;min-height:44px;padding:12px 20px;background:#146452;color:white;border:0;border-radius:6px;font:inherit;font-weight:650;cursor:pointer;text-decoration:none}button:focus-visible,a:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid #ad5d1f;outline-offset:3px}.option{border-left:3px solid #cbd7d0;padding-left:14px;margin:18px 0}.recommend{border-color:#146452}.note{border-left:4px solid #146452;padding:12px 18px;background:#e5eee7}code{overflow-wrap:anywhere}nav{display:flex;gap:18px;flex-wrap:wrap}footer{margin-top:28px;color:#526560}@media(max-width:720px){.grid{grid-template-columns:1fr}main{padding:24px 16px 60px}.card,fieldset{padding:18px}}@media print{button,nav{display:none}body{background:white}.card,fieldset{break-inside:avoid}}</style></head><body><main><header><p class="tag">RadHires · Workspace foundation</p><h1>From a business problem<br>to a result people can use.</h1><p class="muted">A shared workspace for Codex and Claude: persistent knowledge, isolated implementation, explicit decisions, and evidence at every review.</p><p class="note"><strong>Current stage: recruiter judgment discovery.</strong> The focus is scenario calibration before a new client role, using an owner-reviewed fictional reference. The runnable product remains pending.</p><a class="button" href="_work/2026-11-07-business-discovery/discussion.html">Open objective map and discussion</a></header><section class="card"><h2>Why this business case?</h2><p>The owner chose to examine whether recruiters understand a client's real needs and evaluate evidence soundly. This focuses on the judgment behind sourcing, interviews and candidate scoring. It is a deliberate narrow scope, not an established claim of market novelty.</p><p>Work begins with a primary objective, then secondary objectives, dependencies and done evidence. One case becomes a prototype; feedback revises the map before accepted behavior is integrated.</p><nav><a href="knowledge/business.md">Living objective map</a><a href="DESIGN.md">Brief coverage and design draft</a></nav></section><section class="grid" aria-label="Workspace map"><article class="card"><h2>Orient and remember</h2><p>Start with the rules and current baton. Read deeper context only when needed.</p><nav><a href="AGENTS.md">Agent contract</a><a href="memory/STATE.md">Shared state</a><a href="knowledge/INDEX.md">Knowledge map</a></nav></article><article class="card"><h2>Discuss and build</h2><p>Input → questions → plan → implementation → validation → audit → review. Each substantive step receives author checks; Claude–Codex reviews run at plan, pre-merge and final gates.</p><nav><a href="docs/workflow.md">Workflow</a><a href="_work/2026-11-07-bootstrap/record.codex.md">Bootstrap record</a><a href="designs.md">Design contract</a></nav></article><article class="card"><h2>Evidence and tradeoffs</h2><p>Separate sourced facts, proposed defaults, human answers and unknowns.</p><nav><a href="knowledge/research.md">Research</a><a href="knowledge/decisions/0001-workspace.md">First decision</a><a href="prompts/README.md">Prompt records</a></nav></article><article class="card"><h2>Deliver one working slice</h2><p>A narrow business pain, a real model/tool loop, an everyday-user interface, measurable scenarios, and honest limitations.</p><nav><a href="README.md">Run notes</a><a href="DESIGN.md">Design draft</a><a href="RadHires%20Harness%20Challenge%20%28Candidate%20Brief%29.md">Original brief</a></nav></article></section><footer>Offline artifact · No network dependencies · Shared tokens from designs.md<br><button type="button" id="print">Print workspace overview</button></footer></main><script>document.querySelector('#print').addEventListener('click',()=>window.print());</script></body></html>
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Role Intelligence</title>
+<style>
+:root{--ink:#16181d;--ink2:#4b5160;--muted:#6b7180;--glass:rgba(255,255,255,.58);--tile:rgba(255,255,255,.86);--edge:rgba(255,255,255,.9);--y:#f8c65a;--ys:#fdeec7;--g:#1d6b43;--gs:#dff3e8;--r:#a8324a;--rs:#fbe1e6;
+--font:"Segoe UI Variable Display","Segoe UI",system-ui,sans-serif}
+*{box-sizing:border-box}html,body{margin:0}
+body{font:17px/1.6 var(--font);color:var(--ink);background:#eef0f3;background-image:radial-gradient(1000px 700px at 5% 0%,#c3d9f2 0%,transparent 62%),radial-gradient(900px 700px at 100% 100%,#f3d996 0%,transparent 62%);background-attachment:fixed}
+a{color:var(--ink)}a:focus-visible,button:focus-visible{outline:3px solid var(--ink);outline-offset:3px}
+.wrap{max-width:1080px;margin:0 auto;padding:32px 24px 80px}
+.glass{background:var(--glass);backdrop-filter:blur(26px) saturate(140%);-webkit-backdrop-filter:blur(26px) saturate(140%);border:1px solid var(--edge);border-radius:28px;box-shadow:0 12px 40px rgba(40,55,80,.09)}
+.tile{background:var(--tile);border:1px solid var(--edge);border-radius:20px}
+section{padding:36px 40px;margin-bottom:24px}
+.kicker{font-size:13px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+h1{font-size:clamp(34px,5vw,58px);line-height:1.08;letter-spacing:-.02em;margin:8px 0 14px;font-weight:600}
+h2{font-size:28px;letter-spacing:-.01em;margin:6px 0 14px;font-weight:600}
+h3{font-size:18px;margin:0 0 6px}
+p{margin:0 0 12px;color:var(--ink2)}.lead{font-size:20px;color:var(--ink2);max-width:760px}
+.chip{display:inline-block;border-radius:10px;padding:2px 10px;font-size:13px;font-weight:600}.y{background:var(--y);color:#3b2a00}.gs{background:var(--gs);color:var(--g)}.rs{background:var(--rs);color:var(--r)}.k{background:var(--ink);color:#fff}
+.grid{display:grid;gap:14px}.g3{grid-template-columns:repeat(3,1fr)}.g2{grid-template-columns:repeat(2,1fr)}
+.card{padding:18px 20px}.card p{font-size:15px;margin:0}
+.chain{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-top:10px}
+.step{padding:14px;text-align:left}.step b{display:block;font-size:15px}.step small{color:var(--muted);font-size:13px;display:block;margin-top:4px}
+.step .n{width:28px;height:28px;border-radius:50%;background:var(--ink);color:#fff;display:grid;place-items:center;font-size:13px;font-weight:700;margin-bottom:8px}
+.big{font-size:56px;font-weight:600;letter-spacing:-.02em;line-height:1}
+table{width:100%;border-collapse:separate;border-spacing:0 6px;font-size:15px}td{background:rgba(255,255,255,.6);padding:10px 14px;vertical-align:top}td:first-child{border-radius:14px 0 0 14px;font-weight:600;width:34%}td:last-child{border-radius:0 14px 14px 0;color:var(--ink2)}
+figure{margin:0}figure img{width:100%;border-radius:18px;border:1px solid var(--edge);display:block}figcaption{font-size:13px;color:var(--muted);margin-top:6px}
+code{background:var(--tile);border-radius:6px;padding:1px 6px;font-size:14px}
+pre{background:var(--ink);color:#f3f4f6;border-radius:16px;padding:16px 18px;overflow-x:auto;font-size:14px;line-height:1.5}
+.quote{font-size:22px;line-height:1.4;color:var(--ink);border-left:4px solid var(--y);padding-left:16px;margin:16px 0}
+@media (max-width:760px){.g3,.g2,.chain{grid-template-columns:1fr}section{padding:24px 18px}.wrap{padding:16px}}
+</style></head><body><div class="wrap">
+
+<section class="glass">
+<div class="kicker">RadHires harness challenge · fictional agency</div>
+<h1>The job description is the least reliable thing a recruiter reads.</h1>
+<p class="lead">In searches for small companies, the real criteria arrive later: in the kickoff call, the founder's email, the client's rejection. This harness keeps every recruiter on a search current with those changes, and checks that they learned them.</p>
+<p><span class="chip k">Node 24 · SQLite · no dependencies</span> <span class="chip y">7 checked stages</span> <span class="chip gs">76 tests</span></p>
+</section>
+
+<section class="glass">
+<div class="kicker">The problem</div>
+<h2>One recruiter hears the change. Three keep screening the old role.</h2>
+<div class="grid g3">
+<div class="tile card"><h3>Kickoff, 5 Oct</h3><p>"Go can be learned on the job. Incident ownership cannot." The must-have flips; the JD still says Go.</p></div>
+<div class="tile card"><h3>CEO email, 3 Nov</h3><p>Budget cut to €72k, start moved to Q1, mid-level "maybe". Only Ana got the email.</p></div>
+<div class="tile card"><h3>Rejection, 6 Nov</h3><p>"Weak on system design." Nobody had asked about design in the screening; 4 of 11 questions went to Go.</p></div>
+</div>
+</section>
+
+<section class="glass">
+<div class="kicker">The harness</div>
+<h2>From client signal to recruiter judgment, with a check at every step</h2>
+<div class="chain">
+<div class="tile step"><div class="n">1</div><b>Read a source</b><small>Hashed and registered; raw file stays readable.</small></div>
+<div class="tile step"><div class="n">2</div><b>Extract changes</b><small>Model returns JSON; every quote verified word for word.</small></div>
+<div class="tile step"><div class="n">3</div><b>Propose a version</b><small>Only material changes; the lead approves or rejects.</small></div>
+<div class="tile step"><div class="n">4</div><b>Flag bias</b><small>"Under 35" or "top-10 universities" are never applied as filters.</small></div>
+<div class="tile step"><div class="n">5</div><b>Teach the team</b><small>Confirm, study or review, by kind of change; team completion tracked.</small></div>
+</div>
+<p style="margin-top:16px">A stage is complete only when its check passes and the result is stored. Open "How this was processed" on any source to see it. The model proposes; rules and a person decide.</p>
+</section>
+
+<section class="glass">
+<div class="kicker">The recruiter's view</div>
+<h2>Inside the ATS they already use, as the next thing to do</h2>
+<div class="grid g2">
+<figure><img src="_work/2026-11-08-harness-build/evidence/ui-current.png" alt="Stay current tab: confirm items, study questions, a screening review and the team panel"><figcaption>Stay current: tick what you only need to know, explain what you need to understand, learn from the client's decision.</figcaption></figure>
+<figure><img src="_work/2026-11-08-harness-build/evidence/ui-changes.png" alt="Changes tab: timeline of sources and version comparison table"><figcaption>Changes: every source, the version it created, and a table to compare versions.</figcaption></figure>
+</div>
+<p style="margin-top:14px">Moving a candidate is never blocked. Checks happen when the role changes, not on every submission. A lead sees "2 of 4 up to date" and knows who to nudge.</p>
+</section>
+
+<section class="glass">
+<div class="kicker">What I left out, on purpose</div>
+<h2>No RAG. No integrations. That's the point.</h2>
+<p class="quote">I've built retrieval pipelines and app integrations many times. They depend on each agency's tools and are easy to add. They would also hide what matters here: the reasoning from what the client said to what the recruiter knows.</p>
+<table>
+<tr><td>RAG / embeddings</td><td>One approved brief plus one new source fits the context window. Retrieval would add a failure mode with no benefit at this scale.</td></tr>
+<tr><td>Email, Slack, tl;dv, ATS connectors</td><td>Simulated as files with metadata. A connector only changes how a file arrives, not what happens next.</td></tr>
+<tr><td>Candidate scoring</td><td>Out of scope by design. The harness reviews the recruiter's screening against the brief, never the candidate.</td></tr>
+<tr><td>Quizzes with a score</td><td>Recruiters explain better than they pick options: free text, with feedback on what a full answer covers.</td></tr>
+</table>
+</section>
+
+<section class="glass">
+<div class="kicker">Honest status</div>
+<h2>What is real, and what isn't yet</h2>
+<div class="grid g2">
+<div class="tile card"><h3><span class="chip gs">Real</span></h3><p>Ingest and hashing, seven checked stages, verbatim-quote evidence, approval and audit, bias rules, learning steps by change type, team completion, screening review against the brief at screening time, CLI, web UI, 76 tests.</p></div>
+<div class="tile card"><h3><span class="chip y">Stubbed</span></h3><p>The model runs on recorded outputs by default, so the demo shows orchestration and checks, not extraction quality. The OpenAI provider is wired and tested; the live run is pending. Study feedback is keyword-based. Candidates are fake.</p></div>
+</div>
+<pre>cd harness && pnpm install && pnpm harness rebuild && pnpm start</pre>
+<p>Details: <a href="README.md">README</a> · <a href="DESIGN.md">DESIGN.md</a> · plan and reviews in <code>_work/2026-11-08-harness-build/</code></p>
+</section>
+
+</div></body></html>
