@@ -16,6 +16,7 @@ def main():
     p.add_argument('--input', required=True, type=Path)
     p.add_argument('--output', required=True, type=Path)
     p.add_argument('--timeout', type=int, default=240)
+    p.add_argument('--model', help='Optional model id passed to the peer CLI (e.g. gpt-6.1-terra)')
     a = p.parse_args()
     if os.environ.get('HARNESS_CONSULT_ACTIVE'):
         p.error('Recursive peer consultation refused')
@@ -41,9 +42,9 @@ def main():
         auth = subprocess.run(base + ['auth', 'status'], capture_output=True, text=True, encoding='utf-8', timeout=30)
         if auth.returncode:
             sys.exit('Claude authentication failed. Run claude auth login --claudeai. Never share credentials.')
-        command = base + ['-p', '--output-format', 'text', '--no-session-persistence', '--tools', '', '--setting-sources', '', '--settings', '{"disableAllHooks":true}', '--strict-mcp-config', '--mcp-config', '{"mcpServers":{}}', '--disable-slash-commands']
+        command = base + ['-p', '--output-format', 'text', '--no-session-persistence', '--tools', '', '--setting-sources', '', '--settings', '{"disableAllHooks":true}', '--strict-mcp-config', '--mcp-config', '{"mcpServers":{}}', '--disable-slash-commands'] + (['--model', a.model] if a.model else [])
     else:
-        command = base + ['exec', '--ignore-user-config', '--skip-git-repo-check', '--ephemeral', '--sandbox', 'read-only', '--color', 'never', '-']
+        command = base + ['exec', '--ignore-user-config', '--skip-git-repo-check', '--ephemeral', '--sandbox', 'read-only', '--color', 'never'] + (['-m', a.model] if a.model else []) + ['-']
     a.output.parent.mkdir(parents=True, exist_ok=True)
     started = datetime.now(timezone.utc).isoformat()
     try:

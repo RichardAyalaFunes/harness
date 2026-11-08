@@ -1,0 +1,81 @@
+{
+  "summary": "New role opened: AI Agent Engineer, with first criteria.",
+  "changes": [
+    {
+      "field": "company.direction",
+      "op": "set",
+      "value": "First hire for a new AI routing team; agents that propose dispatch plans",
+      "severity": "material",
+      "quote": "First hire for the AI routing team."
+    },
+    {
+      "field": "req.llm-shipped",
+      "op": "add",
+      "value": "Has shipped an LLM-based feature to real users",
+      "severity": "material",
+      "quote": "has shipped an LLM-based feature to real users",
+      "weight": "must"
+    },
+    {
+      "field": "req.evaluation",
+      "op": "add",
+      "value": "Knows how to evaluate an LLM feature, not just demo it",
+      "severity": "material",
+      "quote": "knows how to evaluate it, not just demo it.",
+      "weight": "must"
+    },
+    {
+      "field": "req.python",
+      "op": "add",
+      "value": "Python",
+      "severity": "minor",
+      "quote": "Python is fine, we don't need Go here.",
+      "weight": "nice"
+    },
+    {
+      "field": "offer.budget",
+      "op": "set",
+      "value": "€70–80k",
+      "severity": "material",
+      "quote": "Budget similar to the backend role, €70–80k."
+    },
+    {
+      "field": "offer.location",
+      "op": "set",
+      "value": "Remote, EU",
+      "severity": "material",
+      "quote": "Remote EU."
+    }
+  ],
+  "source_id": "nw-04",
+  "no_change": false,
+  "study": [
+    {
+      "field": "req.evaluation",
+      "prompt": "For the AI Agent Engineer, evaluation is a must-have. What would a candidate say that shows they measured an LLM feature, not just demoed it?",
+      "points": [
+        "Names a metric or test set they built",
+        "Describes a failure they found by measuring",
+        "Explains a decision changed by the results"
+      ],
+      "keys": [
+        [
+          "metric",
+          "test set",
+          "eval",
+          "benchmark"
+        ],
+        [
+          "fail",
+          "error",
+          "wrong"
+        ],
+        [
+          "decid",
+          "changed",
+          "rolled back"
+        ]
+      ]
+    }
+  ]
+}

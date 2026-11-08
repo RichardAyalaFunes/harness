@@ -1,0 +1,97 @@
+{
+  "summary": "Client rejected D. Ruiz on system design; asks to check design depth.",
+  "decision": {
+    "candidate": "D. Ruiz",
+    "outcome": "rejected",
+    "reason": "weak on system design"
+  },
+  "changes": [
+    {
+      "field": "req.system-design",
+      "op": "add",
+      "value": "System design depth: explains trade-offs when designing a service",
+      "severity": "material",
+      "quote": "please check design depth before sending them.",
+      "weight": "proposed",
+      "confirmed": false
+    }
+  ],
+  "source_id": "nw-08",
+  "no_change": false,
+  "study": [
+    {
+      "field": "req.system-design",
+      "prompt": "The client asks for system design depth. What would you ask to see whether someone can explain design trade-offs, without running a technical interview yourself?",
+      "points": [
+        "Asks for a system they designed from scratch",
+        "Asks which alternative they rejected and why",
+        "Listens for a trade-off, not a list of tools"
+      ],
+      "keys": [
+        [
+          "designed",
+          "design",
+          "from scratch"
+        ],
+        [
+          "alternative",
+          "instead",
+          "rejected",
+          "why"
+        ],
+        [
+          "trade-off",
+          "tradeoff",
+          "cost"
+        ]
+      ]
+    }
+  ],
+  "review": {
+    "candidate": "D. Ruiz",
+    "screening": "nw-07",
+    "coverage": [
+      {
+        "criterion": "req.incident-ownership",
+        "status": "asked",
+        "quote": "Tell me about the last production incident you owned."
+      },
+      {
+        "criterion": "req.postgres",
+        "status": "asked",
+        "quote": "How large is the Postgres database you worked with?"
+      },
+      {
+        "criterion": "req.event-driven",
+        "status": "briefly",
+        "quote": "Do you use Kafka or another queue?"
+      },
+      {
+        "criterion": "req.backend-production",
+        "status": "not_asked"
+      },
+      {
+        "criterion": "req.system-design",
+        "status": "not_asked"
+      }
+    ],
+    "overweighted": [
+      {
+        "topic": "Go (trainable since 05 oct)",
+        "count": 4,
+        "total": 11,
+        "quote": "How many years have you worked with Go?"
+      }
+    ],
+    "suggested": [
+      {
+        "text": "Ask for a system they designed, with one trade-off they chose",
+        "why": "Client rejected on design depth; the screening did not ask."
+      },
+      {
+        "text": "Spend at most one question on Go",
+        "why": "Go is trainable since the kickoff; 4 of 11 questions went to it."
+      }
+    ]
+  }
+}

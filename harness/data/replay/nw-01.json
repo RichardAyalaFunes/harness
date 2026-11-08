@@ -1,0 +1,91 @@
+{
+  "summary": "Initial JD: baseline brief.",
+  "changes": [
+    {
+      "field": "company.direction",
+      "op": "set",
+      "value": "Routing and dispatch software for road freight carriers; 55 people; Series A in September",
+      "severity": "material",
+      "quote": "We are 55 people and closed our Series A in September."
+    },
+    {
+      "field": "req.backend-production",
+      "op": "add",
+      "value": "5+ years building backend services in production",
+      "severity": "material",
+      "quote": "5+ years building backend services in production.",
+      "weight": "must"
+    },
+    {
+      "field": "req.go",
+      "op": "add",
+      "value": "Go",
+      "severity": "material",
+      "quote": "Strong Go.",
+      "weight": "must"
+    },
+    {
+      "field": "req.postgres",
+      "op": "add",
+      "value": "PostgreSQL under real load",
+      "severity": "material",
+      "quote": "PostgreSQL under real load.",
+      "weight": "must"
+    },
+    {
+      "field": "req.event-driven",
+      "op": "add",
+      "value": "Event-driven systems: queues, retries, idempotency",
+      "severity": "material",
+      "quote": "Event-driven systems: queues, retries, idempotency.",
+      "weight": "must"
+    },
+    {
+      "field": "req.logistics",
+      "op": "add",
+      "value": "Logistics or routing domain",
+      "severity": "minor",
+      "quote": "Logistics or routing domain experience.",
+      "weight": "nice"
+    },
+    {
+      "field": "req.kubernetes",
+      "op": "add",
+      "value": "Kubernetes",
+      "severity": "minor",
+      "quote": "Kubernetes.",
+      "weight": "nice"
+    },
+    {
+      "field": "offer.level",
+      "op": "set",
+      "value": "Senior",
+      "severity": "material",
+      "quote": "Senior level."
+    },
+    {
+      "field": "offer.budget",
+      "op": "set",
+      "value": "€70–80k",
+      "severity": "material",
+      "quote": "Salary €70–80k."
+    },
+    {
+      "field": "offer.location",
+      "op": "set",
+      "value": "Remote, EU time zones",
+      "severity": "material",
+      "quote": "Remote within EU time zones."
+    },
+    {
+      "field": "offer.start",
+      "op": "set",
+      "value": "As soon as possible",
+      "severity": "material",
+      "quote": "Start as soon as possible."
+    }
+  ],
+  "source_id": "nw-01",
+  "no_change": false,
+  "study": []
+}

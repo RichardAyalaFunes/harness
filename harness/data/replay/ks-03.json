@@ -1,0 +1,15 @@
+{
+  "summary": "Pre-seed closed; context only.",
+  "changes": [
+    {
+      "field": "company.direction",
+      "op": "set",
+      "value": "Pre-seed €1.2M closed; funds first engineering hires and expansion to 40 clinics",
+      "severity": "minor",
+      "quote": "closed a €1.2M pre-seed round."
+    }
+  ],
+  "source_id": "ks-03",
+  "no_change": false,
+  "study": []
+}
