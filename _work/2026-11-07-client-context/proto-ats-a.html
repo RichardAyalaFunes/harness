@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Mock ATS · A · tabs</title>
+<style>
+:root{--bg:#fdfbf9;--panel:#f7efe9;--ink:#171717;--muted:#6b5d50;--line:#d9cfc6;--mark:#ff6f1e;--warn:#ce500a;--ui:"Segoe UI",system-ui,sans-serif}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 var(--ui);min-width:1280px}
+button{font:inherit;color:inherit;cursor:pointer}button:focus-visible,input:focus-visible{outline:3px solid var(--ink);outline-offset:2px}
+.app{display:grid;grid-template-columns:200px 1fr;min-height:100vh}
+nav{border-right:1px solid var(--line);padding:20px 16px;background:var(--panel)}
+nav .logo{font-weight:700;margin-bottom:24px}nav .logo small{display:block;font-weight:400;color:var(--muted);font-size:12px}
+nav button{display:block;width:100%;text-align:left;border:0;background:none;padding:8px 10px;border-radius:6px}nav button.on{background:var(--bg);font-weight:600}
+main{padding:24px 36px 64px}
+.crumb{font-size:13px;color:var(--muted)}.crumb button{border:0;background:none;padding:0;text-decoration:underline;color:var(--muted)}
+h1{font-size:24px;margin:4px 0 2px}h2{font-size:17px;margin:28px 0 8px}
+.sub{color:var(--muted);font-size:14px}
+table{width:100%;border-collapse:collapse}th{text-align:left;font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);border-bottom:1.5px solid var(--ink);padding:8px 10px}
+td{border-bottom:1px solid var(--line);padding:10px;vertical-align:top}
+tr.link{cursor:pointer}tr.link:hover td{background:var(--panel)}
+.badge{display:inline-block;font-size:12px;border:1px solid var(--ink);border-radius:10px;padding:0 8px;white-space:nowrap}
+.badge.warn{border-color:var(--warn);color:var(--warn);font-weight:600}.badge.dash{border-style:dashed}
+.tabs{display:flex;gap:4px;border-bottom:1.5px solid var(--ink);margin-top:20px}
+.tabs button{border:1px solid var(--line);border-bottom:0;background:var(--panel);padding:8px 18px;border-radius:8px 8px 0 0}
+.tabs button.on{background:var(--bg);border-color:var(--ink);font-weight:600;margin-bottom:-1.5px;border-bottom:1.5px solid var(--bg)}
+.board{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-top:20px}
+.col{background:var(--panel);border-radius:8px;padding:10px;min-height:320px}.col h3{font-size:13px;margin:0 0 8px;display:flex;justify-content:space-between}
+.card{background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:8px 10px;margin-bottom:8px;font-size:14px}.card small{display:block;color:var(--muted)}
+.note{border:1px dashed var(--ink);border-radius:8px;padding:10px 14px;margin-top:16px;font-size:14px}
+.note.warn{border-color:var(--warn)}
+.grid2{display:grid;grid-template-columns:1fr 280px;gap:32px}
+td.k{width:200px;color:var(--muted)}tr.chg td:first-child{box-shadow:inset 4px 0 0 var(--mark)}
+.box{border:1px solid var(--ink);border-radius:8px;padding:14px 16px;margin-bottom:16px}.box h3{margin:0 0 6px;font-size:15px}.box ol{margin:0;padding-left:18px;font-size:14px}
+.tl{display:flex;margin:12px 0 4px;position:relative}.tl::before{content:"";position:absolute;left:0;right:0;top:9px;border-top:1.5px solid var(--ink)}
+.ev{flex:1;position:relative;padding-top:24px;font-size:13px}.ev::before{content:"";position:absolute;top:3px;left:0;width:12px;height:12px;border-radius:50%;background:var(--bg);border:1.5px solid var(--ink)}
+.ev.dec::before{border-radius:2px;transform:rotate(45deg)}.ev b{display:block}.ev span{color:var(--muted)}
+.cmp td,.cmp th{font-size:14px}.cmp td.c{background:#ffe7d8}.cmp td.same{color:var(--muted)}
+.q{border:1px solid var(--line);border-radius:8px;padding:14px 16px;margin-bottom:12px}.q p{margin:0 0 8px;font-weight:600}
+.q label{display:block;padding:4px 0;font-size:14px}.q textarea{width:100%;height:56px;font:inherit;font-size:14px;border:1px solid var(--line);border-radius:6px;padding:6px}
+.res{font-size:13px;margin-top:8px;padding:8px 10px;border-radius:6px;background:var(--panel)}
+.ok{color:#1d6b33;font-weight:600}.bad{color:var(--warn);font-weight:600}.part{font-weight:600}
+.btn{border:1.5px solid var(--ink);border-radius:20px;background:var(--bg);padding:6px 18px}.btn.pri{background:var(--ink);color:var(--bg)}
+.meter{display:flex;gap:4px;margin:6px 0}.meter i{flex:1;height:8px;border-radius:2px;background:var(--line)}.meter i.y{background:var(--ink)}
+.stub{font-size:12px;color:var(--muted)}
+</style></head><body>
+<div class="app">
+<nav><div class="logo">mock ATS<small>prototype A · tabs in the position</small></div>
+<button class="on" onclick="go('list')">Positions</button><button disabled title="mock">Candidates</button><button disabled title="mock">Clients</button>
+<p class="stub" style="margin-top:32px">Fictional data. Candidates and pipeline are fake; only the role information matters here.</p></nav>
+<main id="main"></main>
+</div>
+<script>
+const $=s=>document.getElementById(s);
+const POS=[
+{id:'nw-be',co:'Northwind Freight Tech',t:'Senior Backend Engineer',ver:'v4',unrev:1,check:'not taken for v4',stages:[3,2,1,1,0]},
+{id:'nw-ai',co:'Northwind Freight Tech',t:'AI Agent Engineer',ver:'v1',unrev:0,check:'4/5 (v1)',stages:[6,1,0,0,0]},
+{id:'ks-fe',co:'Kestrel Labs',t:'Founding Engineer',ver:'v2',unrev:2,check:'3/5 (v1)',stages:[4,2,1,0,0]}];
+const STAGES=['Sourced','Screening','Client review','Interview','Offer'];
+const NAMES=['A. Lindqvist','J. Moreau','P. Novak','S. Haddad','L. Brandt','K. Osei','D. Weber','T. Kowalski','R. Silva','E. Duval','N. Ivanova','H. Tanaka'];
+// Northwind backend: field history across versions v1..v4 (02 oct JD, 05 oct kickoff, 21 oct news, 03 nov email)
+const V=['v1 · 02 oct · JD','v2 · 05 oct · kickoff','v3 · 21 oct · news','v4 · 03 nov · founder email'];
+const F=[
+['Context','Direction',['Grow the road product','=','Expanding into rail; AI routing team planned','=']],
+['Context','Team',['—','6 backend, reports to CTO, on-call rota','=','=']],
+['Requirements','Incident ownership',['—','Must-have','=','=']],
+['Requirements','5+ yrs backend in production',['Must-have','=','=','=']],
+['Requirements','Postgres under load',['Must-have','=','=','=']],
+['Requirements','Event-driven systems',['Must-have','=','=','=']],
+['Requirements','Go',['Must-have','Trainable','=','=']],
+['Requirements','Logistics domain',['Nice to have','=','=','=']],
+['Restrictions','No staff from partner Carrio',['—','Applied','=','=']],
+['Restrictions','Top-10 university preference',['—','⚑ Not applied (possible bias)','=','=']],
+['Expectations','6 / 12 / 18 months',['—','On-call owner / leads squad of 3 / not discussed','=','=']],
+['Offer','Level',['Senior','=','=','Senior; mid-level mentioned, unconfirmed']],
+['Offer','Budget',['€70–80k','=','=','Up to €72k']],
+['Offer','Start',['ASAP','=','=','Q1']]];
+const EV=[['02 oct','JD received','v1'],['05 oct','Kickoff call','v2'],['21 oct','News: rail expansion','v3'],['03 nov','Founder email','v4'],['10 nov','Client rejected M. Rossi','no new version','dec']];
+const ASK=['Why is the role open now? (02 oct)','Is the university preference job-related? (05 oct)','Is mid-level accepted, or only discussed? (03 nov)','Does system design become a must-have? (10 nov)','What is expected at 18 months? (05 oct)'];
+const Q=[
+{f:'Go',p:'A strong candidate has never used Go. What do you do?',o:['Reject: Go is a must-have','Keep: Go is trainable; check incident ownership','Ask the client first'],a:1,src:'kickoff 05 oct',why:'Go moved from must-have to trainable in v2.'},
+{f:'Budget',p:'Your best finalist expects €76k. What do you do?',o:['Drop them: budget is €72k','Submit as normal: range is €70–80k','Keep them and confirm the cap with the client'],a:2,src:'founder email 03 nov',why:'The cap fell to €72k in v4. Keep strong finalists until the client confirms.'},
+{f:'Restrictions',p:'Which client rule do we apply today?',o:['Top-10 universities only','No staff from partner Carrio','Both'],a:1,src:'kickoff 05 oct',why:'The university preference is flagged as possible bias and is not applied.'},
+{f:'Level',p:'Is a strong mid-level candidate in scope?',o:['Yes, confirmed','Not confirmed: ask before submitting','No'],a:1,src:'founder email 03 nov',why:'Mentioned in the email, not confirmed.'},
+{f:'Must-have',p:'In your own words: what must a submission show, beyond the stack?',open:true,keys:['incident','outage','on-call','design'],src:'kickoff 05 oct; client decision 10 nov',why:'Expected: owning production incidents end to end, and (since 10 nov) evidence of system design trade-offs.'}];
+let state={view:'list',pos:null,tab:'pipeline',ans:{},done:false};
+function go(v,id){state.view=v;if(id){state.pos=id;state.tab='pipeline';state.ans={};state.done=false}draw()}
+function tab(t){state.tab=t;draw()}
+function draw(){const m=$('main');m.innerHTML=state.view==='list'?list():position()}
+function list(){return `<h1>Positions</h1><div class="sub">Open searches. Click a position to open it.</div>
+<table style="margin-top:16px"><thead><tr><th>Company</th><th>Position</th><th>Pipeline</th><th>Brief</th><th>Unreviewed changes</th><th>Recruiter check</th></tr></thead><tbody>
+${POS.map(p=>`<tr class="link" onclick="go('pos','${p.id}')"><td>${p.co}</td><td><b>${p.t}</b></td><td>${p.stages.reduce((a,b)=>a+b)} candidates</td><td>${p.ver}</td>
+<td>${p.unrev?`<span class="badge warn">${p.unrev} new</span>`:'—'}</td><td>${p.check.startsWith('not')?`<span class="badge warn">${p.check}</span>`:p.check}</td></tr>`).join('')}</tbody></table>
+<p class="stub">Only Northwind · Senior Backend Engineer has detailed role data in this prototype.</p>`}
+function position(){const p=POS.find(x=>x.id===state.pos);const T=[['pipeline','Pipeline'],['brief','Role brief'],['changes','Changes'+(p.unrev?' ●':'')],['check','Knowledge check'+(p.check.startsWith('not')?' ●':'')]];
+return `<div class="crumb"><button onclick="go('list')">Positions</button> / ${p.co}</div><h1>${p.t}</h1>
+<div class="sub">${p.co} · brief ${p.ver} · recruiter Ana</div>
+<div class="tabs">${T.map(([k,l])=>`<button class="${state.tab===k?'on':''}" onclick="tab('${k}')">${l}</button>`).join('')}</div>
+${p.id!=='nw-be'&&state.tab!=='pipeline'?'<p class="stub" style="margin-top:20px">Mock: open Northwind · Senior Backend Engineer to see this tab with data.</p>':({pipeline:pipe,brief,changes,check})[state.tab](p)}`}
+function pipe(p){let n=0;return `${p.unrev?`<div class="note warn">Brief changed to ${p.ver} on 03 nov (budget, start, level). Review <b>Changes</b> and take the <b>Knowledge check</b> before submitting more candidates.</div>`:''}
+<div class="board">${STAGES.map((s,i)=>`<div class="col"><h3>${s}<span>${p.stages[i]}</span></h3>${Array.from({length:p.stages[i]},()=>`<div class="card">${NAMES[n++%12]}<small>${3+n} days in stage</small></div>`).join('')}</div>`).join('')}</div>
+<p class="stub">Fake candidates. Not scored or validated by the harness.</p>`}
+function cur(r){let v=r[2][0];r[2].forEach(x=>{if(x!=='=')v=x});return v}
+function brief(){let sec='';return `<div class="grid2"><div>${F.map(r=>{const h=r[0]!==sec?`${sec?'</tbody></table>':''}<h2>${r[0]}</h2><table><tbody>`:'';sec=r[0];const chg=r[2][3]!=='=';return h+`<tr class="${chg?'chg':''}"><td class="k">${r[1]}</td><td>${cur(r)}${chg?` <span class="badge">changed in v4</span>`:''}</td></tr>`}).join('')}</tbody></table></div>
+<aside><div class="box"><h3>Open questions for the client</h3><ol>${ASK.map(a=>`<li>${a}</li>`).join('')}</ol></div>
+<div class="box"><h3>Before your next call</h3><ol><li>Screen for incident stories, not Go keywords.</li><li>Keep finalists above €72k until the cap is confirmed.</li><li>Note one design decision per submission.</li></ol></div></aside></div>`}
+function changes(){return `<h2>Timeline</h2><div class="tl">${EV.map(e=>`<div class="ev ${e[3]||''}"><b>${e[0]}</b>${e[1]}<br><span>${e[2]}</span></div>`).join('')}</div>
+<h2>Compare versions</h2><div class="sub" style="margin-bottom:8px">Shaded cells changed in that version. Grey = same as before.</div>
+<table class="cmp"><thead><tr><th>Field</th>${V.map(v=>`<th>${v}</th>`).join('')}</tr></thead><tbody>
+${F.map(r=>{let last='';return `<tr><td class="k">${r[0]} · ${r[1]}</td>${r[2].map((c,i)=>{const same=c==='=';if(!same)last=c;return `<td class="${same?'same':(i>0?'c':'')}">${same?'same':c}</td>`}).join('')}</tr>`}).join('')}</tbody></table>
+<h2>Client decisions</h2><table><thead><tr><th>Date</th><th>Decision</th><th>Reason</th><th>Effect on the brief</th></tr></thead><tbody><tr><td>10 nov</td><td>Rejected M. Rossi after technical round</td><td>“Weak on system design.”</td><td>No new version. Design depth added to what to verify; question sent to client.</td></tr></tbody></table>`}
+function check(){const a=state.ans;return `<div class="grid2"><div>
+<h2>Knowledge check · brief v4</h2><div class="sub">Answer without opening the brief. Questions come from what changed and from the must-haves. Results show what to re-read; they are not a grade on the candidates.</div>
+${Q.map((q,i)=>`<div class="q"><p>${i+1}. ${q.p}</p>${q.open?`<textarea id="t${i}" ${state.done?'disabled':''}>${a[i]||''}</textarea>`:q.o.map((o,j)=>`<label><input type="radio" name="q${i}" ${a[i]===j?'checked':''} ${state.done?'disabled':''} onchange="state.ans[${i}]=${j}"> ${o}</label>`).join('')}
+${state.done?res(q,i):''}</div>`).join('')}
+${state.done?`<button class="btn" onclick="state.ans={};state.done=false;draw()">Retake</button>`:`<button class="btn pri" onclick="submitQ()">Check my answers</button>`}
+<p class="stub">The open answer is scored here by keyword match (stub). The harness would use the model with the brief as reference.</p></div>
+<aside>${state.done?summary():''}<div class="box"><h3>From your last screening</h3><div class="sub">M. Rossi · screening transcript 06 nov</div>
+<table><tbody><tr><td>Incident ownership</td><td class="ok">asked</td></tr><tr><td>Postgres under load</td><td class="ok">asked</td></tr><tr><td>Event-driven systems</td><td class="part">briefly</td></tr><tr><td>System design</td><td class="bad">not asked</td></tr><tr><td>Go (trainable)</td><td class="bad">4 of 11 questions</td></tr></tbody></table>
+<div class="sub" style="margin-top:6px">Your questions weighed Go as a must-have, which v2 removed. The client later rejected on design depth.</div></div></aside></div>`}
+function res(q,i){const ok=score(q,i);return `<div class="res"><span class="${ok===1?'ok':ok?'part':'bad'}">${ok===1?'Correct':ok?'Partly':'Missed'}</span> · ${q.why} <span class="stub">Source: ${q.src}</span></div>`}
+function score(q,i){const a=state.ans[i];if(q.open){const t=(a||'').toLowerCase();const h=q.keys.filter(k=>t.includes(k)).length;return h>=2?1:h?.5:0}return a===q.a?1:0}
+function submitQ(){const t=$('t4');if(t)state.ans[4]=t.value;state.done=true;draw()}
+function summary(){const s=Q.map((q,i)=>score(q,i));const tot=s.reduce((a,b)=>a+b);const miss=Q.filter((q,i)=>s[i]<1);
+return `<div class="box"><h3>Result: ${tot} / ${Q.length}</h3><div class="meter">${s.map(x=>`<i class="${x===1?'y':''}"></i>`).join('')}</div>
+${miss.length?`<div class="sub">Re-read in the brief:</div><ol>${miss.map(q=>`<li>${q.f} <span class="stub">(${q.src})</span></li>`).join('')}</ol>`:'<div class="sub">Up to date with v4.</div>'}</div>`}
+draw();
+</script></body></html>

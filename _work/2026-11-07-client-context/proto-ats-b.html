@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Mock ATS · B · check at submit</title>
+<style>
+:root{--bg:#fdfbf9;--panel:#f7efe9;--ink:#171717;--muted:#6b5d50;--line:#d9cfc6;--mark:#ff6f1e;--warn:#ce500a;--ui:"Segoe UI",system-ui,sans-serif}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 var(--ui);min-width:1280px}
+button{font:inherit;color:inherit;cursor:pointer}button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--ink);outline-offset:2px}
+header{display:flex;align-items:center;gap:24px;padding:14px 32px;border-bottom:1px solid var(--line);background:var(--panel)}
+header b{font-size:16px}header .sub{margin-left:auto}
+.wrap{display:grid;grid-template-columns:1fr 380px;min-height:calc(100vh - 54px)}
+.wrap.closed{grid-template-columns:1fr 0}
+main{padding:20px 28px 48px;min-width:0}
+.sub{color:var(--muted);font-size:14px}.stub{font-size:12px;color:var(--muted)}
+h1{font-size:22px;margin:0}h2{font-size:16px;margin:20px 0 8px}h3{font-size:14px;margin:16px 0 6px}
+.bar{display:flex;align-items:center;gap:12px;margin-top:4px}
+.banner{display:flex;gap:16px;align-items:center;border:1.5px solid var(--warn);border-radius:8px;padding:10px 14px;margin-top:16px;font-size:14px}
+.banner b{color:var(--warn)}.banner .btn{margin-left:auto}
+.btn{border:1.5px solid var(--ink);border-radius:20px;background:var(--bg);padding:5px 16px;font-size:14px;white-space:nowrap}.btn.pri{background:var(--ink);color:var(--bg)}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+.board{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin-top:16px}
+.col{background:var(--panel);border-radius:8px;padding:10px;min-height:360px}.col h3{margin:0 0 8px;font-size:13px;display:flex;justify-content:space-between}
+.col.lock h3::after{content:"🔒 check first";font-weight:400;color:var(--warn)}
+.card{background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:8px 10px;margin-bottom:8px;font-size:14px}.card small{display:block;color:var(--muted)}
+.card .btn{margin-top:6px;padding:2px 10px;font-size:12px}
+aside{border-left:1px solid var(--line);padding:20px 22px;overflow:auto;background:var(--bg)}
+.wrap.closed aside{display:none}
+.st{display:flex;justify-content:space-between;align-items:center}
+table{width:100%;border-collapse:collapse}th{text-align:left;font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);border-bottom:1.5px solid var(--ink);padding:6px 8px}
+td{border-bottom:1px solid var(--line);padding:7px 8px;vertical-align:top;font-size:14px}
+td.k{color:var(--muted);width:130px}tr.chg td:first-child{box-shadow:inset 4px 0 0 var(--mark)}
+.badge{display:inline-block;font-size:11px;border:1px solid var(--ink);border-radius:10px;padding:0 7px}
+.overlay{position:fixed;inset:0;background:rgba(23,23,23,.35);display:none;align-items:flex-start;justify-content:center;padding:40px;overflow:auto}
+.overlay.on{display:flex}
+.modal{background:var(--bg);border-radius:12px;border:1.5px solid var(--ink);padding:24px 28px;width:1040px;max-width:100%}
+.modal .top{display:flex;justify-content:space-between;align-items:center}
+.cmp td.c{background:#ffe7d8}.cmp td.same{color:var(--muted)}
+.steps{display:flex;gap:8px;margin:14px 0;font-size:13px}.steps span{border:1px solid var(--line);border-radius:12px;padding:2px 10px}.steps span.on{border-color:var(--ink);font-weight:600}.steps span.done{color:var(--muted);text-decoration:line-through}
+.q{border:1px solid var(--line);border-radius:8px;padding:12px 14px;margin-bottom:10px}.q p{margin:0 0 6px;font-weight:600}.q label{display:block;font-size:14px;padding:2px 0}
+.res{font-size:13px;margin-top:6px;padding:6px 10px;border-radius:6px;background:var(--panel)}
+.ok{color:#1d6b33;font-weight:600}.bad{color:var(--warn);font-weight:600}.part{font-weight:600}
+select{font:inherit;font-size:14px;padding:3px 6px;border:1px solid var(--line);border-radius:6px;background:var(--bg)}
+.ev{font-size:13px;color:var(--muted)}
+</style></head><body>
+<header><b>mock ATS</b><span>Positions / Northwind Freight Tech / <b>Senior Backend Engineer</b></span><span class="sub">prototype B · brief beside the pipeline, check at submit</span></header>
+<div class="wrap" id="wrap">
+<main>
+<div class="bar"><h1>Senior Backend Engineer</h1><span class="sub">Northwind Freight Tech · brief v4 · recruiter Ana</span>
+<button class="btn" style="margin-left:auto" onclick="toggle()">Role brief ◧</button></div>
+<div class="banner" id="banner"><span><b>Brief v4 · 03 nov:</b> budget, start and level changed. Client review is locked until you pass a short check on what changed.</span><button class="btn" onclick="openCmp()">See what changed</button></div>
+<div class="board" id="board"></div>
+<p class="stub">Fake candidates. The harness does not score candidates; it checks that the recruiter's understanding and evidence match the current brief.</p>
+</main>
+<aside id="aside"></aside>
+</div>
+<div class="overlay" id="ov" onclick="if(event.target===this)closeOv()"><div class="modal" id="modal"></div></div>
+<script>
+const $=s=>document.getElementById(s);
+const STAGES=['Sourced','Screening','Client review','Interview','Offer'];
+let cards=[['A. Lindqvist',0],['J. Moreau',0],['P. Novak',0],['S. Haddad',1],['L. Brandt',1],['K. Osei',2],['T. Kowalski',3]];
+const V=['v1 · 02 oct','v2 · 05 oct','v3 · 21 oct','v4 · 03 nov'];
+const F=[
+['Direction',['Grow road product','=','Rail expansion; AI routing team','=']],
+['Incident ownership',['—','Must-have','=','=']],
+['5+ yrs backend',['Must-have','=','=','=']],
+['Postgres under load',['Must-have','=','=','=']],
+['Event-driven systems',['Must-have','=','=','=']],
+['Go',['Must-have','Trainable','=','=']],
+['Logistics domain',['Nice to have','=','=','=']],
+['Carrio staff',['—','Do not approach','=','=']],
+['University pref.',['—','⚑ Not applied','=','=']],
+['6 / 12 / 18 months',['—','On-call / squad of 3 / ?','=','=']],
+['Level',['Senior','=','=','Senior; mid-level unconfirmed']],
+['Budget',['€70–80k','=','=','Up to €72k']],
+['Start',['ASAP','=','=','Q1']]];
+const SRC=['JD','kickoff','news','founder email'];
+const MUST=['Incident ownership','5+ yrs backend','Postgres under load','Event-driven systems','System design (proposed)'];
+// screening notes the recruiter wrote for S. Haddad (fake), used to test evidence mapping
+const NOTES={'S. Haddad':[['Led the fix of a 3-hour payments outage; wrote the post-mortem and changed the alerting.','Incident ownership'],['7 years Java/Kotlin services, 2 in production at a logistics firm.','5+ yrs backend'],['Mentioned Postgres; no detail on load or tuning.','—'],['Built a Kafka retry pipeline with idempotent consumers.','Event-driven systems'],['Strong Go knowledge.','—']],
+'L. Brandt':[['On-call for 2 years, escalates incidents to the lead.','Incident ownership'],['6 years backend.','5+ yrs backend'],['Ran Postgres partitioning for a 2 TB table.','Postgres under load'],['—','—'],['Designed the order service from scratch; chose Postgres over Mongo for consistency.','System design (proposed)']]};
+const Q=[
+{p:'Your finalist expects €76k. What do you do?',o:['Drop them','Submit as normal','Keep them and confirm the cap with the client'],a:2,why:'Budget fell to €72k in v4 (founder email, 03 nov); keep strong finalists until confirmed.'},
+{p:'When can the hire start?',o:['As soon as possible','Q1','Not decided'],a:1,why:'Start moved to Q1 in v4.'},
+{p:'Is a strong mid-level candidate in scope?',o:['Yes','Mentioned, not confirmed: say so in the submission','No'],a:1,why:'Mentioned in the 03 nov email, not confirmed.'}];
+let passed=false,open=true,step=0,ans={},sub=null,map={};
+function board(){$('board').innerHTML=STAGES.map((s,i)=>`<div class="col ${i===2&&!passed?'lock':''}"><h3>${s}<span>${cards.filter(c=>c[1]===i).length}</span></h3>
+${cards.filter(c=>c[1]===i).map(c=>`<div class="card">${c[0]}<small>${i===1?'screening notes ✓':'mock'}</small>${i===1?`<button class="btn" onclick="submit('${c[0]}')">Submit to client →</button>`:''}</div>`).join('')}</div>`).join('');
+$('banner').style.display=passed?'none':'flex'}
+function cur(r){let v=r[1][0],s=0;r[1].forEach((x,i)=>{if(x!=='='){v=x;s=i}});return [v,s]}
+function aside(){$('aside').innerHTML=`<div class="st"><h2 style="margin:0">Role brief v4</h2><button class="btn" onclick="openCmp()">Compare versions</button></div>
+<div class="sub">Orange bar = changed in v4.</div>
+<table style="margin-top:10px"><tbody>${F.map(r=>{const [v,s]=cur(r);return `<tr class="${s===3?'chg':''}"><td class="k">${r[0]}</td><td>${v}</td></tr>`}).join('')}</tbody></table>
+<h3>Open questions for the client</h3><ol class="sub" style="padding-left:18px;margin:0"><li>Why is the role open now?</li><li>Is the university preference job-related?</li><li>Is mid-level accepted?</li><li>Does system design become a must-have?</li><li>What is expected at 18 months?</li></ol>
+<h3>Client decisions</h3><div class="sub">10 nov · rejected M. Rossi: “weak on system design.” No new version; design depth added to what to verify.</div>`}
+function toggle(){open=!open;$('wrap').classList.toggle('closed',!open)}
+function openCmp(){$('modal').innerHTML=`<div class="top"><h2 style="margin:0">What changed, by version</h2><button class="btn" onclick="closeOv()">Close</button></div>
+<div class="sub">Timeline: 02 oct JD → 05 oct kickoff → 21 oct news → 03 nov founder email → 10 nov client decision (no new version). Shaded = changed in that version.</div>
+<table class="cmp" style="margin-top:12px"><thead><tr><th>Field</th>${V.map((v,i)=>`<th>${v}<br><span class="stub">${SRC[i]}</span></th>`).join('')}</tr></thead>
+<tbody>${F.map(r=>`<tr><td class="k">${r[0]}</td>${r[1].map((c,i)=>`<td class="${c==='='?'same':i?'c':''}">${c==='='?'same':c}</td>`).join('')}</tr>`).join('')}</tbody></table>`;$('ov').classList.add('on')}
+function closeOv(){$('ov').classList.remove('on')}
+function submit(name){sub=name;step=passed?1:0;ans={};map={};render()}
+function render(){const S=['1 · What changed','2 · Evidence for each must-have','3 · Submit'];
+let body='';
+if(step===0){body=`<div class="sub">Three questions on brief v4. Answer from memory; you can open the brief after.</div>
+${Q.map((q,i)=>`<div class="q"><p>${q.p}</p>${q.o.map((o,j)=>`<label><input type="radio" name="b${i}" ${ans[i]===j?'checked':''} onchange="ans[${i}]=${j}"> ${o}</label>`).join('')}${ans.done?`<div class="res"><span class="${ans[i]===q.a?'ok':'bad'}">${ans[i]===q.a?'Correct':'Missed'}</span> · ${q.why}</div>`:''}</div>`).join('')}
+${ans.done?(score()===Q.length?`<button class="btn pri" onclick="passed=true;step=1;board();render()">Continue</button>`:`<span class="bad">${score()}/${Q.length}.</span> <button class="btn" onclick="ans={};render()">Read the notes above and retry</button>`):`<button class="btn pri" onclick="ans.done=true;render()">Check</button>`}`}
+if(step===1){const N=NOTES[sub]||[];body=`<div class="sub">Link each of your screening notes on <b>${sub}</b> to the must-have it is evidence for. The harness checks whether every must-have is covered by real evidence, not whether the candidate is good.</div>
+<table style="margin-top:10px"><thead><tr><th>Your note</th><th>Evidence for</th></tr></thead><tbody>${N.map((n,i)=>`<tr><td>${n[0]}</td><td><select onchange="map[${i}]=this.value">${['—',...MUST].map(m=>`<option ${map[i]===m?'selected':''}>${m}</option>`).join('')}</select></td></tr>`).join('')}</tbody></table>
+<button class="btn pri" style="margin-top:12px" onclick="step=2;render()">Check coverage</button>`}
+if(step===2){const got=new Set(Object.values(map));body=`<table><thead><tr><th>Must-have (v4 + proposed)</th><th>Covered by your notes</th></tr></thead><tbody>
+${MUST.map(m=>`<tr><td>${m}</td><td>${got.has(m)?'<span class="ok">covered</span>':`<span class="bad">no evidence</span> <span class="ev">${hint(m)}</span>`}</td></tr>`).join('')}</tbody></table>
+<p class="ev">“Strong Go knowledge” is not evidence for any must-have: Go is trainable since v2.</p>
+<div style="display:flex;gap:10px;margin-top:10px"><button class="btn" onclick="closeOv()">Back: ask the candidate first</button><button class="btn pri" onclick="move();closeOv()">Submit with gaps noted</button></div>
+<p class="stub">Mock: the real harness reads the screening transcript and proposes the mapping for the recruiter to confirm.</p>`}
+$('modal').innerHTML=`<div class="top"><h2 style="margin:0">Submit ${sub} to Northwind</h2><button class="btn" onclick="closeOv()">Cancel</button></div>
+<div class="steps">${S.map((s,i)=>`<span class="${i===step?'on':i<step?'done':''}">${s}</span>`).join('')}</div>${body}`;$('ov').classList.add('on')}
+function hint(m){return {'Postgres under load':'Ask: largest table or traffic you tuned.','System design (proposed)':'Ask: a system you designed and its trade-offs (client rejected M. Rossi on this).','Incident ownership':'Ask: the last outage you owned end to end.','Event-driven systems':'Ask: how you handle retries and duplicates.','5+ yrs backend':'Confirm years in production.'}[m]}
+function score(){return Q.filter((q,i)=>ans[i]===q.a).length}
+function move(){cards=cards.map(c=>c[0]===sub?[c[0],2]:c);board()}
+board();aside();
+</script></body></html>

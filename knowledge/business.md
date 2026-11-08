@@ -59,6 +59,12 @@ Recommended option accepted for C1, C2, C4–C18; C3 proposal accepted. Notes th
 - **V3 yes:** the stage-and-evidence rule goes into AGENTS.md (rule 13).
 - **Presentation intent (draft, for the end):** readme.html becomes the human's presentation. Message: the owner has built RAG systems (the human wrote "RAC"; interpreted as RAG, to confirm) and app integrations many times. They omitted them from this MVP on purpose because integrations depend on each client's tools and are easy to learn. The point of this submission is the reasoning: what changed, why it matters, and how the recruiter's judgment follows. Final wording is the owner's.
 
+## Role information inside a mock ATS (prompts/client-context/015-user.md, 2026-11-07)
+- Wrap the brief in a mock ATS: positions list, then a position with a fake candidate Kanban. Candidates and pipeline are fake and out of scope; role information and its changes are the scope.
+- Bring back the version comparison table (faster to compare than prose) alongside the timeline.
+- New need: evaluate whether the recruiter knows enough about the role.
+- Two mid-fidelity, workflow-focused prototypes: proto-ats-a.html (tabs: Pipeline, Role brief, Changes with timeline and version table, Knowledge check with screening coverage) and proto-ats-b.html (brief beside the pipeline; Client review locked after a brief change until a short check passes; at submit the recruiter links screening notes to must-haves and gaps are shown). Choice pending.
+
 ## UI direction after reading prototypes (prompts/client-context/013-user.md, 2026-11-07)
 - Base: proto-brief (current brief, changes since a chosen date). proto-story is dropped.
 - The editorial look read as selling, not understanding. Wanted: plain hierarchy, tables for structure, factual headings.

@@ -1,0 +1,2 @@
+# Assistant message 016 (summary of visible reply)
+Built two mid-fidelity mock-ATS prototypes: proto-ats-a.html (knowledge check as its own tab, periodic) and proto-ats-b.html (check inside the submit flow, just in time, plus evidence-to-must-have mapping). Both include the timeline and version comparison table and fake candidate Kanbans. Script click-checked at 1440px. The open-answer score in A is a keyword stub. Asked which to build on.
