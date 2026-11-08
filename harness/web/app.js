@@ -307,6 +307,30 @@ function itemShell(it, kids) {
   return h('article', { class: `glass item${it.completion ? ' done' : ''}` }, h('div', { class: 'top' }, h('b', null, it.title), it.completion ? chip('✓ Done', 'ok') : chip('To do', 'y')),
     h('small', null, `From ${srcName(it.source_id)}`), kids);
 }
+// ---- ask about this role (chat grounded in the current brief) ----
+state.chat = {};
+function askPanel(d) {
+  const log = (state.chat[d.role.id] ||= []);
+  const list = h('div', { class: 'chatlog', 'aria-live': 'polite' });
+  const draw = () => list.replaceChildren(...(log.length ? log.map((m) => h('div', { class: `msg ${m.role}${m.error ? ' err' : ''}` },
+    h('div', null, m.content),
+    m.role === 'assistant' && !m.error ? h('small', null, m.stub ? 'Stub: no live model connected.' : m.in_brief ? `Based on the brief${m.based_on.length ? `: ${m.based_on.map((b) => b.label).join(', ')}` : ''}.` : 'Not in the brief: confirm with the client.') : null))
+    : [h('p', { class: 'sub' }, 'Examples: “What is LangGraph and why would they care?” · “What does owning an incident look like?”')]));
+  const q = h('input', { type: 'text', placeholder: 'Ask anything about this role', 'aria-label': 'Your question about this role', maxlength: '500' });
+  const btn = h('button', { class: 'pill dark', type: 'submit' }, 'Ask');
+  const form = h('form', { class: 'askform', onsubmit: async (e) => {
+    e.preventDefault();
+    const question = q.value.trim(); if (!question) return;
+    const history = log.filter((m) => !m.error).map((m) => ({ role: m.role, content: m.content }));
+    log.push({ role: 'user', content: question }); q.value = ''; btn.disabled = true; btn.textContent = 'Thinking…'; draw();
+    try { const r = await api(`/api/roles/${d.role.id}/ask`, { question, history }); log.push({ role: 'assistant', content: r.answer, in_brief: r.in_brief, based_on: r.based_on, stub: r.stub }); }
+    catch (err) { log.push({ role: 'assistant', content: err.message, error: true }); }
+    btn.disabled = false; btn.textContent = 'Ask'; draw(); list.scrollTop = list.scrollHeight; q.focus();
+  } }, q, btn);
+  draw();
+  return h('div', { class: 'glass panel' }, h('h3', null, 'Ask about this role', hint('Short answers based only on the approved brief for this role. If the brief does not cover it, the answer says so and you should ask the client.')),
+    h('p', { class: 'sub' }, 'Unsure about a term or requirement? Ask. Answers are short and based on this role’s brief.'), list, form);
+}
 function currentTab(d) {
   const by = (k) => d.items.filter((i) => i.kind === k);
   const TIPS = { ack: 'Facts to know, like budget or location. Tick once you have read them.', study: 'A new must-have or level change. Explain in your own words how you would check it in a screening.', review: 'The client decided on a candidate. See what the screening covered and agree what to check next time.' };
@@ -314,6 +338,7 @@ function currentTab(d) {
   return h('div', { class: 'two' },
     h('div', null,
       h('div', { class: 'glass panel' }, h('h3', null, 'Stay current'), h('p', { class: 'sub' }, `You have completed ${d.my_progress.done} of ${d.my_progress.total} items for this position. Only approved changes appear here.`)),
+      askPanel(d),
       d.items.length ? null : h('p', { class: 'sub' }, 'Nothing to learn yet: no approved change has created a step.'),
       sec('Confirm', 'read and acknowledge', 'ack', ackItem), sec('Study', 'write what you would do', 'study', studyItem), sec('Review', 'learn from the client decision', 'review', reviewItem)),
     h('div', null, h('div', { class: 'glass panel' }, h('h3', null, 'Team', hint('Up to date means the recruiter completed every step for this position: a confirmation, a written answer or an accepted review.')), h('p', { class: 'sub' }, 'Who has learned every approved change.'),

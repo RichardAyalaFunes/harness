@@ -11,5 +11,9 @@ export function createReplayModel({ dir }) {
       if (!fs.existsSync(file)) throw new Error(`no replay file for ${source.id} (${file})`);
       return fs.readFileSync(file, 'utf8');
     },
+    // Stub: the replay model has no recorded answers for free questions. Named as a stub in the UI.
+    async ask() {
+      return JSON.stringify({ stub: true, in_brief: false, based_on: [], answer: 'Questions need the live model. Set HARNESS_MODEL=openai and OPENAI_API_KEY in harness/.env, then restart the server.' });
+    },
   };
 }
