@@ -43,15 +43,16 @@ sources/*.md ──► 1 register (hash, metadata) ──► 2 extract (model �
 - **Model input is small on purpose:** the current approved brief as compact JSON, plus one source (truncated at 12,000 characters). A client decision also gets its matched screening transcript. The model never sees the whole history, so the context doesn't fill with stale material.
 - **Every stage has a check, defined before it runs, and its result is stored in `stage_runs`.** A stage is complete only when its check passes; a skip records the rule that allows it. Examples:
   - a schema check, with fields limited to a whitelist;
-  - every quote must exist verbatim at stored offsets in the source;
+  - every quote must be verbatim in the text the model saw (only that text counts). Offsets are recomputed when the quote is unique; an ambiguous or missing quote fails;
   - a minimum severity per kind of change (a budget change cannot be "minor");
   - a new version only when a change is material;
-  - restrictions on protected characteristics or proxies are never applied.
+  - restrictions on protected characteristics or proxies appear in the brief only as `not_applied_bias`, never as `applied`, and nothing filters candidates by restrictions;
+  - a proposal is rebased at approval: its diff and learning items are recomputed against the brief current at that moment, and a proposal left with nothing material is marked `superseded_noop`.
 - **Human gate:** a proposed version is invisible to the team until the lead approves it. Approval publishes learning items to each recruiter; rejection keeps an audit row.
 - **Up to date** is computed only from recorded completions that pass their own checks (an acknowledgement, a study answer of at least 20 characters, an accepted review). Being assigned a step counts for nothing.
 - **Failure handling:** a failed model call or check stops that source at that stage, visibly, in the CLI and UI. Reruns are idempotent. A changed source file supersedes the old row and is reprocessed.
 - **Quality evidence:**
-  - 76 automated tests, covering the negative fixtures (malformed JSON, unknown fields, paraphrased quotes, bad severity), bias cases (age, university prestige, a lawful no-poach rule), historical-brief reviews, approval gating and the guarantee that moving candidates is never blocked;
+  - 94 automated tests, covering the negative fixtures (malformed JSON, unknown fields, paraphrased quotes, bad severity), bias cases (age, university prestige, a lawful no-poach rule), historical-brief reviews, approval gating and the guarantee that moving candidates is never blocked;
   - `harness check` re-verifies the whole database;
   - a live-model run against the same checks (pending a key).
 

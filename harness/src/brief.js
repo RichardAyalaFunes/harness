@@ -41,10 +41,12 @@ export function mergeChanges(prev, changes, { sourceId, n }) {
   for (const c of changes) {
     if (c.op === 'remove') { delete fields[c.field]; continue; }
     const old = prev[c.field];
+    // Invariant: a biased restriction can only ever be stored as not_applied_bias, whatever the proposal says.
+    if (c.bias_kind && c.status === 'applied') throw new Error(`${c.field}: a biased restriction cannot be applied`);
     fields[c.field] = {
       value: c.value,
       weight: c.weight ?? old?.weight ?? null,
-      status: c.status ?? (c.field.startsWith('restriction.') ? old?.status ?? 'pending' : null),
+      status: c.bias_kind ? 'not_applied_bias' : c.status ?? (c.field.startsWith('restriction.') ? old?.status ?? 'pending' : null),
       bias: c.bias_kind ? { kind: c.bias_kind, note: c.bias_note } : null,
       confirmed: c.confirmed == null ? null : !!c.confirmed,
       severity: c.severity, source_id: sourceId, quote: c.quote, start: c.start, end: c.end,
@@ -93,3 +95,6 @@ export function briefFields(v) {
     field, group: groupOf(field), label: labelOf(field), ...f, changed_in_version: f.version,
   }));
 }
+
+// The only restrictions that count as applied. not_applied_bias and pending ones are shown in the brief but are never filters.
+export const appliedRestrictions = (fields) => Object.entries(fields || {}).filter(([k, f]) => k.startsWith('restriction.') && f.status === 'applied' && !f.bias).map(([k]) => k);

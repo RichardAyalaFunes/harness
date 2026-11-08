@@ -35,7 +35,7 @@ CREATE TABLE analyses(
 CREATE TABLE proposals(
   id INTEGER PRIMARY KEY AUTOINCREMENT, source_row_id INTEGER NOT NULL, role_id TEXT NOT NULL,
   state TEXT NOT NULL DEFAULT 'proposed', severity TEXT NOT NULL, kind TEXT NOT NULL DEFAULT 'source',
-  corrects INTEGER, version_created INTEGER, decided_by TEXT, decided_at TEXT, reason TEXT, created_at TEXT NOT NULL);
+  corrects INTEGER, base_version INTEGER NOT NULL DEFAULT 0, version_created INTEGER, decided_by TEXT, decided_at TEXT, reason TEXT, created_at TEXT NOT NULL);
 
 CREATE TABLE changes(
   id INTEGER PRIMARY KEY AUTOINCREMENT, source_row_id INTEGER NOT NULL, role_id TEXT NOT NULL, proposal_id INTEGER,

@@ -11,7 +11,7 @@
 // 7 Publish             assignments                       when nothing to publish or all rejected (recorded on approval)
 import { tx, now, json, unjson } from './db.js';
 import { sha256 } from './sources.js';
-import { MAX_CONTEXT_CHARS, truncateForModel, checkExtraction, checkBias, checkReview, mustHaves, rank } from './checks.js';
+import { isCalendarDate, MAX_CONTEXT_CHARS, truncateForModel, checkExtraction, checkBias, checkReview, mustHaves, rank } from './checks.js';
 import { validateExtraction } from './schema.js';
 import { compactBrief, currentVersion, versionAt } from './brief.js';
 import { draftItems, saveDraftItems, teamOf } from './learning.js';
@@ -39,7 +39,7 @@ function stage1({ db, row }) {
   const errors = [];
   if (!row.body.trim()) errors.push('source body is empty');
   if (sha256(row.body) !== row.hash) errors.push('stored hash does not match body');
-  if (!/^\d{4}-\d{2}-\d{2}$/.test(row.date || '')) errors.push('date is missing or not YYYY-MM-DD');
+  if (!isCalendarDate(row.date)) errors.push(`date "${row.date ?? ''}" is missing or not a real calendar date (YYYY-MM-DD)`);
   if (!row.channel) errors.push('channel is missing');
   const client = db.prepare('SELECT * FROM clients WHERE id = ?').get(row.client_id);
   if (!client) errors.push(`unknown client "${row.client_id}"`);
@@ -80,7 +80,7 @@ function stage2({ db, row, modelOut }) {
 }
 
 // ---- stage 3 -------------------------------------------------------------------------------------------------
-const isNoop = (c, old) => (c.op === 'remove' ? !old
+export const isNoop = (c, old) => (c.op === 'remove' ? !old
   : !!old && old.value === c.value && (c.weight == null || c.weight === old.weight) && (c.status == null || c.status === old.status));
 
 function stage3({ db, row }) {
@@ -105,16 +105,30 @@ function stage3({ db, row }) {
     if (!ids.length) results.push({ role: roleId, decision: 'no new version', reason: a.no_change ? 'no change' : 'every value repeats the current brief', noops });
     else if (rank(top) < rank('material')) results.push({ role: roleId, decision: 'no new version', reason: `highest severity is ${top}; changes recorded only`, noops });
     else {
-      const p = db.prepare('INSERT INTO proposals(source_row_id, role_id, state, severity, kind, created_at) VALUES (?,?,?,?,?,?)')
-        .run(row.id, roleId, 'proposed', top, row.channel === 'manual-correction' ? 'manual-correction' : 'source', now());
+      const p = db.prepare('INSERT INTO proposals(source_row_id, role_id, state, severity, kind, base_version, created_at) VALUES (?,?,?,?,?,?,?)')
+        .run(row.id, roleId, 'proposed', top, row.channel === 'manual-correction' ? 'manual-correction' : 'source', cur?.n ?? 0, now());
       for (const c of ids) db.prepare('UPDATE changes SET proposal_id = ? WHERE id = ?').run(Number(p.lastInsertRowid), c.id);
       results.push({ role: roleId, decision: 'proposal', proposal_id: Number(p.lastInsertRowid), severity: top, changes: ids.length, noops });
     }
   }
-  // Self-check of the version rule: a proposal exists iff a material/critical effective change exists.
-  const bad = results.filter((r) => (r.decision === 'proposal') !== (r.severity !== undefined && rank(r.severity) >= rank('material')));
-  if (bad.length) return fail({ errors: ['version rule violated'], results });
+  const errors = verifyVersionRule(db, row);
+  if (errors.length) return fail({ errors, results });
   return pass({ results });
+}
+
+// Independent self-check of the version rule, read back from the persisted rows (not from stage 3's own bookkeeping):
+// a proposal exists for a role iff a persisted effective change is material/critical, and it owns exactly those changes.
+export function verifyVersionRule(db, row) {
+  const errors = [];
+  for (const { role_id: roleId } of db.prepare('SELECT DISTINCT role_id FROM changes WHERE source_row_id = ?').all(row.id)) {
+    const eff = db.prepare('SELECT severity, proposal_id FROM changes WHERE source_row_id = ? AND role_id = ? AND noop = 0').all(row.id, roleId);
+    const props = db.prepare('SELECT id FROM proposals WHERE source_row_id = ? AND role_id = ?').all(row.id, roleId);
+    const material = eff.some((c) => rank(c.severity) >= rank('material'));
+    if (material !== (props.length === 1)) errors.push(`${roleId}: ${material ? 'material change but no proposal' : 'proposal without a material change'} (${props.length} proposals)`);
+    if (props.length > 1) errors.push(`${roleId}: more than one proposal for one source`);
+    if (props.length === 1 && eff.some((c) => c.proposal_id !== props[0].id)) errors.push(`${roleId}: an effective change is not attached to the proposal`);
+  }
+  return errors;
 }
 
 // ---- stage 4 -------------------------------------------------------------------------------------------------
@@ -201,7 +215,8 @@ export function updateStage7(db, rowId) {
     for (const it of items) for (const m of teamOf(db, it.role_id)) {
       if (!db.prepare('SELECT 1 FROM assignments WHERE item_id = ? AND recruiter_id = ?').get(it.id, m.id)) missing.push(`${m.id}:${it.id}`);
     }
-    res = missing.length ? fail({ missing }) : pass({ items: items.length, recruiters: [...new Set(items.flatMap((i) => teamOf(db, i.role_id).map((m) => m.id)))] });
+    const noTeam = [...new Set(items.filter((i) => !teamOf(db, i.role_id).length).map((i) => i.role_id))];
+    res = noTeam.length ? fail({ errors: [`no assigned recruiters for ${noTeam.join(', ')}`] }) : missing.length ? fail({ missing }) : pass({ items: items.length, recruiters: [...new Set(items.flatMap((i) => teamOf(db, i.role_id).map((m) => m.id)))] });
   }
   recordStage(db, `approval-${Date.now().toString(36)}`, row, 7, res);
   return res;

@@ -134,7 +134,9 @@ test('unpublished items and recruiters outside the team cannot complete', async 
   const draft = env.db.prepare('SELECT id FROM learning_items WHERE proposal_id = ?').get(f.proposal.id);
   assert.throws(() => completeItem(env.db, draft.id, 'ana', {}), /not published/);
   approveProposal(env.db, f.proposal.id, 'lead');
-  assert.throws(() => completeItem(env.db, draft.id, 'marta', {}), /not on the team/);
+  // approval regenerates items from the approval-time diff, so look the published item up again
+  const published = env.db.prepare('SELECT id FROM learning_items WHERE proposal_id = ? AND published = 1').get(f.proposal.id);
+  assert.throws(() => completeItem(env.db, published.id, 'marta', {}), /not on the team/);
   env.cleanup();
 });
 

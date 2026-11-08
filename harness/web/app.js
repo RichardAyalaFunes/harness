@@ -138,7 +138,7 @@ function verifyPanel(d) {
 
 // ---- changes ----
 const sevChip = (s) => chip(s, s === 'critical' ? 'r' : s === 'material' ? 'y' : 'g');
-const stateChip = (s) => ({ proposed: chip('Awaiting approval', 'y'), approved: chip('Approved', 'ok'), rejected: chip('Rejected', 'r'), superseded: chip('Superseded by a changed file', 'g') }[s] || chip(s));
+const stateChip = (s) => ({ proposed: chip('Awaiting approval', 'y'), approved: chip('Approved', 'ok'), rejected: chip('Rejected', 'r'), superseded: chip('Superseded by a changed file', 'g'), superseded_noop: chip('Superseded: nothing material left after rebase', 'g') }[s] || chip(s));
 function changeBox(c) {
   const shown = c.op === 'remove' ? 'removed' : c.value;
   return h('div', { class: `cg${c.bias ? ' bias' : ''}` },

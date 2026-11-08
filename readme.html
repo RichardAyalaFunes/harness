@@ -35,7 +35,7 @@ pre{background:var(--ink);color:#f3f4f6;border-radius:16px;padding:16px 18px;ove
 <div class="kicker">RadHires harness challenge · fictional agency</div>
 <h1>The job description is the least reliable thing a recruiter reads.</h1>
 <p class="lead">In searches for small companies, the real criteria arrive later: in the kickoff call, the founder's email, the client's rejection. This harness keeps every recruiter on a search current with those changes, and checks that they learned them.</p>
-<p><span class="chip k">Node 24 · SQLite · no dependencies</span> <span class="chip y">7 checked stages</span> <span class="chip gs">76 tests</span></p>
+<p><span class="chip k">Node 24 · SQLite · no dependencies</span> <span class="chip y">7 checked stages</span> <span class="chip gs">94 tests</span></p>
 </section>
 
 <section class="glass">
@@ -55,7 +55,7 @@ pre{background:var(--ink);color:#f3f4f6;border-radius:16px;padding:16px 18px;ove
 <div class="tile step"><div class="n">1</div><b>Read a source</b><small>Hashed and registered; raw file stays readable.</small></div>
 <div class="tile step"><div class="n">2</div><b>Extract changes</b><small>Model returns JSON; every quote verified word for word.</small></div>
 <div class="tile step"><div class="n">3</div><b>Propose a version</b><small>Only material changes; the lead approves or rejects.</small></div>
-<div class="tile step"><div class="n">4</div><b>Flag bias</b><small>"Under 35" or "top-10 universities" are never applied as filters.</small></div>
+<div class="tile step"><div class="n">4</div><b>Flag bias</b><small>"Under 35" or "top-10 universities" appear in the brief only as "not applied" and never filter candidates.</small></div>
 <div class="tile step"><div class="n">5</div><b>Teach the team</b><small>Confirm, study or review, by kind of change; team completion tracked.</small></div>
 </div>
 <p style="margin-top:16px">A stage is complete only when its check passes and the result is stored. Open "How this was processed" on any source to see it. The model proposes; rules and a person decide.</p>
@@ -75,6 +75,7 @@ pre{background:var(--ink);color:#f3f4f6;border-radius:16px;padding:16px 18px;ove
 <div class="kicker">What I left out, on purpose</div>
 <h2>No RAG. No integrations. That's the point.</h2>
 <p class="quote">I've built retrieval pipelines and app integrations many times. They depend on each agency's tools and are easy to add. They would also hide what matters here: the reasoning from what the client said to what the recruiter knows.</p>
+<p style="font-size:13px;color:var(--muted)">Draft wording of the owner's stated reasoning; the owner confirms or edits it before submission.</p>
 <table>
 <tr><td>RAG / embeddings</td><td>One approved brief plus one new source fits the context window. Retrieval would add a failure mode with no benefit at this scale.</td></tr>
 <tr><td>Email, Slack, tl;dv, ATS connectors</td><td>Simulated as files with metadata. A connector only changes how a file arrives, not what happens next.</td></tr>
@@ -87,7 +88,7 @@ pre{background:var(--ink);color:#f3f4f6;border-radius:16px;padding:16px 18px;ove
 <div class="kicker">Honest status</div>
 <h2>What is real, and what isn't yet</h2>
 <div class="grid g2">
-<div class="tile card"><h3><span class="chip gs">Real</span></h3><p>Ingest and hashing, seven checked stages, verbatim-quote evidence, approval and audit, bias rules, learning steps by change type, team completion, screening review against the brief at screening time, CLI, web UI, 76 tests.</p></div>
+<div class="tile card"><h3><span class="chip gs">Real</span></h3><p>Ingest and hashing, seven checked stages, verbatim-quote evidence, approval and audit, bias rules, learning steps by change type, team completion, screening review against the brief at screening time, CLI, web UI, 94 tests.</p></div>
 <div class="tile card"><h3><span class="chip y">Stubbed</span></h3><p>The model runs on recorded outputs by default, so the demo shows orchestration and checks, not extraction quality. The OpenAI provider is wired and tested; the live run is pending. Study feedback is keyword-based. Candidates are fake.</p></div>
 </div>
 <pre>cd harness && pnpm install && pnpm harness rebuild && pnpm start</pre>

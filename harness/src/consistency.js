@@ -49,6 +49,10 @@ const CHECKS = [
   ['version rule: proposals need a material/critical change; approved ones map to a version', (db) => {
     const p = [];
     for (const pr of db.prepare('SELECT * FROM proposals').all()) {
+      if (pr.state === 'superseded_noop') {
+        if (!db.prepare("SELECT 1 FROM approvals WHERE target_type = 'proposal' AND target_id = ? AND action = 'superseded_noop'").get(pr.id)) p.push(`proposal ${pr.id}: superseded_noop without an audit row`);
+        continue;
+      }
       const top = db.prepare('SELECT severity FROM changes WHERE proposal_id = ? AND noop = 0').all(pr.id).reduce((m, c) => (rank(c.severity) > rank(m) ? c.severity : m), 'none');
       if (rank(top) < rank('material')) p.push(`proposal ${pr.id}: highest severity ${top}`);
       if (pr.state === 'approved' && !getVersion(db, pr.role_id, pr.version_created)) p.push(`proposal ${pr.id}: approved but v${pr.version_created} is missing`);

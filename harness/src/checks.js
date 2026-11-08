@@ -7,6 +7,13 @@ export const SEVERITIES = ['none', 'minor', 'material', 'critical'];
 export const rank = (s) => SEVERITIES.indexOf(s);
 
 const FIELD_RE = /^(company\.(direction|team)|req\.[a-z0-9]+(-[a-z0-9]+)*|restriction\.[a-z0-9]+(-[a-z0-9]+)*|expect\.(6m|12m|18m)|offer\.(level|budget|start|location|equity))$/;
+// Real calendar date (round trip), so 2026-02-30 and 2026-99-99 fail.
+export function isCalendarDate(s) {
+  if (typeof s !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(s)) return false;
+  const d = new Date(`${s}T00:00:00Z`);
+  return !Number.isNaN(d.getTime()) && d.toISOString().slice(0, 10) === s;
+}
+
 export const isAllowedField = (f) => typeof f === 'string' && FIELD_RE.test(f);
 
 // Safety net for restrictions the model did not flag. Not exhaustive; a human still reviews every proposal.

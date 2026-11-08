@@ -26,7 +26,7 @@ Open http://localhost:3000. `rebuild` creates `harness/harness.db` from the mock
 Other commands:
 
 ```bash
-pnpm test                          # 76 tests (node --test)
+pnpm test                          # 94 tests (node --test)
 pnpm harness check                 # 12 consistency checks over the database
 pnpm harness stages nw-08          # how one source was processed, stage by stage
 pnpm harness brief nw-be           # current approved brief
@@ -56,9 +56,9 @@ The database is a build product: it is gitignored and recreated by `rebuild`. JS
 |---|---|
 | Source ingest, hashing, supersede on change | Real |
 | 7-stage pipeline with a recorded check per stage | Real. See `pnpm harness stages <source>` or "How this was processed" in the UI |
-| Quote verification (verbatim, by offsets) | Real |
+| Quote verification | Real. The quote must be verbatim in the model-visible text; offsets are recomputed when the quote occurs exactly once; ambiguous or missing quotes fail |
 | Version proposals, lead approval or rejection, audit | Real |
-| Bias flags (protected characteristic or proxy) | Real rule on top of the model's flag; never applied as a filter |
+| Bias flags (protected characteristic or proxy) | Real rule on top of the model's flag; a biased restriction is stored in the brief only as `not_applied_bias` (the harness refuses to store it as applied). No code path filters candidates by any restriction; only lawful ones (such as a partner no-poach) are shown as `applied`, for display |
 | Learning steps by change type (confirm / study / review), team completion | Real |
 | Screening review against the brief *at screening time* | Real |
 | Model extraction | **Replay by default** (hand-written outputs). It proves orchestration and checks, not extraction quality. OpenAI provider implemented; live run pending a key |
