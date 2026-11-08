@@ -398,7 +398,18 @@ function studyItem(it, d) {
   const ta = h('textarea', { rows: 4, 'aria-label': `Your answer: ${it.title}`, placeholder: 'Answer in your own words (at least 20 characters)', value: it.completion ? it.completion.response || '' : '', disabled: !!it.completion });
   const result = h('div', { class: 'fb', hidden: true });
   const res = it.completion ? it.completion.result : null;
-  const showRes = (r) => { result.hidden = false; result.replaceChildren(h('b', { class: r.passed ? 'ok' : 'bad' }, r.passed ? 'Answer recorded. ' : `Not recorded yet: ${r.rule}. `), r.points ? r.points.map((p) => h('div', { class: `pt${p.hit ? ' y' : ''}` }, p.hit ? '✓' : '○', ' ', p.text)) : null, r.note ? h('p', { class: 'stubnote' }, `Replay stub: ${r.note}`) : null); };
+  const showRes = (r) => {
+    const ai = r.ai && !r.ai.stub && !r.ai.error ? r.ai : null;
+    const hit = (p, i) => (ai ? ai.covered[i] : p.hit);
+    result.hidden = false;
+    result.replaceChildren(h('b', { class: r.passed ? 'ok' : 'bad' }, r.passed ? 'Answer recorded. ' : `Not recorded yet: ${r.rule}. `),
+      ai ? h('p', { class: 'aicomment' }, ai.comment) : null,
+      r.points ? h('div', null, h('small', { class: 'ptlabel' }, 'What a full answer covers'), r.points.map((p, i) => h('div', { class: `pt${hit(p, i) ? ' y' : ''}` }, hit(p, i) ? '✓' : '○', ' ', p.text))) : null,
+      ai && ai.try_asking ? h('p', { class: 'tryask' }, h('b', null, 'Try asking a candidate: '), `“${ai.try_asking}”`) : null,
+      ai ? h('p', { class: 'stubnote' }, 'Coaching from the AI, based on this role’s brief. It is advice, not a grade.')
+        : r.ai && r.ai.error ? h('p', { class: 'stubnote' }, `AI feedback unavailable (${r.ai.error}). Showing keyword matches instead.`)
+        : r.note ? h('p', { class: 'stubnote' }, `No live model: ${r.note}`) : null);
+  };
   if (res) showRes(res);
   return itemShell(it, [h('p', { class: 'prompt' }, it.detail.prompt), h('div', { class: 'answer' }, ta), result,
     it.completion ? null : h('div', { class: 'acts split' }, h('button', { class: 'micb', type: 'button', title: 'Answer by voice: not available yet', onclick: () => $('pop').classList.add('on') }, micIcon(), h('span', null, 'Record audio'), h('em', null, 'soon')), h('button', { class: 'pill dark', onclick: async () => {

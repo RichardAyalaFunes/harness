@@ -61,9 +61,13 @@ export function createOpenAIModel(env = process.env, fetchImpl = globalThis.fetc
     async extract(input) {
       return call([{ role: 'system', content: systemPrompt() }, { role: 'user', content: JSON.stringify(input) }]);
     },
+    // Coaching feedback on a recruiter's study answer.
+    async feedback(input) {
+      return call([{ role: 'system', content: read('feedback.md') }, { role: 'user', content: JSON.stringify(input) }]);
+    },
     // Recruiter Q&A about one role. Context = the current approved brief only.
     async ask(input) {
-      return call([{ role: 'system', content: read('ask.md') }, ...(input.history || []), { role: 'user', content: JSON.stringify({ role: input.role, brief: input.brief, question: input.question }) }]);
+      return call([{ role: 'system', content: read('ask.md') }, ...(input.history || []), { role: 'user', content: JSON.stringify({ role: input.role, brief: input.brief, recent: input.recent || [], question: input.question }) }]);
     },
   };
 }

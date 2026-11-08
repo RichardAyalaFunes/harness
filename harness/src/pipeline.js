@@ -239,7 +239,8 @@ async function callModel(db, model, row) {
   const { text } = truncateForModel(row.body, MAX_CONTEXT_CHARS);
   const roles = targetRoles(db, row);
   const brief = row.scope === 'role' ? compactBrief(currentVersion(db, row.role_id)) : { roles: Object.fromEntries(roles.map((r) => [r, compactBrief(currentVersion(db, r))])) };
-  const input = { source: { id: row.source_id, channel: row.channel, date: row.date, author: row.author, role: row.role_ref, candidate: row.candidate, decision: row.decision }, brief, body: text };
+  const roleInfo = db.prepare('SELECT r.id, r.title, c.name AS client FROM roles r JOIN clients c ON c.id = r.client_id WHERE r.id = ?');
+  const input = { roles: roles.map((id) => roleInfo.get(id)).filter(Boolean), source: { id: row.source_id, channel: row.channel, date: row.date, author: row.author, role: row.role_ref, candidate: row.candidate, decision: row.decision }, brief, body: text };
   if (row.channel === 'client-decision' && row.candidate) {
     const scr = findScreening(db, row.role_id, row.candidate, row.date);
     if (scr) input.screening = { source_id: scr.source_id, date: scr.date, body: truncateForModel(scr.body, MAX_CONTEXT_CHARS).text };

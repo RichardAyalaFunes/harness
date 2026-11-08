@@ -9,7 +9,8 @@ import { diff, matrix } from './brief.js';
 import { listCandidates, moveCandidate } from './candidates.js';
 import { approveProposal, rejectProposal, approveReview, rejectReview } from './approvals.js';
 import { completeItem } from './learning.js';
-import { loadEnv, getModel } from './model/index.js';
+import { loadEnv, getAssistModel } from './model/index.js';
+import { studyFeedback } from './feedback.js';
 import { askRole } from './ask.js';
 loadEnv();
 
@@ -44,8 +45,16 @@ export function createApp(db, { webDir = path.join(ROOT, 'web') } = {}) {
   route('POST', '/api/proposals/:id/reject', ({ p, body }) => rejectProposal(db, Number(p.id), body.by || ME, body.reason || 'rejected in the UI'));
   route('POST', '/api/reviews/:id/approve', ({ p, body }) => approveReview(db, Number(p.id), body.by || ME));
   route('POST', '/api/reviews/:id/reject', ({ p, body }) => rejectReview(db, Number(p.id), body.by || ME, body.reason || 'rejected in the UI'));
-  route('POST', '/api/items/:id/complete', ({ p, body }) => completeItem(db, Number(p.id), body.recruiter || ME, { response: body.response, accepted: body.accepted, none_needed: body.none_needed }));
-  route('POST', '/api/roles/:id/ask', ({ p, body }) => askRole(db, getModel(), p.id, body).catch((e) => Promise.reject(new HttpError(400, e.message))));
+  route('POST', '/api/items/:id/complete', async ({ p, body }) => {
+    const who = body.recruiter || ME;
+    const r = completeItem(db, Number(p.id), who, { response: body.response, accepted: body.accepted, none_needed: body.none_needed });
+    if (r.passed && !r.already) {
+      const ai = await studyFeedback(db, getAssistModel(), Number(p.id), who);
+      if (ai) r.result = { ...r.result, ai };
+    }
+    return r;
+  });
+  route('POST', '/api/roles/:id/ask', ({ p, body }) => askRole(db, getAssistModel(), p.id, body).catch((e) => Promise.reject(new HttpError(400, e.message))));
   route('GET', '/api/stages', ({ q }) => stagesView(db, q.get('source')));
 
   const send = (res, status, body, type = 'application/json; charset=utf-8') => {

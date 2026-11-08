@@ -15,6 +15,14 @@ export function loadEnv(file = path.join(ROOT, '.env'), env = process.env) {
   return env;
 }
 
+// Model for recruiter-facing help (Ask about this role, study feedback). Uses OpenAI whenever a key is set,
+// so answers are live while the pipeline can stay on replay (no tokens spent on rebuilds). HARNESS_ASSIST=replay turns it off.
+export function getAssistModel(env = process.env, opts = {}) {
+  if (env.HARNESS_ASSIST === 'replay') return getModel({ ...env, HARNESS_MODEL: 'replay' }, opts);
+  if (env.OPENAI_API_KEY) return createOpenAIModel(env);
+  return getModel(env, opts);
+}
+
 export function getModel(env = process.env, opts = {}) {
   const kind = env.HARNESS_MODEL || 'replay';
   if (kind === 'replay') return createReplayModel({ dir: opts.replayDir || path.join(ROOT, 'data', 'replay') });

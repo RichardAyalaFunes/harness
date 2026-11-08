@@ -26,7 +26,7 @@ Open http://localhost:3000. `rebuild` creates `harness/harness.db` from the mock
 Other commands:
 
 ```bash
-pnpm test                          # 94 tests (node --test)
+pnpm test                          # 103 tests (node --test)
 pnpm harness check                 # 12 consistency checks over the database
 pnpm harness stages nw-08          # how one source was processed, stage by stage
 pnpm harness brief nw-be           # current approved brief
@@ -40,6 +40,8 @@ By default the harness uses the **replay model**: recorded, hand-written model o
 1. Copy `harness/.env.example` to `harness/.env`. `.env` is gitignored; never commit a key.
 2. Set `HARNESS_MODEL=openai`, `OPENAI_API_KEY=...` and optionally `OPENAI_MODEL`.
 3. Run `pnpm harness rebuild` again.
+
+With a key set, the recruiter-facing help ("Ask about this role" and coaching feedback on study answers) uses OpenAI right away, even while the pipeline stays on replay, so rebuilding the demo spends no tokens. Set `HARNESS_ASSIST=replay` to keep those offline. Prompts are in `harness/src/prompts/`.
 
 The live model goes through the same JSON contract and the same checks. If a call or check fails, that stage shows as failed. The harness never falls back to the replay data silently.
 
@@ -62,7 +64,8 @@ The database is a build product: it is gitignored and recreated by `rebuild`. JS
 | Learning steps by change type (confirm / study / review), team completion | Real |
 | Screening review against the brief *at screening time* | Real |
 | Model extraction | **Replay by default** (hand-written outputs). It proves orchestration and checks, not extraction quality. OpenAI provider implemented; live run pending a key |
-| Study answer feedback | Keyword stub showing which points were covered; no grade |
+| Study answer feedback | AI coaching (OpenAI) when a key is set: which points the answer covers, one comment, one question to try; advice, not a grade. Keyword stub without a key |
+| Ask about this role | Short answers grounded in the current brief and recent client messages (OpenAI); a labelled stub without a key |
 | Candidates and pipeline | Fake data; moving a card is never blocked |
 | Integrations (email, Slack, tl;dv, ATS), RAG, audio answers, auth | Out of scope, on purpose. See DESIGN.md |
 

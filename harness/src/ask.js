@@ -40,7 +40,10 @@ export async function askRole(db, model, roleId, { question, history } = {}) {
   const v = currentVersion(db, roleId);
   if (!v) throw new Error('this role has no approved brief yet');
   const brief = briefForAsk(v);
-  const raw = await model.ask({ role: { title: role.title, client: role.client }, brief, question: q, history: cleanHistory(history) });
+  const recent = db.prepare(`SELECT s.date, s.channel, s.title, a.summary FROM sources s LEFT JOIN analyses a ON a.source_row_id = s.id
+    WHERE s.status <> 'superseded' AND (s.role_id = ? OR (s.scope = 'company' AND s.client_id = (SELECT client_id FROM roles WHERE id = ?)))
+    ORDER BY s.date DESC LIMIT 5`).all(roleId, roleId);
+  const raw = await model.ask({ role: { title: role.title, client: role.client }, brief, recent, question: q, history: cleanHistory(history) });
   const res = checkAnswer(raw, brief);
   if (!res.ok) throw new Error(`No answer: ${res.error}. Try again.`);
   return { ...res, model: model.name };

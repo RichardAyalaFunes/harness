@@ -430,3 +430,6 @@ textarea:focus,input[type=text]:focus{border-color:var(--ink);box-shadow:0 0 0 4
 .pill[disabled]{transition:opacity .2s}
 .tipfloat{transition:opacity .15s var(--ease),transform .18s var(--ease)}
 .panel{transition:box-shadow var(--mid) var(--ease)}
+.aicomment{margin:8px 0;color:var(--ink);font-size:14px;line-height:1.55}
+.ptlabel{display:block;margin-top:6px;color:var(--muted);font-size:12px}
+.tryask{margin:10px 0 0;padding:10px 12px;border-radius:12px;background:#dfeaf7;color:#1f4a7a;font-size:13.5px}
