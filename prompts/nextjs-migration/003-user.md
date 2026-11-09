@@ -1,0 +1,3 @@
+# 003 · user · 2026-11-08 (visible message, transcribed from voice input; lightly cleaned, meaning unchanged)
+
+Answering the questions. Question 1: yes, merge that to main so we have that as a fallback. Question 2: build a new app in a separate folder, yes, but I would also like to know where the current files and scripts that hold our application are, just to know. I approve having a new folder: name it app-next, or maybe just app, because it will be the only app, unless you think there will be another folder so we can group the information. Question 3: yes, go ahead with Playwright. Question 4: yes, I agree with you. Question 5: yes, let's do that too.

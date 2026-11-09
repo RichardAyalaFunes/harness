@@ -1,4 +1,4 @@
-# Next.js migration plan (revision 4, plan gate PASSED on Codex pass 4)
+# Next.js migration plan (revision 4, plan gate PASSED on Codex pass 4; human answers recorded below)
 
 ID 2026-11-08-nextjs-migration · author Claude · planning on branch claude/vibrant-goldstine-051d8a; the implementation gets its own worktree and branch · canonical record: main `_work/2026-11-08-nextjs-migration/`.
 Plan gate: Codex returned PASS WITH CHANGES (`plan-review.codex.md`). The findings from passes 1–3 were all accepted and folded in below; see `review-dispositions.claude.md`.
@@ -282,12 +282,18 @@ The full live run on the **current** app (NQ4) produces the baseline real-model 
   | Scope creep | the Out list and the exceptions file |
   | Losing a working deliverable | P0 tag |
 
-## Questions for the human (recommended default first)
-- **NQ1 Baseline.** Merge the current branch to main, tag `pre-next` and record the golden files first? *Recommend yes.*
-- **NQ2 Where.** Build the Next app in a new `app-next/` folder beside `harness/`, then replace `harness/` at cutover, or rebuild in place? *Recommend side by side*, because the golden and e2e runs compare the old and new apps live.
-- **NQ3 Playwright.** Add it as a dev dependency (it downloads a browser of about 150 MB) and make it mandatory for cutover? *Recommend yes.*
-- **NQ4 Live baseline.** Run the full live OpenAI pass on the current app first (about 30 minutes; it records the real-model results), then migrate and do the short P7 smoke? *Recommend yes.*
-- **NQ5 Trace payload default.** Should the default be `full` (store the redacted inputs and outputs, as you asked) or `meta`? *Recommend `full`* for this synthetic demo, with `meta` documented for real data.
+## Human answers (2026-11-08, prompts/nextjs-migration/003-user.md)
+- **NQ1 Baseline:** yes. Done: `main` fast-forwarded to the branch, tag `pre-next` created.
+- **NQ2 Where:** a new folder, named **`app-next/`**, created at P1. The old app stays in `harness/` until cutover, when `harness/` is removed and `app-next/` stays. Why this name instead of `app/`: Next.js already uses an `app/` folder inside a project for its routes, so `app/app/` would be confusing, and a temporary name that is explicit avoids a rename later. The human allowed either.
+- **NQ3 Playwright:** yes, mandatory for cutover.
+- **NQ4 Live baseline first:** yes. Done: `live-baseline.claude.md`.
+- **NQ5 Trace payload default:** `full` (redacted), with `meta` and `off` available.
+
+### Changes found while doing P0 and NQ4 (to carry into the port)
+1. The golden recordings exist: `harness/test/golden/` (7 scenarios, 61 steps, deterministic across 4 runs). `parity-exceptions.md` lists 8 proposed intended differences (X1–X8), including X3: the old server accepts a 2-character rejection reason, because only the UI enforced the minimum.
+2. The prompts gained `contract.md` (worked examples, no `?` keys), rules mapped to the checks, and one bounded repair attempt per source for live models. `lib/model` must carry these over, and the `llm_calls` table records the repair attempt as attempt 2 of the same logical call (it already allows 3 attempt rows).
+3. The recommended live model is `gpt-4o` or newer.
+4. The baseline test count is now **110** (it was 103); the "tests keep their assertions" rule applies to all 110.
 
 ## Peer review
 - Pass 1: Codex, PASS WITH CHANGES (6 material, 1 minor), all accepted.

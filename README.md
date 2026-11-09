@@ -26,7 +26,7 @@ Open http://localhost:3000. `rebuild` creates `harness/harness.db` from the mock
 Other commands:
 
 ```bash
-pnpm test                          # 103 tests (node --test)
+pnpm test                          # 110 tests (node --test)
 pnpm harness check                 # 12 consistency checks over the database
 pnpm harness stages nw-08          # how one source was processed, stage by stage
 pnpm harness brief nw-be           # current approved brief
@@ -38,7 +38,7 @@ pnpm harness team nw-be            # who on the team is up to date
 By default the harness uses the **replay model**: recorded, hand-written model outputs in `harness/data/replay/`. It runs offline. To use a live model:
 
 1. Copy `harness/.env.example` to `harness/.env`. `.env` is gitignored; never commit a key.
-2. Set `HARNESS_MODEL=openai`, `OPENAI_API_KEY=...` and optionally `OPENAI_MODEL`.
+2. Set `HARNESS_MODEL=openai`, `OPENAI_API_KEY=...` and `OPENAI_MODEL` (use `gpt-4o` or newer: `gpt-4o-mini` passed only 8 of 13 sources in the live baseline, `gpt-4o` 12 of 13).
 3. Run `pnpm harness rebuild` again.
 
 With a key set, the recruiter-facing help ("Ask about this role" and coaching feedback on study answers) uses OpenAI right away, even while the pipeline stays on replay, so rebuilding the demo spends no tokens. Set `HARNESS_ASSIST=replay` to keep those offline. Prompts are in `harness/src/prompts/`.

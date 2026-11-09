@@ -60,23 +60,31 @@ function stage1({ db, row }) {
 }
 
 // ---- stage 2 -------------------------------------------------------------------------------------------------
-function stage2({ db, row, modelOut }) {
-  if (modelOut.error) return fail({ errors: [`model call failed: ${modelOut.error}`] });
-  let obj = modelOut.raw;
+// Parse + schema + semantic checks of one raw model answer. Used by stage 2 and by the repair attempt in callModel.
+function evaluateRaw(db, row, raw) {
+  let obj = raw;
   if (typeof obj === 'string') {
-    try { obj = JSON.parse(obj); } catch (e) { return fail({ errors: [`malformed JSON: ${e.message}`] }); }
+    try { obj = JSON.parse(obj); } catch (e) { return { errors: [`malformed JSON: ${e.message}`] }; }
   }
   const schemaErrors = validateExtraction(obj);
-  if (schemaErrors.length) return fail({ errors: schemaErrors });
-  const roles = targetRoles(db, row);
+  if (schemaErrors.length) return { errors: schemaErrors };
   const cur = row.scope === 'role' ? currentVersion(db, row.role_id) : null;
   const known = new Set(db.prepare("SELECT source_id FROM sources WHERE status <> 'superseded'").all().map((s) => s.source_id));
   const { seen, truncated } = truncateForModel(row.body);
   const chk = checkExtraction(obj, { source: row, seen, current: cur?.fields || {}, knownSources: known });
-  if (!chk.ok) return fail({ errors: chk.errors });
+  return chk.ok ? { errors: [], obj, chk, truncated } : { errors: chk.errors };
+}
+
+function stage2({ db, row, modelOut }) {
+  if (modelOut.error) return fail({ errors: [`model call failed: ${modelOut.error}`] });
+  const ev = evaluateRaw(db, row, modelOut.raw);
+  const repair = modelOut.repair ? { repair: modelOut.repair } : {};
+  if (ev.errors.length) return fail({ errors: ev.errors, ...repair });
+  const { obj, chk, truncated } = ev;
+  const roles = targetRoles(db, row);
   db.prepare('INSERT INTO analyses(source_row_id, model, raw, parsed, summary, no_change, truncated) VALUES (?,?,?,?,?,?,?)')
     .run(row.id, modelOut.model, typeof modelOut.raw === 'string' ? modelOut.raw : json(modelOut.raw), json({ ...obj, changes: chk.changes }), obj.summary, obj.no_change ? 1 : 0, truncated ? 1 : 0);
-  return pass({ model: modelOut.model, summary: obj.summary, no_change: obj.no_change, changes: chk.changes.length, ...chk.stats, truncated, roles });
+  return pass({ model: modelOut.model, summary: obj.summary, no_change: obj.no_change, changes: chk.changes.length, ...chk.stats, truncated, roles, ...repair });
 }
 
 // ---- stage 3 -------------------------------------------------------------------------------------------------
@@ -245,8 +253,19 @@ async function callModel(db, model, row) {
     const scr = findScreening(db, row.role_id, row.candidate, row.date);
     if (scr) input.screening = { source_id: scr.source_id, date: scr.date, body: truncateForModel(scr.body, MAX_CONTEXT_CHARS).text };
   }
-  try { return { raw: await model.extract(input), model: model.name, input_chars: JSON.stringify(input).length }; }
-  catch (e) { return { error: e.message, model: model.name }; }
+  try {
+    const out = { raw: await model.extract(input), model: model.name, input_chars: JSON.stringify(input).length };
+    // One bounded repair attempt for live models: the same checks that would reject the answer are shown to the model
+    // once, and the corrected answer goes through the same checks again. The first errors are kept in the stage record.
+    if (model.repairs) {
+      const first = evaluateRaw(db, row, out.raw).errors;
+      if (first.length) {
+        out.repair = { attempts: 2, first_errors: first.slice(0, 15) };
+        out.raw = await model.extract({ ...input, repair: { previous_answer: String(out.raw).slice(0, 20000), errors: first.slice(0, 15) } });
+      }
+    }
+    return out;
+  } catch (e) { return { error: e.message, model: model.name }; }
 }
 
 // Runs the stages that are not yet complete for this source row. Passed/skipped stages are never redone (idempotent per hash+stage).
