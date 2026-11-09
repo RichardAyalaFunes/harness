@@ -45,7 +45,7 @@ By default the harness uses the **replay model**: recorded, hand-written model o
 1. Create `app-next/.env` (it is gitignored; never commit a key) with `OPENAI_API_KEY=...`, `OPENAI_MODEL=gpt-4o` and, to run the pipeline live, `HARNESS_MODEL=openai`. See `app-next/.env.example`.
 2. Run `pnpm harness rebuild` again.
 
-Use `gpt-4o` or newer. In the live baseline `gpt-4o-mini` passed only 8 of 13 sources and `gpt-4o` 11 to 12 (results vary between runs; see `_work/2026-11-08-nextjs-migration/live-baseline.claude.md`).
+`gpt-4o` is the model that was tested; other models have not been validated. In the live baseline `gpt-4o-mini` passed only 8 of 13 sources and `gpt-4o` 11 to 12 (results vary between runs; see `_work/2026-11-08-nextjs-migration/live-baseline.claude.md`).
 
 With a key set, the recruiter-facing help ("Ask about this role" and coaching feedback on study answers) uses OpenAI right away, even while the pipeline stays on replay, so rebuilding the demo spends no tokens. Set `HARNESS_ASSIST=replay` to keep those offline. Prompts are in `app-next/lib/model/prompts/`.
 
@@ -71,9 +71,9 @@ State-changing requests must come from the same origin: a browser sends `Origin`
 
 ### Logging and traces
 - **Logs:** one JSON line per event on stdout (`LOG_LEVEL` sets the level) with the trace id, redacted before it is written.
-- **Traces:** every API request, page load and CLI command is a trace in SQLite (`traces`, `spans`, `llm_calls`). A pipeline run is a tree: command, source, stage, AI call. Each AI attempt stores the model, a hash of the system prompt (so a changed prompt is visible), the redacted request and response, token counts, latency and the result of the checks. Every API response carries `x-trace-id`, and a stage record in the audit trail links to its trace.
+- **Traces:** every API request handled by the shared route wrapper, every page load and every state-changing CLI command is traced to SQLite on a best-effort basis (`traces`, `spans`, `llm_calls`); read-only CLI commands such as `check` and `brief` are not traced. A pipeline run is a tree: command, source, stage, AI call. Each AI attempt stores the model, a hash of the system prompt (so a changed prompt is visible), the redacted request and response, token counts, latency and the result of the checks. Responses from the route wrapper (including its 400, 403, 404, 413, 415 and 500 answers) carry `x-trace-id`; the 405 that Next itself sends for an unsupported method on an existing route does not, and a trace that could not be written leaves an id that does not resolve. A stage record in the audit trail links to its trace.
 - **Read them:** `pnpm harness trace --last` prints the tree. There is no reporting UI, on purpose.
-- **Privacy:** keys, auth headers, emails and phone numbers are removed before anything is stored; free text never goes into span attributes; payload fields are capped at 64 KB and a trace at 2 MB. `TRACE_PAYLOADS=meta` keeps only sizes and hashes, `off` keeps nothing. Domain records (source texts, answers) are stored as before. Pruning deletes rows logically; it does not guarantee physical erasure until a `VACUUM`.
+- **Privacy (logs, trace payloads and error bodies only):** keys, auth headers, emails and phone numbers are removed by pattern before they are written there. This is pattern-based redaction, not a comprehensive privacy guarantee; free text never goes into span attributes; payload fields are capped at 64 KB and a trace at 2 MB. `TRACE_PAYLOADS=meta` keeps only sizes and hashes, `off` keeps nothing. **Domain records are not redacted:** the source documents under `app-next/data/sources/`, the stored source texts, briefs and recruiters' answers are kept exactly as they are (they are synthetic here; with real data they would need their own policy). Pruning deletes rows logically; it does not guarantee physical erasure until a `VACUUM`.
 - **Best effort:** writing a trace never fails a request and never touches domain data. A crashed process leaves a trace marked `interrupted` after its lease expires.
 
 ### Why SQLite

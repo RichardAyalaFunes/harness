@@ -10,7 +10,7 @@ These signals land in one recruiter's inbox or call. The rest of the team keeps 
 
 **What it costs.** Candidates screened on the wrong criteria, submissions the client rejects, and repeated clarification calls. One recruiter may know about a change while three others don't. We have no measured baseline; these are the failure modes the owner describes from practice, and we claim no measured savings.
 
-**Why an AI harness fits.** Reading messy sources (transcripts, emails, news) and saying precisely what changed in a role is language work a model does well.
+**Why an AI harness fits.** Reading messy sources (transcripts, emails, news) and saying precisely what changed in a role is language work suited to model-assisted extraction, as long as every output is checked and a person approves it.
 
 **Where it doesn't fit.** Deciding whether a change is real, whether a restriction is lawful, or whether a recruiter is ready is for people and rules. So the model only proposes. Rules check every proposal, and a lead approves before anything reaches the team.
 
@@ -75,7 +75,7 @@ sources/*.md ──► 1 register (hash, metadata) ──► 2 extract (model �
   - small models break small rules (verbatim quotes, minimum severities, missing weights), so one repair attempt sends the exact check errors back once; `gpt-4o-mini` then passed 8 of 13 sources and `gpt-4o` 11 to 12 (it varies run to run);
   - the checks held: weak output was rejected, never applied;
   - a live model finds fewer changes than the hand-written outputs and names fields differently, so later briefs diverge and one review stage still fails on slug mismatch. This is a model-quality limit, and it is why every proposal still needs a person.
-- **Time spent.** The owner will fill this in. Agent sessions ran across 7 to 9 Nov 2026.
+- **Time spent.** The owner will fill this in. Agent sessions ran across 7 to 8 Nov 2026.
 - **Next steps:**
   1. Stronger slug consistency (reuse the existing field names listed in the brief) and a comparison with a newer model.
   2. A lead view across positions.

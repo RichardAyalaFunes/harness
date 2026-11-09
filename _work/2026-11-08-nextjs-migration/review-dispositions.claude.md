@@ -77,3 +77,20 @@ Not verifiable by the reviewer from the supplied text and checked separately: th
 The reviewer found the finding resolved and no new material problem in the supplied lines; optional test tightening (assert exactly 64 reads; a throwing getter at entry 65) is noted and not required. Evidence limit stated by the reviewer: source review only, no execution results; the executions are recorded here: `tsc --noEmit` and the test project clean; 160 unit tests, 16 integration tests (production server, golden parity), 9 Playwright journeys and `harness check` 12/12 all passed on the final code.
 
 **Pre-merge gate: PASS on pass 5.** The pre-merge review took five passes (FAIL, FAIL, FAIL, FAIL, PASS); each pass found real gaps (redaction of structured keys and metadata, origin scheme and Host, telemetry containment, byte caps and bounded work, boundary-safe redaction) and one regression in my own first fix (an origin check based on `req.url` refused real browsers) that the integration and e2e suites caught. The **final gate (whole assessment) is still pending** and is not claimed by this file.
+
+## Final gate (`final.codex.md`): PASS WITH CHANGES (3 material, 3 minor), all addressed
+
+| # | Finding | Severity | Disposition |
+|---|---|---|---|
+| 1 | README overstated trace coverage ("every API response carries x-trace-id", "every API request is a trace") | material | **Fixed (docs).** Scoped to the route wrapper; the Next-generated 405 is named as the exception; persistence is described as best effort; read-only CLI commands are said to be untraced |
+| 2 | README privacy sentence read as if the database and source files hold no personal data | material | **Fixed (docs).** Scoped to logs, trace payloads and error bodies; pattern-based, not a guarantee; domain records and source documents are stated to be unredacted (synthetic here) |
+| 3 | Demo assets (replay outputs, source documents) not proven to ship | material | **Verified.** `git ls-files app-next/data` lists 13 replay outputs, the seed and all 13 source documents. Clean-clone run recorded below |
+| m1 | "gpt-4o or newer" implies tested compatibility | minor | Fixed: "gpt-4o is the model that was tested; other models have not been validated" |
+| m2 | DESIGN dates ran to 9 Nov | minor | Fixed: "7 to 8 Nov 2026" |
+| m3 | "a model does well" too strong | minor | Fixed: model-assisted extraction, checked and approved by a person |
+
+Not changed, as the reviewer noted: extraction recall against independently annotated sources, plausible-but-wrong conclusions backed by real quotes, and adversarial instructions inside sources are evaluation gaps, not extra deliverables; they are in the limitations. Time spent and the first-person quote stay with the owner.
+
+Clean-clone check (final gate item 3), run on a fresh `git clone` of main into a temp folder with no local files: `pnpm install` (20 s), `pnpm harness rebuild` (replay, no key needed), `pnpm harness check` (all 12 checks passed), `pnpm typecheck` (clean), `pnpm test` (160 of 160 passed). One stray file from my side was found and removed from git: `app-next/test-results/.last-run.json` (Playwright output; the folder is gitignored).
+
+**Final gate: PASS WITH CHANGES, and the changes are applied.** The reviewer did not see the corrected files, so this is recorded as "findings addressed", not as a second PASS. Open for the owner: time spent, the first-person quote in the README, and the choice to submit.
