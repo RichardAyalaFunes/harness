@@ -2,6 +2,8 @@
 
 Updated: 2026-11-07 · Claude (client-context chat). Stage: client-context answers recorded; plan next.
 
+NEXT.JS MIGRATION (2026-11-08, Claude): human decided to migrate harness to a single Next.js service (prompts/nextjs-migration/001-user.md). Plan: _work/2026-11-08-nextjs-migration/plan.claude.md (rev 4); plan gate PASS on Codex pass 4 (dispositions in review-dispositions.claude.md). Nothing implemented. Open human questions NQ1-NQ5 (merge+tag baseline first, side-by-side folder, Playwright, live baseline run first, trace payload default). Branch claude/vibrant-goldstine-051d8a also carries 7 unmerged UI/AI commits (76095d4 and earlier); not yet checkpointed on main pending NQ1.
+
 LATEST (2026-11-08): harness built and merged. harness/ = Node 24 + node:sqlite, 7 checked stages, CLI, web UI from prototype A, replay model by default, OpenAI provider wired (retries, generic errors). 94 tests pass; harness check 12/12. Plan gate PASS (3rd Codex pass), pre-merge PASS (2nd pass); see _work/2026-11-08-harness-build/review-dispositions.claude.md. README, DESIGN.md, readme.html written (owner to confirm the first-person quote and time spent). PENDING: owner puts OPENAI_API_KEY (+ OPENAI_MODEL) in harness/.env; then live run (HARNESS_MODEL=openai pnpm harness rebuild), record results vs replay, then final Codex review.
 
 Earlier baton (Codex):
