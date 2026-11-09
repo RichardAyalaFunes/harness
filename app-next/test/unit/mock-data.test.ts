@@ -59,7 +59,7 @@ test('mock data: stage_runs tell the story of nw-08 (all stages, publish passed)
 test('API: positions, role, stages, approve the pending Kestrel proposal, complete an item, move a candidate', async () => {
   const server = createApp(db).listen(0, '127.0.0.1');
   await new Promise((r) => server.once('listening', r));
-  const base = `http://127.0.0.1:${server.address().port}`;
+  const base = `http://127.0.0.1:${(server.address() as any).port}`;
   const get = async (p: any) => (await fetch(base + p)).json();
   const post = async (p: any, body: any) => { const r = await fetch(base + p, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) }); return { status: r.status, body: await r.json() }; };
   try {

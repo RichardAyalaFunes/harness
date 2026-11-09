@@ -85,6 +85,9 @@ const EXPECTED_DIFFS: Record<string, Check> = {
   // X1 new error body everywhere; X9 unknown entity 404 instead of 400; X10 state conflict 409 instead of 400
   'reads/unknown role': err(404, 'not_found', /unknown role nope/),
   'reads/diff non numeric': err(400, 'validation', /from: must be a whole number/),
+  // X11: /api/stages rows gained one additive key, trace_id (links an audit row to its trace). Everything else must match.
+  'reads/stages all': (res, g) => { assert.equal(res.status, 200); assert.deepEqual(normalise(res.body.map(({ trace_id, ...r }: any) => r)), g.response.body); },
+  'reads/stages for one source': (res, g) => { assert.equal(res.status, 200); assert.deepEqual(normalise(res.body.map(({ trace_id, ...r }: any) => r)), g.response.body); },
   'approvals/approve proposal 6 again': err(409, 'conflict', /is approved, not proposed/),
   'approvals/approve unknown proposal': err(404, 'not_found', /unknown proposal 999/),
   'approvals/approve non numeric id': err(400, 'validation', /id: must be a whole number/),
@@ -112,7 +115,8 @@ const EXPECTED_DIFFS: Record<string, Check> = {
   'http-edges/POST without Origin': err(403, 'forbidden'), // X5
   'http-edges/DELETE on an API route': (res) => assert.equal(res.status, 405), // X6: Next answers; no trace id expected (plan I2b)
   'http-edges/unknown API path': err(404, 'not_found', /no route GET \/api\/does\/not\/exist/),
-  'http-edges/POST to a page': (res) => assert.ok([404, 405].includes(res.status)), // X8: pages are Next's; a POST to / is refused
+  // X8: pages belong to Next, which answers a POST to a page like a GET (200). Pages are read-only and define no server actions, so nothing can change; the database check below proves it.
+  'http-edges/POST to a page': (res, _g, db) => { assert.ok([200, 404, 405].includes(res.status)); assert.equal(db.prepare('SELECT COUNT(*) AS n FROM approvals').get().n, 10); },
   'http-edges/index page headers': (res) => { assert.equal(res.status, 200); assert.match(res.headers['content-type'], /text\/html/); assert.equal(res.headers['x-content-type-options'], 'nosniff'); },
   'http-edges/unknown static file': (res) => assert.equal(res.status, 404),
   'http-edges/path traversal': (res) => assert.ok([400, 404].includes(res.status)),

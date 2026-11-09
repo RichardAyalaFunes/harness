@@ -101,7 +101,7 @@ export function stagesView(db: Db, sourceId = null) {
   const rows = sourceId
     ? db.prepare("SELECT sr.*, s.hash, s.status AS source_status FROM stage_runs sr JOIN sources s ON s.id = sr.source_row_id WHERE sr.source_id = ? AND s.status <> 'superseded' ORDER BY sr.stage").all(sourceId)
     : db.prepare("SELECT sr.*, s.hash, s.status AS source_status FROM stage_runs sr JOIN sources s ON s.id = sr.source_row_id WHERE s.status <> 'superseded' ORDER BY s.date, s.ingest_order, sr.stage").all();
-  const out = rows.map((r: any) => ({ source_id: r.source_id, stage: r.stage, name: r.name, status: r.status, skip_reason: r.skip_reason, check: unjson(r.check_result), run_id: r.run_id, hash: r.hash.slice(0, 12), at: r.created_at }));
+  const out = rows.map((r: any) => ({ source_id: r.source_id, stage: r.stage, name: r.name, status: r.status, skip_reason: r.skip_reason, check: unjson(r.check_result), run_id: r.run_id, hash: r.hash.slice(0, 12), at: r.created_at, trace_id: r.trace_id ?? null }));
   // Stage 7 is recorded only once every proposal/review of the source is decided; until then show it as pending.
   const result: any[] = [];
   for (const id of new Set(out.map((r: any) => r.source_id))) {
