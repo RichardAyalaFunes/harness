@@ -16,6 +16,7 @@ import { validateExtraction } from '../contracts/extraction.ts';
 import { compactBrief, currentVersion, versionAt } from './brief.ts';
 import { draftItems, saveDraftItems, teamOf } from './learning.ts';
 import type { Db } from '../db/connection.ts';
+import { currentTraceId, withSpan } from '../obs/tracer.ts';
 
 export const STAGE_NAMES = { 1: 'Register source', 2: 'Extract changes', 3: 'Decide version', 4: 'Bias screen', 5: 'Learning steps', 6: 'Screening review', 7: 'Publish to recruiters' };
 const DONE = new Set(['passed', 'skipped']);
@@ -24,10 +25,10 @@ const fail = (check: any) => ({ status: 'failed', check });
 const skip = (reason: any, check = {}) => ({ status: 'skipped', check, reason });
 
 export function recordStage(db: Db, runId: any, row: any, n: any, res: any) {
-  db.prepare(`INSERT INTO stage_runs(run_id, source_row_id, source_id, stage, name, status, check_result, skip_reason, created_at)
-    VALUES (?,?,?,?,?,?,?,?,?) ON CONFLICT(source_row_id, stage) DO UPDATE SET run_id = excluded.run_id, status = excluded.status,
-    check_result = excluded.check_result, skip_reason = excluded.skip_reason, created_at = excluded.created_at`)
-    .run(runId, row.id, row.source_id, n, (STAGE_NAMES as any)[n], res.status, json(res.check), res.reason ?? null, now());
+  db.prepare(`INSERT INTO stage_runs(run_id, source_row_id, source_id, stage, name, status, check_result, skip_reason, created_at, trace_id)
+    VALUES (?,?,?,?,?,?,?,?,?,?) ON CONFLICT(source_row_id, stage) DO UPDATE SET run_id = excluded.run_id, status = excluded.status,
+    check_result = excluded.check_result, skip_reason = excluded.skip_reason, created_at = excluded.created_at, trace_id = excluded.trace_id`)
+    .run(runId, row.id, row.source_id, n, (STAGE_NAMES as any)[n], res.status, json(res.check), res.reason ?? null, now(), currentTraceId() ?? null);
 }
 
 export const stageRows = (db: Db, rowId: any) => db.prepare('SELECT * FROM stage_runs WHERE source_row_id = ? ORDER BY stage').all(rowId);
@@ -254,19 +255,23 @@ async function callModel(db: Db, model: any, row: any) {
     const scr = findScreening(db, row.role_id, row.candidate, row.date);
     if (scr) input.screening = { source_id: scr.source_id, date: scr.date, body: truncateForModel(scr.body, MAX_CONTEXT_CHARS).text };
   }
-  try {
-    const out: any = { raw: await model.extract(input), model: model.name, input_chars: JSON.stringify(input).length };
-    // One bounded repair attempt for live models: the same checks that would reject the answer are shown to the model
-    // once, and the corrected answer goes through the same checks again. The first errors are kept in the stage record.
-    if (model.repairs) {
-      const first = evaluateRaw(db, row, out.raw).errors;
-      if (first.length) {
+  const inputChars = JSON.stringify(input).length;
+  return withSpan('llm', 'extract', { model: model.name, provider: model.name, input_chars: inputChars, purpose: 'extract' }, async (span) => {
+    try {
+      const out: any = { raw: await model.extract(input), model: model.name, input_chars: inputChars };
+      // One bounded repair attempt for live models: the same checks that would reject the answer are shown to the model
+      // once, and the corrected answer goes through the same checks again. The first errors are kept in the stage record.
+      const first = model.repairs ? evaluateRaw(db, row, out.raw).errors : [];
+      if (model.repairs && first.length) {
         out.repair = { attempts: 2, first_errors: first.slice(0, 15) };
         out.raw = await model.extract({ ...input, repair: { previous_answer: String(out.raw).slice(0, 20000), errors: first.slice(0, 15) } });
       }
-    }
-    return out;
-  } catch (e) { return { error: e.message, model: model.name }; }
+      const finalErrors = evaluateRaw(db, row, out.raw).errors;
+      span.set({ check: finalErrors.length ? 'fail' : 'pass', errors: finalErrors.length, repaired: !!out.repair });
+      if (finalErrors.length) span.fail(finalErrors.slice(0, 3).join('; '));
+      return out;
+    } catch (e) { span.fail(e.message); return { error: e.message, model: model.name }; }
+  });
 }
 
 // Runs the stages that are not yet complete for this source row. Passed/skipped stages are never redone (idempotent per hash+stage).
@@ -277,21 +282,30 @@ export async function runSource(db: Db, rowId: any, { model, force = false }: an
   if (force) resetSource(db, rowId);
   const runId = `run-${Date.now().toString(36)}`;
   const done = () => Object.fromEntries(stageRows(db, rowId).map((s: any) => [s.stage, s.status]));
-  let failedAt = null;
-  for (const [n, fn] of STAGES as any[]) {
-    if (DONE.has(done()[n])) continue;
-    const ctx: any = { db, row };
-    if (n === 2) ctx.modelOut = await callModel(db, model, row);
-    let res: any;
-    db.exec('BEGIN');
-    try { res = fn(ctx); if (res.status === 'failed') { db.exec('ROLLBACK'); db.exec('BEGIN'); } }
-    catch (e) { db.exec('ROLLBACK'); db.exec('BEGIN'); res = fail({ errors: [`stage crashed: ${e.message}`] }); }
-    recordStage(db, runId, row, n, res);
-    db.exec('COMMIT');
-    if (res.status === 'failed') { failedAt = n; break; }
-  }
-  if (!failedAt) updateStage7(db, rowId);
-  return { source_id: row.source_id, failedAt, stages: stageRows(db, rowId).map((s: any) => ({ stage: s.stage, status: s.status })) };
+  return withSpan('source', row.source_id, { source_id: row.source_id, channel: row.channel }, async (sourceSpan) => {
+    let failedAt: any = null;
+    for (const [n, fn] of STAGES as any[]) {
+      if (DONE.has(done()[n])) continue;
+      const res: any = await withSpan('stage', `${n} ${(STAGE_NAMES as any)[n]}`, { stage: n, name: (STAGE_NAMES as any)[n] }, async (stageSpan) => {
+        const ctx: any = { db, row };
+        if (n === 2) ctx.modelOut = await callModel(db, model, row);
+        let r: any;
+        db.exec('BEGIN');
+        try { r = fn(ctx); if (r.status === 'failed') { db.exec('ROLLBACK'); db.exec('BEGIN'); } }
+        catch (e) { db.exec('ROLLBACK'); db.exec('BEGIN'); r = fail({ errors: [`stage crashed: ${e.message}`] }); }
+        recordStage(db, runId, row, n, r);
+        db.exec('COMMIT');
+        stageSpan.set({ status: r.status, skip: r.reason ?? undefined, errors: r.check?.errors?.length, changes: r.check?.changes, repair: r.check?.repair ? 'yes' : undefined });
+        if (r.status === 'failed') stageSpan.fail((r.check?.errors || []).slice(0, 3).join('; ') || 'stage failed');
+        return r;
+      });
+      if (res.status === 'failed') { failedAt = n; break; }
+    }
+    if (!failedAt) updateStage7(db, rowId);
+    sourceSpan.set({ failed_at: failedAt ?? undefined });
+    if (failedAt) sourceSpan.fail(`failed at stage ${failedAt}`);
+    return { source_id: row.source_id, failedAt, stages: stageRows(db, rowId).map((s: any) => ({ stage: s.stage, status: s.status })) };
+  });
 }
 
 export async function runAll(db: Db, { model, force = false, only = null }: any = {}) {

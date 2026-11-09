@@ -4,6 +4,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { PROMPTS_DIR } from '../paths.ts';
+import { recordLlmAttempt, sha12 } from '../obs/tracer.ts';
 
 const PROMPTS = PROMPTS_DIR;
 const read = (f: any) => fs.readFileSync(path.join(PROMPTS, f), 'utf8').split('\r\n').join('\n'); // same text on every OS
@@ -28,29 +29,40 @@ function waitMs(res: any, attempt: any) {
 // status, request id, or a failure class. The upstream response body is never read into an error message.
 // Retries (max 2): network errors, 429 and 5xx. Timeouts are not retried (they already waited the full timeout).
 export function createOpenAIModel(env: any = process.env, fetchImpl: any = globalThis.fetch, { sleep = realSleep }: any = {}) {
-  async function call(messages: any) {
+  // promptId names the system prompt in traces; its content hash shows when a prompt file changed.
+  async function call(messages: any, promptId = 'unknown') {
     const key = env.OPENAI_API_KEY;
-    if (!key) throw new Error('OPENAI_API_KEY is not set (add it to harness/.env)');
-    const model = env.OPENAI_MODEL || 'gpt-4o-mini';
+    if (!key) throw new Error('OPENAI_API_KEY is not set (add it to the .env file)');
+    const model = env.OPENAI_MODEL || 'gpt-4o';
     const url = env.OPENAI_BASE_URL || 'https://api.openai.com/v1/chat/completions';
     const body = JSON.stringify({ model, response_format: { type: 'json_object' }, messages });
+    const promptSha = sha12(String(messages[0]?.content ?? ''));
+    // Traces keep the conversation without repeating the large system prompt: it is identified by id and hash.
+    const traced = messages.map((m: any, i: number) => (i === 0 && m.role === 'system' ? { role: 'system', content: `[system prompt ${promptId}@${promptSha}]` } : m));
+    const base = { provider: 'openai', model, promptId, promptSha, request: { model, messages: traced } };
     for (let attempt = 0; ; attempt++) {
       let res: any;
+      const t0 = Date.now();
+      const took = () => Date.now() - t0;
       try {
         res = await fetchImpl(url, { method: 'POST', headers: { 'content-type': 'application/json', authorization: `Bearer ${key}` }, body,
           signal: AbortSignal.timeout(Number(env.OPENAI_TIMEOUT_MS || 120000)) });
       } catch (e) {
-        if (e?.name === 'TimeoutError' || e?.name === 'AbortError') throw new Error('OpenAI API timeout');
+        const timeout = e?.name === 'TimeoutError' || e?.name === 'AbortError';
+        recordLlmAttempt({ ...base, attempt, status: 'error', latencyMs: took(), response: timeout ? 'timeout' : 'network error' });
+        if (timeout) throw new Error('OpenAI API timeout');
         if (attempt < MAX_RETRIES) { await sleep(waitMs(null, attempt)); continue; }
         throw new Error('OpenAI API network error');
       }
       if (!res.ok) {
+        recordLlmAttempt({ ...base, attempt, status: 'error', httpStatus: res.status, latencyMs: took(), response: `HTTP ${res.status}` }); // the upstream body is never read
         if ((res.status === 429 || res.status >= 500) && attempt < MAX_RETRIES) { await sleep(waitMs(res, attempt)); continue; }
         throw new Error(generic(res.status, res.headers?.get?.('x-request-id')));
       }
       let data: any;
-      try { data = await res.json(); } catch { throw new Error('OpenAI API returned a non-JSON response'); }
+      try { data = await res.json(); } catch { recordLlmAttempt({ ...base, attempt, status: 'error', httpStatus: res.status, latencyMs: took(), response: 'non-JSON response' }); throw new Error('OpenAI API returned a non-JSON response'); }
       const text = data?.choices?.[0]?.message?.content;
+      recordLlmAttempt({ ...base, attempt, status: text ? 'ok' : 'error', httpStatus: res.status, latencyMs: took(), response: text ?? 'no content', promptTokens: data?.usage?.prompt_tokens, completionTokens: data?.usage?.completion_tokens });
       if (!text) throw new Error('OpenAI API returned no content');
       return text;
     }
@@ -65,15 +77,15 @@ export function createOpenAIModel(env: any = process.env, fetchImpl: any = globa
           { role: 'user', content: ['Automatic checks rejected your answer:', ...repair.errors.map((e: any) => `- ${e}`),
             'Return the complete corrected JSON object, following the rules and the output contract exactly. For a quote error, copy a different exact fragment from the body or drop that change.'].join('\n') });
       }
-      return call(messages);
+      return call(messages, 'extract+study+review+contract');
     },
     // Coaching feedback on a recruiter's study answer.
     async feedback(input: any) {
-      return call([{ role: 'system', content: read('feedback.md') }, { role: 'user', content: JSON.stringify(input) }]);
+      return call([{ role: 'system', content: read('feedback.md') }, { role: 'user', content: JSON.stringify(input) }], 'feedback.md');
     },
     // Recruiter Q&A about one role. Context = the current approved brief only.
     async ask(input: any) {
-      return call([{ role: 'system', content: read('ask.md') }, ...(input.history || []), { role: 'user', content: JSON.stringify({ role: input.role, brief: input.brief, recent: input.recent || [], question: input.question }) }]);
+      return call([{ role: 'system', content: read('ask.md') }, ...(input.history || []), { role: 'user', content: JSON.stringify({ role: input.role, brief: input.brief, recent: input.recent || [], question: input.question }) }], 'ask.md');
     },
   };
 }

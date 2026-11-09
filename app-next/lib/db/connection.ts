@@ -74,6 +74,28 @@ CREATE TABLE completions(
   item_id INTEGER NOT NULL, kind TEXT NOT NULL, response TEXT, accepted_json TEXT, result_json TEXT NOT NULL,
   created_at TEXT NOT NULL, UNIQUE(recruiter_id, item_id));
 `,
+  // 2: observability. traces / spans / llm_calls. stage_runs.trace_id is nullable and has NO foreign key,
+  // so pruning a trace leaves the audit row intact (the link then reads as "pruned").
+  `
+CREATE TABLE traces(
+  id TEXT PRIMARY KEY, name TEXT NOT NULL, kind TEXT NOT NULL CHECK(kind IN ('http','page','cli')),
+  status TEXT NOT NULL CHECK(status IN ('running','ok','error','interrupted')),
+  started_at TEXT NOT NULL, ended_at TEXT, owner_id TEXT NOT NULL, heartbeat_at TEXT NOT NULL,
+  attributes_json TEXT NOT NULL DEFAULT '{}', truncated INTEGER NOT NULL DEFAULT 0, dropped_spans INTEGER NOT NULL DEFAULT 0);
+CREATE INDEX traces_started ON traces(started_at);
+CREATE TABLE spans(
+  id TEXT PRIMARY KEY, trace_id TEXT NOT NULL REFERENCES traces(id) ON DELETE CASCADE, parent_id TEXT,
+  kind TEXT NOT NULL, name TEXT NOT NULL, start TEXT NOT NULL, end TEXT, status TEXT NOT NULL,
+  attributes_json TEXT NOT NULL DEFAULT '{}', error TEXT);
+CREATE INDEX spans_trace ON spans(trace_id);
+CREATE TABLE llm_calls(
+  id INTEGER PRIMARY KEY AUTOINCREMENT, span_id TEXT NOT NULL REFERENCES spans(id) ON DELETE CASCADE, attempt INTEGER NOT NULL,
+  provider TEXT NOT NULL, model TEXT, prompt_id TEXT, prompt_sha TEXT,
+  request_json TEXT, response_raw TEXT, original_bytes INTEGER, truncated INTEGER NOT NULL DEFAULT 0,
+  status TEXT NOT NULL, http_status INTEGER, latency_ms INTEGER, prompt_tokens INTEGER, completion_tokens INTEGER);
+CREATE INDEX llm_calls_span ON llm_calls(span_id);
+ALTER TABLE stage_runs ADD COLUMN trace_id TEXT;
+`,
 ];
 
 type Cache = Map<string, DatabaseSync>;
