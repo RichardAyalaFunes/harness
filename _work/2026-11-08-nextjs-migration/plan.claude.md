@@ -74,7 +74,7 @@ Earlier the assistant recommended staying on plain Node. The human decided to mi
 
 ### Stack (exact versions pinned at install, all current stable)
 - **Next.js** (App Router) + **React**, **TypeScript** strict, **Zod**: these are the only runtime dependencies.
-- **SQLite** via the built-in `node:sqlite` (Node 24.12), so there is no native addon. `lib/db` starts with `import 'server-only'`, and routes and pages declare `runtime = 'nodejs'`.
+- **SQLite** via the built-in `node:sqlite` (Node 24.12), so there is no native addon. routes declare `runtime = 'nodejs'` (see the boundary rule in Module rules).
 - **Tests:** keep the built-in **`node:test`** (no Vitest). Node 24 type-stripping runs the `.ts` tests directly, so the 103 existing tests keep their runner and only change imports. **Playwright** handles the end-to-end tests. It is a dev dependency, optional for everyday runs and **mandatory for cutover**.
 - **Logger:** an in-repo JSON logger of about 60 lines.
 - **CLI:** plain `node` on the `.ts` files (built-in type stripping).
@@ -83,6 +83,7 @@ Earlier the assistant recommended staying on plain Node. The human decided to mi
 ### Module rules (so the CLI, tests and Next share one domain graph)
 - `lib/` (domain, contracts, model, db, obs) is plain ESM TypeScript using only erasable syntax (tsconfig sets `erasableSyntaxOnly`, `allowImportingTsExtensions`, `noEmit`, `verbatimModuleSyntax`).
 - Imports are relative with explicit `.ts` extensions; no path aliases (type-stripping does not resolve them).
+- Spike finding (`spike.claude.md`): the `server-only` package is NOT used in `lib/`, because Node cannot load it from the CLI. Instead, a boundary test fails with a clear message if any `components/` or `'use client'` file imports `lib/db`, `lib/domain`, `lib/model`, `lib/obs` or `lib/paths`; the build also fails if one slips through.
 - `lib/` must not import from `next/*` or `react`. A lint rule (an ESLint import restriction, or failing that a grep test) enforces this.
 - Asset paths (prompts, `data/` sources, replay outputs, the DB file) resolve from one `lib/paths.ts`, anchored at the project root (`HARNESS_ROOT`, default the app folder, found from `import.meta.url`). They never depend on `process.cwd()`. The Next config lists the prompt and data folders in `outputFileTracingIncludes`, so they exist after a build.
 
@@ -171,7 +172,7 @@ test/{unit,contract,integration,e2e}
 | # | Phase | Artifact | Acceptance check |
 |---|---|---|---|
 | P0 | Baseline | Current branch merged to main (with approval), tag `pre-next`, and **golden capture**: a script drives the old server through scripted workflows and records the status, the relevant headers, the body and a DB state dump after each step | 103 tests green; the golden files are committed under `test/golden/`; the app runs |
-| P1 | Spike (time-box 3 h) | `spike.claude.md` | On Windows, the real `lib/` graph slice (Zod contract, prompt-file load, `node:sqlite` write/read, one domain function) runs: (a) from the CLI, started from a **different working directory**; (b) from a route handler and a Server Component under both `next dev` and `next build && next start`; (c) under `node --test`. `server-only` blocks a client import at build; assets resolve after the build. **Fail → stop and decide** (fallbacks: `better-sqlite3`, or keep the Node server) |
+| P1 | Spike (time-box 3 h) — **PASSED 2026-11-08** | `spike.claude.md` | On Windows, the real `lib/` graph slice (Zod contract, prompt-file load, `node:sqlite` write/read, one domain function) runs: (a) from the CLI, started from a **different working directory**; (b) from a route handler and a Server Component under both `next dev` and `next build && next start`; (c) under `node --test`. `server-only` blocks a client import at build; assets resolve after the build. **Fail → stop and decide** (fallbacks: `better-sqlite3`, or keep the Node server) |
 | P2 | Contracts + domain port | `lib/contracts`, `lib/domain`, `lib/model`, `lib/db`, `lib/paths` | `tsc --noEmit` is clean. The 103 tests pass against the TS modules, **with assertions unchanged** (a diff check: only import lines may change; any other test edit is listed in `parity-exceptions.md`). The T-C tests pass |
 | P3 | Observability | `lib/obs`, migrations, the CLI `trace` commands | T-O tests pass. A replay rebuild yields one `cli` trace with 13 `source` spans; `trace --last` prints it |
 | P4 | API parity | `app/api/**/route.ts` for all 13 routes | T-I runs against a **production `next start`** on a temp port and temp DB: it replays the P0 golden workflows and compares status, headers, body and DB state; the only differences are the ones listed in the exceptions file. The new input-error cases pass |
