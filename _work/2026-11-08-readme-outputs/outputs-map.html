@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Submission outputs map</title>
+<style>
+:root{--ink:#16181d;--ink2:#4b5160;--muted:#6b7180;--glass:rgba(255,255,255,.58);--tile:rgba(255,255,255,.86);--edge:rgba(255,255,255,.9);--y:#f8c65a;--ys:#fdeec7;--g:#1d6b43;--gs:#dff3e8;--r:#a8324a;--rs:#fbe1e6;--font:"Segoe UI Variable","Segoe UI",system-ui,sans-serif}
+*{box-sizing:border-box}html,body{margin:0}
+body{font:16px/1.55 var(--font);color:var(--ink);background:#eef0f3;background-image:radial-gradient(1000px 700px at 5% 0%,#c3d9f2 0%,transparent 62%),radial-gradient(900px 700px at 100% 100%,#f3d996 0%,transparent 62%);background-attachment:fixed}
+a{color:var(--ink)}:focus-visible{outline:3px solid var(--ink);outline-offset:3px}
+.wrap{max-width:1120px;margin:0 auto;padding:28px 20px 80px}
+.glass{background:var(--glass);backdrop-filter:blur(26px) saturate(140%);-webkit-backdrop-filter:blur(26px) saturate(140%);border:1px solid var(--edge);border-radius:28px;box-shadow:0 12px 40px rgba(40,55,80,.09);padding:28px 32px;margin-bottom:20px}
+.tile{background:var(--tile);border:1px solid var(--edge);border-radius:20px;padding:16px 18px}
+.kicker{font-size:13px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+h1{font-size:clamp(28px,4vw,44px);line-height:1.1;margin:6px 0 10px;font-weight:600}h2{font-size:24px;margin:4px 0 12px;font-weight:600}h3{font-size:17px;margin:0 0 6px}
+p{margin:0 0 10px;color:var(--ink2)}
+.chip{display:inline-block;border-radius:10px;padding:1px 9px;font-size:12.5px;font-weight:600;white-space:nowrap}
+.ok{background:var(--gs);color:var(--g)}.upd{background:var(--ys);color:#3b2a00}.own{background:var(--rs);color:var(--r)}.dep{background:var(--ink);color:#fff}
+.legend{display:flex;flex-wrap:wrap;gap:8px 14px;font-size:14px;color:var(--ink2)}
+.tablewrap{overflow-x:auto}
+table{width:100%;border-collapse:separate;border-spacing:0 6px;font-size:14.5px;min-width:760px}
+th{text-align:left;font-size:12.5px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.04em;padding:4px 12px}
+td{background:rgba(255,255,255,.66);padding:10px 12px;vertical-align:top;color:var(--ink2)}
+td:first-child{border-radius:14px 0 0 14px;color:var(--ink);font-weight:600;width:22%}td:last-child{border-radius:0 14px 14px 0;width:14%}
+.grid{display:grid;gap:14px}.g2{grid-template-columns:1fr 1fr}.g3{grid-template-columns:repeat(3,1fr)}
+fieldset{border:1px solid var(--edge);background:var(--tile);border-radius:20px;padding:16px 18px;margin:0 0 14px}
+legend{font-weight:600;padding:0 6px}
+.why{font-size:14px;color:var(--muted);margin:2px 0 10px}
+label.opt{display:flex;gap:10px;align-items:flex-start;border:1px solid #d7dbe2;border-radius:14px;padding:10px 12px;margin:6px 0;background:#fff;min-height:44px;cursor:pointer}
+label.opt input{margin-top:4px;width:18px;height:18px}
+label.opt small{display:block;color:var(--muted)}
+.rec{font-size:12px;font-weight:700;background:var(--ink);color:#fff;border-radius:8px;padding:1px 7px;margin-left:6px}
+textarea,input[type=text]{width:100%;font:inherit;border:1px solid #c9ced6;border-radius:12px;padding:10px;background:#fff;min-height:44px}
+button{font:inherit;font-weight:600;height:44px;border-radius:22px;border:0;padding:0 22px;background:var(--ink);color:#fff;cursor:pointer}
+.status{font-size:14px;color:var(--muted)}
+ol.flow{margin:0;padding-left:20px;color:var(--ink2)}ol.flow li{margin:4px 0}
+@media (max-width:720px){.g2,.g3{grid-template-columns:1fr}.glass{padding:20px 16px}}
+</style></head><body><div class="wrap">
+
+<header class="glass">
+<div class="kicker">Working artifact · 2026-11-08 · Claude · not a submission file</div>
+<h1>What the submission must say, where it says it, and what is still owed</h1>
+<p>Built from the candidate brief (Deliverables + five evaluation dimensions). Assumes the Next.js + SQLite migration (<code>app-next/</code>) is finished, as you asked. Values that depend on that cutover are marked <span class="chip dep">after cutover</span> and must be re-read from the real app before submission.</p>
+<div class="legend"><span><span class="chip ok">Ready</span> content exists, wording only</span><span><span class="chip upd">Update</span> exists but stale (Node app, 94 tests, live run "pending")</span><span><span class="chip own">Owner</span> only you can supply it</span><span><span class="chip dep">After cutover</span> fill from the finished Next app</span></div>
+</header>
+
+<section class="glass" aria-labelledby="s-shape">
+<div class="kicker">Proposal</div>
+<h2 id="s-shape">Four outputs, one job each, no duplication</h2>
+<div class="grid g2">
+<div class="tile"><h3>readme.html — the 3-minute pitch</h3><p>For the reviewer opening the repo first. One screen per evaluation dimension, each ending in a link to proof. No setup detail beyond one command block.</p></div>
+<div class="tile"><h3>README.md — the operator manual</h3><p>Exactly the three brief bullets: what/who, how to run (keys, env), real vs stubbed + limitations. Plus a repo map.</p></div>
+<div class="tile"><h3>DESIGN.md — the argument (1–3 pages)</h3><p>The five required headings, in order. Carries the reasoning; readme.html only quotes it.</p></div>
+<div class="tile"><h3>Run notes / demo — the proof it runs</h3><p>A short <code>RUN-NOTES.md</code> with a recorded CLI session (rebuild, check, trace) and screenshots; optional 2–3 min video link. Also the email text.</p></div>
+</div>
+</section>
+
+<section class="glass" aria-labelledby="s-map">
+<div class="kicker">Information map</div>
+<h2 id="s-map">Brief requirement → content to fill → source of truth</h2>
+<div class="tablewrap"><table>
+<thead><tr><th>Requirement</th><th>Content to fill</th><th>Where it comes from</th><th>Status</th></tr></thead>
+<tbody>
+<tr><td>README · what &amp; who</td><td>Two sentences: recruiters at an agency for small clients; harness turns client signals into approved brief versions and team learning steps.</td><td>README.md today; knowledge/business.md</td><td><span class="chip ok">Ready</span></td></tr>
+<tr><td>README · how to run</td><td><code>cd app-next</code>, Node ≥24.12, pnpm, <code>pnpm harness rebuild</code>, <code>pnpm dev</code> / <code>build &amp;&amp; start</code>, test commands (unit + Playwright e2e).</td><td>app-next/package.json, migration plan P6</td><td><span class="chip dep">After cutover</span></td></tr>
+<tr><td>README · keys &amp; env</td><td><code>.env.example</code> path, <code>HARNESS_MODEL</code>, <code>OPENAI_API_KEY</code>, <code>OPENAI_MODEL=gpt-4o</code>, <code>HARNESS_ASSIST</code>; mention RadHires' offered Claude key is not used (OpenAI by owner choice) — or switch.</td><td>harness/.env.example, live-baseline</td><td><span class="chip upd">Update</span></td></tr>
+<tr><td>README · real vs stubbed</td><td>Table refreshed: live run now happened (gpt-4o 12/13, mini 8/13); study feedback is AI coaching with key; new rows for traces, Zod validation, structured logs.</td><td>live-baseline.claude.md, migration plan</td><td><span class="chip upd">Update</span></td></tr>
+<tr><td>README · limitations</td><td>Recall below the hand-written reference; slug drift (nw-08); single demo user; desktop-first; traces CLI-only; prune not physical erasure.</td><td>live-baseline conclusions, plan privacy section</td><td><span class="chip upd">Update</span></td></tr>
+<tr><td>README · demo link</td><td>Video URL or "no video; see RUN-NOTES.md".</td><td>You</td><td><span class="chip own">Owner · R3</span></td></tr>
+<tr><td>DESIGN · thesis</td><td>Who hurts, what it costs (no measured baseline, stated), why AI fits, where it doesn't.</td><td>DESIGN.md §1</td><td><span class="chip ok">Ready</span></td></tr>
+<tr><td>DESIGN · user &amp; interface</td><td>Mock ATS, 4 tabs, confirm/study/review, team panel, why inside the ATS.</td><td>DESIGN.md §2; new screenshots</td><td><span class="chip ok">Ready</span> <span class="chip dep">shots</span></td></tr>
+<tr><td>DESIGN · architecture &amp; quality</td><td>Pipeline diagram unchanged; add: Next.js route handlers, Zod at UI+API, one bounded repair, trace spans in SQLite, golden parity tests, live baseline as the quality evidence.</td><td>migration plan, live-baseline, test counts</td><td><span class="chip upd">Update</span> <span class="chip dep">counts</span></td></tr>
+<tr><td>DESIGN · tooling &amp; tradeoffs</td><td>The current text argues "Node, no framework". It must now explain why you moved to Next.js anyway, and what it cost.</td><td>You decide the framing</td><td><span class="chip own">Owner · R5</span></td></tr>
+<tr><td>DESIGN · reflections</td><td>Time spent; next steps (slug reuse, lead view, primers, connectors); least sure (recall, severity rules, "up to date" expiry).</td><td>DESIGN.md §5 + you</td><td><span class="chip own">Owner · R1</span></td></tr>
+<tr><td>Dimension · problem framing</td><td>readme.html hero + three dated signals (Kickoff / CEO email / Rejection).</td><td>readme.html today</td><td><span class="chip ok">Ready</span></td></tr>
+<tr><td>Dimension · end-user empathy</td><td>Screens + the "never blocks moving a candidate" rule + tick vs explain vs review.</td><td>DESIGN §2; refreshed screenshots</td><td><span class="chip dep">After cutover</span></td></tr>
+<tr><td>Dimension · elegance &amp; judgment ("how do you know it's good")</td><td>Checks per stage, the live baseline table, a rejected bad answer shown as an example.</td><td>live-baseline, stage_runs</td><td><span class="chip upd">Update</span></td></tr>
+<tr><td>Dimension · tooling rationale</td><td>What was left out (RAG, integrations, scoring) + why Next.js/SQLite/Zod.</td><td>readme.html "left out" + R5</td><td><span class="chip own">Owner · R2, R5</span></td></tr>
+<tr><td>Dimension · honesty</td><td>Real / stubbed, least sure, time spent, AI-assisted process with cross-model review.</td><td>DESIGN §5, review dispositions</td><td><span class="chip own">Owner · R1</span></td></tr>
+<tr><td>Email to submissions@</td><td>Repo link, DESIGN.md link, run notes/video. Private repo → share with @joniler.</td><td>You (sending is yours)</td><td><span class="chip own">Owner · R8</span></td></tr>
+</tbody></table></div>
+</section>
+
+<section class="glass" aria-labelledby="s-q">
+<div class="kicker">Questions · defaults are proposals, inputs left blank</div>
+<h2 id="s-q">Decisions that change what gets written</h2>
+<form id="f">
+<fieldset><legend>R1 · How much time did you actually spend?</legend><p class="why">The brief asks for it explicitly; right-sizing is graded. Only you know it. Agent sessions ran 7–8 Nov.</p><input type="text" name="R1" aria-label="R1 time spent" placeholder="e.g. about 2 days, of which …"></fieldset>
+
+<fieldset><legend>R2 · The first-person quote on leaving out RAG and integrations</legend><p class="why">It is agent-drafted wording of your reasoning; it cannot ship unconfirmed.</p>
+<label class="opt"><input type="radio" name="R2" value="keep"><span>Keep as written<small>Fastest. Risk: it is not in your voice.</small></span></label>
+<label class="opt"><input type="radio" name="R2" value="edit"><span>I will edit it (write below)<span class="rec">Recommended</span><small>Reviewers may ask you about it in the call; your own words defend better.</small></span></label>
+<label class="opt"><input type="radio" name="R2" value="drop"><span>Drop the quote, keep the table<small>No voice risk; loses some personality.</small></span></label>
+<textarea name="R2_text" aria-label="R2 your wording" rows="2"></textarea></fieldset>
+
+<fieldset><legend>R3 · Demo evidence</legend><p class="why">The brief accepts a video when running locally is hard. Ours runs offline, so a video is optional.</p>
+<label class="opt"><input type="radio" name="R3" value="notes"><span>RUN-NOTES.md with a recorded CLI session + screenshots<span class="rec">Recommended</span><small>Cheap, versioned, no hosting. Cost: less vivid than a video.</small></span></label>
+<label class="opt"><input type="radio" name="R3" value="both"><span>Notes plus a 2–3 min video you record<small>Strongest impression. Costs your time; link must stay live.</small></span></label>
+<label class="opt"><input type="radio" name="R3" value="none"><span>Nothing beyond README<small>Least work; reviewers must run it to see it.</small></span></label></fieldset>
+
+<fieldset><legend>R4 · Role of readme.html</legend><p class="why">Avoids writing the same thing three times.</p>
+<label class="opt"><input type="radio" name="R4" value="pitch"><span>Short pitch organised by the five evaluation dimensions, linking to proof<span class="rec">Recommended</span><small>Matches how they grade. Cost: some detail lives only in md files.</small></span></label>
+<label class="opt"><input type="radio" name="R4" value="mirror"><span>Full HTML version of README + DESIGN<small>One place to read. Two copies to keep in sync.</small></span></label></fieldset>
+
+<fieldset><legend>R5 · How to explain the move from plain Node to Next.js</legend><p class="why">DESIGN.md currently says a framework "would add weight without changing what is demonstrated". Reviewers will notice the contradiction.</p>
+<label class="opt"><input type="radio" name="R5" value="depth"><span>Honest sequence: proved the workflow dependency-free first, then moved to Next.js + Zod to show validation on both sides, typed contracts, tracing and e2e tests; parity proven by golden recordings<span class="rec">Recommended</span><small>Turns the contradiction into evidence of method. Cost: admits extra weight (4 runtime deps).</small></span></label>
+<label class="opt"><input type="radio" name="R5" value="product"><span>Product reason: the agency would ship one deployable web service<small>Simpler story; weaker, since nothing is deployed.</small></span></label>
+<textarea name="R5_text" aria-label="R5 other framing" rows="2"></textarea></fieldset>
+
+<fieldset><legend>R6 · Screenshots</legend><p class="why">Current images show the Node UI.</p>
+<label class="opt"><input type="radio" name="R6" value="retake"><span>Retake from the Next app after cutover (I can do it with the browser)<span class="rec">Recommended</span><small>Truthful. Needs the cutover finished.</small></span></label>
+<label class="opt"><input type="radio" name="R6" value="keep"><span>Keep the old ones if the UI is pixel-identical<small>No work; must be checked, not assumed.</small></span></label></fieldset>
+
+<fieldset><legend>R7 · How much of the live-model result to show</legend><p class="why">It is the best "how do you know it's good" evidence we have, including its failures.</p>
+<label class="opt"><input type="radio" name="R7" value="full"><span>The run table (mini 1→8/13 after prompt and repair fixes, gpt-4o 12/13) and the nw-08 failure explained<span class="rec">Recommended</span><small>Shows an eval loop and honesty. Cost: exposes lower recall.</small></span></label>
+<label class="opt"><input type="radio" name="R7" value="headline"><span>Headline only ("gpt-4o: 12 of 13 clean")<small>Shorter; hides the method.</small></span></label></fieldset>
+
+<fieldset><legend>R8 · Repository visibility for the reviewers</legend><p class="why">Decides the email text and whether @joniler needs access. Pushing/sharing stays your action.</p>
+<label class="opt"><input type="radio" name="R8" value="private"><span>Private, shared with @joniler<small>Keeps prompts/ and _work/ out of public view.</small></span></label>
+<label class="opt"><input type="radio" name="R8" value="public"><span>Public on GitHub<small>Simplest to open. Prompts and process logs become public.</small></span></label>
+<label class="opt"><input type="radio" name="R8" value="zip"><span>Zip attachment<small>No account access needed; loses git history view.</small></span></label></fieldset>
+
+<fieldset><legend>Anything missing?</legend><textarea name="notes" aria-label="Other notes" rows="3"></textarea></fieldset>
+<button type="button" id="dl">Download answers (JSON)</button>
+<p class="status" id="st">Unanswered. Downloading does not write repository files: send the JSON (or paste it) back to the agent to record it.</p>
+</form>
+</section>
+
+<section class="glass" aria-labelledby="s-next">
+<div class="kicker">Order of work</div>
+<h2 id="s-next">What happens after your answers</h2>
+<ol class="flow">
+<li>readme.html prototype (<a href="readme-prototype.html">readme-prototype.html</a>) is reviewed by you; placeholders marked "owner" or "after cutover".</li>
+<li>After the Next cutover: re-read run commands, test counts, screenshots from the real app.</li>
+<li>Rewrite README.md and DESIGN.md §3–5 with R1, R5, R7; promote the prototype to the root readme.html.</li>
+<li>Final Codex review of the whole submission (required gate), fix findings, then you send the email.</li>
+</ol>
+</section>
+</div>
+<script>
+document.getElementById('dl').addEventListener('click',function(){
+  var f=document.getElementById('f'),a={},ids=['R1','R2','R2_text','R3','R4','R5','R5_text','R6','R7','R8','notes'];
+  ids.forEach(function(id){var el=f.elements[id];if(!el)return;var v=el.value!==undefined?el.value:'';if(el instanceof RadioNodeList){v=el.value;}a[id]=v||null;});
+  var out={artifact:'outputs-map',version:1,exported_at:new Date().toISOString(),answers:a};
+  var b=new Blob([JSON.stringify(out,null,2)],{type:'application/json'}),u=URL.createObjectURL(b),l=document.createElement('a');
+  l.href=u;l.download='outputs-map-answers-v1.json';document.body.appendChild(l);l.click();l.remove();URL.revokeObjectURL(u);
+  var n=Object.keys(a).filter(function(k){return a[k]}).length;
+  document.getElementById('st').textContent='Exported '+n+' answered fields. Not recorded until you return the file to the agent.';
+});
+</script>
+</body></html>
