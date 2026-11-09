@@ -1,0 +1,2 @@
+# 002 user (2026-11-09)
+Attached outputs-map-answers-v1.json. Asked: less text but more context on where to start; storytelling from the wide overview, with examples and animations; write in Richard's voice (C:\Users\Xavi-PC\Claude-spaces\richard-voice.md, outside repo); explain the purpose of outputs-map.html. readme.html must be a single-file presentation holding everything (README/DESIGN still delivered as requested), like Richard talking to reviewers; the previous version read like a selling landing page. Time spent: pending, given at the end.
