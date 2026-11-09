@@ -1,0 +1,24 @@
+{
+  "summary": "Client advanced J. Moreau; confirms what convinced them. No criteria change.",
+  "decision": {
+    "candidate": "J. Moreau",
+    "outcome": "advanced",
+    "reason": "had paying users before anyone else joined; explained simply"
+  },
+  "no_change": true,
+  "changes": [],
+  "source_id": "ks-05",
+  "study": [],
+  "review": {
+    "candidate": "J. Moreau",
+    "screening": null,
+    "coverage": [],
+    "overweighted": [],
+    "suggested": [
+      {
+        "text": "Ask whether they had paying users before anyone else joined",
+        "why": "The client advanced J. Moreau for exactly this."
+      }
+    ]
+  }
+}
