@@ -1,1 +1,0 @@
-{"source_id":"fx-01","summary":"severity outside the enum","no_change":false,"changes":[{"field":"offer.budget","op":"set","value":"90k","severity":"huge","quote":"The budget is now 90k."}],"study":[]}

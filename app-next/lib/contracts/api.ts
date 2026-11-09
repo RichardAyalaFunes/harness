@@ -44,11 +44,14 @@ export type AskBody = z.infer<typeof AskBody>;
 export type MoveBody = z.infer<typeof MoveBody>;
 export type CompleteBody = z.infer<typeof CompleteBody>;
 
+/** A field name from a request is echoed only if it looks like a plain identifier; anything else is hidden. */
+const safeKey = (k: string): string => (/^[A-Za-z_][A-Za-z0-9_.-]{0,29}$/.test(k) ? k : '(invalid name)');
+
 /** Zod issues -> user text. Same function for the API and the UI forms, so both show the same words. */
 export function issuesToMessages(error: z.ZodError): Issue[] {
   return error.issues.map((i) => {
     const path = i.path.join('.') || '(body)';
-    const message = i.code === 'unrecognized_keys' ? `unexpected field: ${i.keys.join(', ')}` : i.message;
+    const message = i.code === 'unrecognized_keys' ? `unexpected field: ${i.keys.map(safeKey).join(', ')}` : i.message;
     return { path, message };
   });
 }

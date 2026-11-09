@@ -52,32 +52,38 @@ sources/*.md ──► 1 register (hash, metadata) ──► 2 extract (model �
 - **Up to date** is computed only from recorded completions that pass their own checks (an acknowledgement, a study answer of at least 20 characters, an accepted review). Being assigned a step counts for nothing.
 - **Failure handling:** a failed model call or check stops that source at that stage, visibly, in the CLI and UI. Reruns are idempotent. A changed source file supersedes the old row and is reprocessed.
 - **Quality evidence:**
-  - 94 automated tests, covering the negative fixtures (malformed JSON, unknown fields, paraphrased quotes, bad severity), bias cases (age, university prestige, a lawful no-poach rule), historical-brief reviews, approval gating and the guarantee that moving candidates is never blocked;
+  - 185 automated tests (160 unit, contract, tracing, review-regression and boundary tests; 16 integration tests against a production server; 9 browser journeys), covering the negative fixtures (malformed JSON, unknown fields, paraphrased quotes, bad severity), bias cases (age, university prestige, a lawful no-poach rule), historical-brief reviews, approval gating and the guarantee that moving candidates is never blocked;
   - `harness check` re-verifies the whole database;
-  - a live-model run against the same checks (pending a key).
+  - a live-model run against the same checks (see section 5 and `_work/2026-11-08-nextjs-migration/live-baseline.claude.md`).
 
 ## 4. Tooling and tradeoffs
-- **Node 24 with no dependencies.** `node:sqlite`, `node:http` and `node:test` make install trivial. A small server and vanilla JS UI are enough for a desktop prototype. A framework would add weight without changing what is demonstrated.
-- **SQLite, not JSONL.** JSONL was first chosen for readable audits. Once positions, pipelines, teams and versions became relational, SQLite was the honest choice. Raw sources stay as files, so the evidence stays human-readable.
-- **Replay model first, live model behind the same contract.** This let us build and test the workflow and checks deterministically before spending on API calls. The cost: the demo does not show extraction quality. The README says so.
-- **OpenAI for the live run,** at the owner's choice. The provider is a small module, so swapping vendors is cheap.
-- **Considered and left out:** RAG/embeddings (one brief plus one source fits the context window, and retrieval would add a failure mode without benefit at this scale), real integrations, candidate scoring, and model-graded quizzes (free-text explanation plus coverage hints suits learning better than a score).
+- **One Next.js service (App Router, TypeScript strict, Zod).** The first version was a plain Node server with a vanilla JS UI, and the assistant recommended keeping it. The owner chose to migrate anyway, to show a fuller engineering project: one deployable service with UI and API, typed contracts, tests at every level, logging and traceability. The cost is real: the project went from no dependencies to Next, React, Zod and Playwright (about 380 MB installed), and a build step. The old version stays in git under the tag `pre-next` as the fallback and as the reference the new one was tested against.
+- **How the migration was kept honest.** Before any rewrite, the old server was driven through scripted workflows and its status codes, headers, bodies and database state were recorded (9 scenarios). The new app is driven through the same scripts against a production `next start` and compared; every intended difference is listed with its reason in `_work/2026-11-08-nextjs-migration/parity-exceptions.md`. The original 110 tests were ported with their assertions unchanged except where listed.
+- **One route table.** The 13 API routes are defined once (`lib/api/routes.ts`); the Next route files re-export entries, and the in-process test shim dispatches through the same table. A single wrapper does, in this order: create the trace, check origin, enforce the size limit, parse JSON, validate with Zod, call the handler, map errors to the error contract.
+- **Contracts at the edges.** Zod schemas for requests, environment and model output. The UI uses the same schemas for inline messages. The model-output gate keeps the hand-written validator and semantic checks (their error texts feed the repair attempt) and adds Zod types that are tested against every stored output.
+- **Shared domain code.** `lib/` is plain TypeScript with explicit `.ts` imports and no Next or React imports, so the CLI (Node's type stripping), the tests and the app run the same code. A boundary test keeps browser code from importing the database.
+- **SQLite, not JSONL.** Once positions, pipelines, teams and versions became relational, SQLite was the honest choice. Raw sources stay as files, so the evidence stays human-readable. WAL mode, a busy timeout and migrations versioned by `PRAGMA user_version` read after the write lock is taken let the server and the CLI share one file.
+- **Observability without a platform.** Spans are buffered per trace and written once, after domain work has committed, in a transaction of their own; a failure there is logged and never fails the request. Liveness is a lease with fencing, so a paused process cannot overwrite a trace another process marked interrupted. Payloads are redacted before they are capped and stored. Caps bound memory as well as storage (payload bytes, 2,000 spans, attributes, attempts).
+- **Replay model first, live model behind the same contract.** This let us build and test the workflow and checks deterministically before spending on API calls. The first live run then found a bug no replay test could (see 5), which is the argument for running it early.
+- **OpenAI for the live run,** at the owner's choice, through plain `fetch` with retries and no SDK. The provider is a small module, so swapping vendors is cheap.
+- **Considered and left out:** RAG/embeddings, real integrations, candidate scoring, model-graded quizzes, an ORM, a trace UI, an OpenTelemetry exporter, auth, containers.
 
 ## 5. Reflections
-- **Process.** The work went through several prototype rounds with the owner. Its plan was reviewed by a second model (Codex), which failed it twice with useful findings:
-  - recruiter completion had to be evidence-based;
-  - lead approval had to gate publication;
-  - screening reviews had to use the brief current at screening time.
-
-  Each finding was fixed before building. Evidence is in `_work/2026-11-08-harness-build/`.
-- **Time spent.** The owner will fill this in. Agent sessions ran across 7–8 Nov 2026.
+- **Process.** The work went through several prototype rounds with the owner. Plans and diffs were reviewed by a second model (Codex) at the plan, pre-merge and final gates. The first harness plan failed twice with useful findings (recruiter completion had to be evidence-based; lead approval had to gate publication; screening reviews had to use the brief current at screening time). The migration plan needed four passes: the early findings were about trace liveness, privacy scope and parity gates that only counted tests. Each finding was fixed before building. Evidence is in `_work/2026-11-08-harness-build/` and `_work/2026-11-08-nextjs-migration/`.
+- **What the live run taught.** Running OpenAI over the 13 sources found things no replay test could:
+  - the model copied optional-key markers such as `"weight?"` literally from the output contract, so the contract is now a worked example, and a test lints the prompt;
+  - small models break small rules (verbatim quotes, minimum severities, missing weights), so one repair attempt sends the exact check errors back once; `gpt-4o-mini` then passed 8 of 13 sources and `gpt-4o` 11 to 12 (it varies run to run);
+  - the checks held: weak output was rejected, never applied;
+  - a live model finds fewer changes than the hand-written outputs and names fields differently, so later briefs diverge and one review stage still fails on slug mismatch. This is a model-quality limit, and it is why every proposal still needs a person.
+- **Time spent.** The owner will fill this in. Agent sessions ran across 7 to 9 Nov 2026.
 - **Next steps:**
-  1. Run the live model and compare it with the replay outputs on all 13 sources.
-  2. Model-based feedback on study answers.
-  3. A lead view across positions.
-  4. Field primers (F2), which teach recruiters a domain when a new kind of role arrives.
-  5. Real triggers (a mail or transcript connector).
+  1. Stronger slug consistency (reuse the existing field names listed in the brief) and a comparison with a newer model.
+  2. A lead view across positions.
+  3. Field primers (F2), which teach recruiters a domain when a new kind of role arrives.
+  4. Real triggers (a mail or transcript connector).
+  5. Login, so approval is tied to identity and not only to a same-origin check.
 - **Least sure about:**
-  - how well a live model keeps quotes verbatim (the checks will reject paraphrases, which may make the live run strict);
   - whether the severity rules match how a real lead would judge changes;
-  - whether "up to date" should expire when a recruiter is added mid-search.
+  - whether "up to date" should expire when a recruiter is added mid-search;
+  - whether regex-based redaction of phone numbers (long digit runs) is too aggressive for numeric ids in traces;
+  - `node:sqlite` is experimental in Node 24; the fallback would be `better-sqlite3`.

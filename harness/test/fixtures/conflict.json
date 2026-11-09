@@ -1,1 +1,0 @@
-{"source_id":"fx-01","summary":"budget contradicts the earlier JD","no_change":false,"changes":[{"field":"offer.budget","op":"set","value":"90k","severity":"material","quote":"The budget is now 90k.","conflicts_with":"j1"}],"study":[]}

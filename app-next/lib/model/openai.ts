@@ -21,7 +21,8 @@ const generic = (status: any, id: any) => `OpenAI API error ${status}${id ? ` (r
 
 // Seconds from Retry-After (a date form is ignored), capped at 10 s; otherwise exponential backoff.
 function waitMs(res: any, attempt: any) {
-  const ra = Number(res?.headers?.get?.('retry-after'));
+  const raw = res?.headers?.get?.('retry-after');
+  const ra = raw == null || raw === '' ? Number.NaN : Number(raw); // an absent header is NOT 0 seconds
   return Math.min(MAX_WAIT_MS, Number.isFinite(ra) && ra >= 0 ? ra * 1000 : 500 * 2 ** attempt);
 }
 
@@ -39,7 +40,7 @@ export function createOpenAIModel(env: any = process.env, fetchImpl: any = globa
     const promptSha = sha12(String(messages[0]?.content ?? ''));
     // Traces keep the conversation without repeating the large system prompt: it is identified by id and hash.
     const traced = messages.map((m: any, i: number) => (i === 0 && m.role === 'system' ? { role: 'system', content: `[system prompt ${promptId}@${promptSha}]` } : m));
-    const base = { provider: 'openai', model, promptId, promptSha, request: { model, messages: traced } };
+    const base = { provider: 'openai', model, promptId, promptSha, request: { model, messages: traced }, requestBytes: Buffer.byteLength(body) };
     for (let attempt = 0; ; attempt++) {
       let res: any;
       const t0 = Date.now();

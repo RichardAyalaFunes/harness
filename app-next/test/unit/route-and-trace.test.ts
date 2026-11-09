@@ -44,12 +44,15 @@ test('I6: an unexpected exception gives a generic 500 with a trace id; the stack
 });
 
 test('error mapping: AppError keeps its status; a thrown code maps; an unknown error is hidden', async () => {
+  const restore = setLogSink(() => {}); // the unknown error is logged on purpose; keep the test output clean
+  try {
   assert.equal(toErrorResponse(new AppError('conflict', 'x'), 't1').status, 409);
   assert.equal(toErrorResponse(Object.assign(new Error('nope'), { code: 'not_found' }), 't2').status, 404);
   const r = toErrorResponse(new TypeError('secret internals'), 't3');
   assert.equal(r.status, 500);
   assert.doesNotMatch(JSON.stringify(await r.json()), /secret internals/);
   assert.equal(toErrorResponse(new Error('database is locked'), 't4').status, 503);
+  } finally { restore(); }
 });
 
 test('T-L + O8: the live path over all 13 sources emits one cli trace, 13 source spans, an llm span per source with check results, and stage rows linked to the trace', async () => {
@@ -83,4 +86,23 @@ test('T-L + O8: the live path over all 13 sources emits one cli trace, 13 source
   assert.ok(t.spans.filter((s: any) => s.kind === 'stage').length >= 13 * 6 - 10);
   assert.match(renderTrace(db, traceId), /cli cli\.rebuild[\s\S]*source nw-01[\s\S]*llm extract/);
   db.close(); closeDb(file);
+});
+
+test('logging: every API request writes one structured line with trace id, route, status and duration', async () => {
+  const file = tmpDb();
+  const db = await rebuild({ model: getModel({}), file });
+  process.env.HARNESS_DB = file;
+  configureTracing({ getDb: () => openDb(file) });
+  const lines: string[] = [];
+  const restore = setLogSink((l) => lines.push(l));
+  try {
+    const ok = await dispatch(get('/api/me'));
+    const missing = await dispatch(get('/api/roles/nope'));
+    const recs = lines.map((l) => JSON.parse(l)).filter((r) => r.msg === 'request');
+    assert.equal(recs.length, 2);
+    assert.deepEqual(recs.map((r) => [r.method, r.route, r.status]), [['GET', '/api/me', 200], ['GET', '/api/roles/:id', 404]]);
+    assert.equal(recs[0].traceId, ok.headers.get('x-trace-id'));
+    assert.equal(recs[1].traceId, missing.headers.get('x-trace-id'));
+    assert.ok(recs.every((r) => typeof r.ms === 'number' && r.level === 'info' && r.time));
+  } finally { restore(); db.close(); closeDb(file); delete process.env.HARNESS_DB; }
 });

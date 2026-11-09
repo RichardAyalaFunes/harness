@@ -11,6 +11,8 @@ const EnvSchema = z.object({
   LOG_LEVEL: z.enum(['debug', 'info', 'warn', 'error', 'silent']).default('info'),
   TRACE_PAYLOADS: z.enum(['full', 'meta', 'off']).default('full'),
   TRACE_RETENTION_DAYS: z.coerce.number().int().min(1).max(3650).default(7),
+  // comma-separated full origins (scheme + host + port) allowed to call state-changing routes, for a proxy that terminates TLS
+  TRUSTED_ORIGINS: z.string().optional(),
 }).refine((e) => e.HARNESS_MODEL !== 'openai' || !!e.OPENAI_API_KEY, { message: 'HARNESS_MODEL=openai needs OPENAI_API_KEY', path: ['OPENAI_API_KEY'] });
 
 export type Env = z.infer<typeof EnvSchema>;

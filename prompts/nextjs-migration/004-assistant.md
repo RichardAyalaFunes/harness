@@ -1,0 +1,3 @@
+# 004 · assistant · 2026-11-08 (summary of the visible work after "go ahead completely, through phase 7")
+
+Phases P2 to P7 were carried out without stopping: the TypeScript port with Zod contracts and typed errors (P2), logging, redaction and tracing in SQLite with leases and caps (P3), the API route table and golden parity against a production Next server (P4), the React UI, Playwright journeys, boundary tests and the CLI (P5, P6), then the live OpenAI smoke, docs and the Codex pre-merge review (P7). The pre-merge review failed four times and passed on the fifth pass; every finding was fixed with a regression test. The final whole-assessment review is still pending. Details: `_work/2026-11-08-nextjs-migration/`.
