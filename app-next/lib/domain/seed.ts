@@ -41,8 +41,9 @@ export function seedCompletions(db: Db) {
   }
 }
 
-export async function rebuild({ model, dataDir = path.join(ROOT, 'data'), file = DB_PATH, log = (_m: string) => {} }: any = {}) {
-  resetDbFiles(file);
+export async function rebuild({ model, dataDir = path.join(ROOT, 'data'), file = DB_PATH, log = (_m: string) => {}, reset = true }: any = {}) {
+  // reset=false: the caller already recreated the file (the CLI does, so its trace root lives in the new database)
+  if (reset) resetDbFiles(file);
   const db = openDb(file);
   loadSeed(db, JSON.parse(fs.readFileSync(path.join(dataDir, 'seed', 'seed.json'), 'utf8')));
   const ing = ingestAll(db, path.join(dataDir, 'sources'));

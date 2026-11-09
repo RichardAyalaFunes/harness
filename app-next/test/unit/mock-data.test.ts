@@ -89,7 +89,7 @@ test('API: positions, role, stages, approve the pending Kestrel proposal, comple
     const short = await post(`/api/items/${study.id}/complete`, { recruiter: 'ana', response: 'short' });
     assert.equal(short.body.passed, false);
     assert.equal(short.body.result.stub, true);
-    assert.equal((await post('/api/proposals/9999/approve', {})).status, 400);
+    assert.equal((await post('/api/proposals/9999/approve', {})).status, 404); // was 400 before the migration: unknown entity is now 404 (parity-exceptions X9)
     assert.equal((await fetch(`${base}/%2e%2e/src/db.js`)).status, 404, 'static files cannot escape web/');
   } finally { server.close(); }
   assert.ok(publishedItems(db, 'ks-fe').length > 3);

@@ -1,0 +1,5655 @@
+{
+  "scenario": "candidates",
+  "description": "Move candidates between pipeline stages, including invalid moves.",
+  "steps": [
+    {
+      "name": "move 1 to stage 1",
+      "request": {
+        "method": "POST",
+        "path": "/api/candidates/1/move",
+        "headers": {},
+        "body": {
+          "to": 1
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "content-type": "application/json; charset=utf-8",
+          "cache-control": "no-store",
+          "x-content-type-options": "nosniff",
+          "content-security-policy": "default-src 'self'; style-src 'self' 'unsafe-inline'; base-uri 'none'; form-action 'self'"
+        },
+        "body": {
+          "id": 1,
+          "name": "A. Lindqvist",
+          "role_id": "nw-be",
+          "stage": 1,
+          "stage_name": "Screening"
+        }
+      },
+      "db": {
+        "counts": {
+          "analyses": 13,
+          "approvals": 10,
+          "assignments": 40,
+          "brief_versions": 8,
+          "candidates": 13,
+          "changes": 48,
+          "clients": 2,
+          "completions": 21,
+          "learning_items": 15,
+          "proposals": 9,
+          "recruiters": 4,
+          "role_recruiters": 8,
+          "roles": 3,
+          "screening_reviews": 2,
+          "sources": 13,
+          "stage_runs": 90
+        },
+        "rows": {
+          "proposals": [
+            {
+              "id": 1,
+              "source_row_id": 1,
+              "role_id": "nw-be",
+              "state": "approved",
+              "severity": "material",
+              "kind": "source",
+              "corrects": null,
+              "base_version": 0,
+              "version_created": 1,
+              "decided_by": "lead (seed)",
+              "decided_at": "<ts>",
+              "reason": null,
+              "created_at": "<ts>"
+            },
+            {
+              "id": 2,
+              "source_row_id": 2,
+              "role_id": "nw-be",
+              "state": "approved",
+              "severity": "material",
+              "kind": "source",
+              "corrects": null,
+              "base_version": 1,
+              "version_created": 2,
+              "decided_by": "lead (seed)",
+              "decided_at": "<ts>",
+              "reason": null,
+              "created_at": "<ts>"
+            },
+            {
+              "id": 3,
+              "source_row_id": 3,
+              "role_id": "ks-fe",
+              "state": "approved",
+              "severity": "material",
+              "kind": "source",
+              "corrects": null,
+              "base_version": 0,
+              "version_created": 1,
+              "decided_by": "lead (seed)",
+              "decided_at": "<ts>",
+              "reason": null,
+              "created_at": "<ts>"
+            },
+            {
+              "id": 4,
+              "source_row_id": 4,
+              "role_id": "ks-fe",
+              "state": "approved",
+              "severity": "material",
+              "kind": "source",
+              "corrects": null,
+              "base_version": 1,
+              "version_created": 2,
+              "decided_by": "lead (seed)",
+              "decided_at": "<ts>",
+              "reason": null,
+              "created_at": "<ts>"
+            },
+            {
+              "id": 5,
+              "source_row_id": 7,
+              "role_id": "nw-ai",
+              "state": "approved",
+              "severity": "material",
+              "kind": "source",
+              "corrects": null,
+              "base_version": 0,
+              "version_created": 1,
+              "decided_by": "lead (seed)",
+              "decided_at": "<ts>",
+              "reason": null,
+              "created_at": "<ts>"
+            },
+            {
+              "id": 6,
+              "source_row_id": 8,
+              "role_id": "ks-fe",
+              "state": "proposed",
+              "severity": "critical",
+              "kind": "source",
+              "corrects": null,
+              "base_version": 2,
+              "version_created": null,
+              "decided_by": null,
+              "decided_at": null,
+              "reason": null,
+              "created_at": "<ts>"
+            },
+            {
+              "id": 7,
+              "source_row_id": 9,
+              "role_id": "nw-ai",
+              "state": "approved",
+              "severity": "material",
+              "kind": "source",
+              "corrects": null,
+              "base_version": 1,
+              "version_created": 2,
+              "decided_by": "lead (seed)",
+              "decided_at": "<ts>",
+              "reason": null,
+              "created_at": "<ts>"
+            },
+            {
+              "id": 8,
+              "source_row_id": 10,
+              "role_id": "nw-be",
+              "state": "approved",
+              "severity": "material",
+              "kind": "source",
+              "corrects": null,
+              "base_version": 2,
+              "version_created": 3,
+              "decided_by": "lead (seed)",
+              "decided_at": "<ts>",
+              "reason": null,
+              "created_at": "<ts>"
+            },
+            {
+              "id": 9,
+              "source_row_id": 13,
+              "role_id": "nw-be",
+              "state": "approved",
+              "severity": "material",
+              "kind": "source",
+              "corrects": null,
+              "base_version": 3,
+              "version_created": 4,
+              "decided_by": "lead (seed)",
+              "decided_at": "<ts>",
+              "reason": null,
+              "created_at": "<ts>"
+            }
+          ],
+          "screening_reviews": [
+            {
+              "id": 1,
+              "source_row_id": 12,
+              "role_id": "ks-fe",
+              "candidate": "J. Moreau",
+              "screening_source_id": null,
+              "brief_version_at_screening": null,
+              "must_have_snapshot_json": "[]",
+              "coverage_json": "[]",
+              "overweighted_json": "[]",
+              "suggested_json": "[{\"text\":\"Ask whether they had paying users before anyone else joined\",\"why\":\"The client advanced J. Moreau for exactly this.\",\"future_screenings\":true}]",
+              "status": "insufficient_evidence",
+              "purpose": "retrospective",
+              "decision_json": "{\"candidate\":\"J. Moreau\",\"outcome\":\"advanced\",\"reason\":\"had paying users before anyone else joined; explained simply\"}",
+              "state": "approved",
+              "decided_by": "lead (seed)",
+              "decided_at": "<ts>",
+              "reason": null
+            },
+            {
+              "id": 2,
+              "source_row_id": 13,
+              "role_id": "nw-be",
+              "candidate": "D. Ruiz",
+              "screening_source_id": "nw-07",
+              "brief_version_at_screening": 3,
+              "must_have_snapshot_json": "<sha256:61ffe72b7e2f len=345>",
+              "coverage_json": "<sha256:ed09d362e406 len=457>",
+              "overweighted_json": "[{\"topic\":\"Go (trainable since 05 oct)\",\"count\":4,\"total\":11,\"quote\":\"How many years have you worked with Go?\"}]",
+              "suggested_json": "<sha256:fb3a76d0c429 len=309>",
+              "status": "ok",
+              "purpose": "retrospective",
+              "decision_json": "{\"candidate\":\"D. Ruiz\",\"outcome\":\"rejected\",\"reason\":\"weak on system design\"}",
+              "state": "approved",
+              "decided_by": "lead (seed)",
+              "decided_at": "<ts>",
+              "reason": null
+            }
+          ],
+          "brief_versions": [
+            {
+              "id": 1,
+              "role_id": "nw-be",
+              "n": 1,
+              "proposal_id": 1,
+              "source_id": "nw-01",
+              "effective_date": "2026-10-02",
+              "fields_json": "<sha256:5492978c6578 len=2785>",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 2,
+              "role_id": "nw-be",
+              "n": 2,
+              "proposal_id": 2,
+              "source_id": "nw-02",
+              "effective_date": "2026-10-05",
+              "fields_json": "<sha256:524c58ca1dd7 len=5004>",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 3,
+              "role_id": "ks-fe",
+              "n": 1,
+              "proposal_id": 3,
+              "source_id": "ks-01",
+              "effective_date": "2026-10-12",
+              "fields_json": "<sha256:7709e80990e6 len=1924>",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 4,
+              "role_id": "ks-fe",
+              "n": 2,
+              "proposal_id": 4,
+              "source_id": "ks-02",
+              "effective_date": "2026-10-14",
+              "fields_json": "<sha256:9ee29955b9f3 len=2808>",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 5,
+              "role_id": "nw-ai",
+              "n": 1,
+              "proposal_id": 5,
+              "source_id": "nw-04",
+              "effective_date": "2026-10-23",
+              "fields_json": "<sha256:f221d9b15cbc len=1588>",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 6,
+              "role_id": "nw-ai",
+              "n": 2,
+              "proposal_id": 7,
+              "source_id": "nw-05",
+              "effective_date": "2026-10-28",
+              "fields_json": "<sha256:488a31aa0e64 len=2465>",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 7,
+              "role_id": "nw-be",
+              "n": 3,
+              "proposal_id": 8,
+              "source_id": "nw-06",
+              "effective_date": "2026-11-03",
+              "fields_json": "<sha256:177748128815 len=5131>",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 8,
+              "role_id": "nw-be",
+              "n": 4,
+              "proposal_id": 9,
+              "source_id": "nw-08",
+              "effective_date": "2026-11-06",
+              "fields_json": "<sha256:817147e2bf38 len=5448>",
+              "created_at": "<ts>"
+            }
+          ],
+          "approvals": [
+            {
+              "id": 1,
+              "target_type": "proposal",
+              "target_id": 1,
+              "action": "approve",
+              "actor": "lead (seed)",
+              "reason": null,
+              "created_at": "<ts>"
+            },
+            {
+              "id": 2,
+              "target_type": "proposal",
+              "target_id": 2,
+              "action": "approve",
+              "actor": "lead (seed)",
+              "reason": null,
+              "created_at": "<ts>"
+            },
+            {
+              "id": 3,
+              "target_type": "proposal",
+              "target_id": 3,
+              "action": "approve",
+              "actor": "lead (seed)",
+              "reason": null,
+              "created_at": "<ts>"
+            },
+            {
+              "id": 4,
+              "target_type": "proposal",
+              "target_id": 4,
+              "action": "approve",
+              "actor": "lead (seed)",
+              "reason": null,
+              "created_at": "<ts>"
+            },
+            {
+              "id": 5,
+              "target_type": "proposal",
+              "target_id": 5,
+              "action": "approve",
+              "actor": "lead (seed)",
+              "reason": null,
+              "created_at": "<ts>"
+            },
+            {
+              "id": 6,
+              "target_type": "proposal",
+              "target_id": 7,
+              "action": "approve",
+              "actor": "lead (seed)",
+              "reason": null,
+              "created_at": "<ts>"
+            },
+            {
+              "id": 7,
+              "target_type": "proposal",
+              "target_id": 8,
+              "action": "approve",
+              "actor": "lead (seed)",
+              "reason": null,
+              "created_at": "<ts>"
+            },
+            {
+              "id": 8,
+              "target_type": "review",
+              "target_id": 1,
+              "action": "approve",
+              "actor": "lead (seed)",
+              "reason": null,
+              "created_at": "<ts>"
+            },
+            {
+              "id": 9,
+              "target_type": "proposal",
+              "target_id": 9,
+              "action": "approve",
+              "actor": "lead (seed)",
+              "reason": null,
+              "created_at": "<ts>"
+            },
+            {
+              "id": 10,
+              "target_type": "review",
+              "target_id": 2,
+              "action": "approve",
+              "actor": "lead (seed)",
+              "reason": null,
+              "created_at": "<ts>"
+            }
+          ],
+          "completions": [
+            {
+              "id": 1,
+              "recruiter_id": "luis",
+              "role_id": "nw-be",
+              "version": 2,
+              "item_id": 5,
+              "kind": "study",
+              "response": "Seeded demo answer: I would ask for one concrete example I can verify, and what changed afterwards.",
+              "accepted_json": "null",
+              "result_json": "<sha256:7208002ed949 len=458>",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 2,
+              "recruiter_id": "marta",
+              "role_id": "nw-be",
+              "version": 2,
+              "item_id": 5,
+              "kind": "study",
+              "response": "Seeded demo answer: I would ask for one concrete example I can verify, and what changed afterwards.",
+              "accepted_json": "null",
+              "result_json": "<sha256:7208002ed949 len=458>",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 3,
+              "recruiter_id": "luis",
+              "role_id": "nw-be",
+              "version": 2,
+              "item_id": 6,
+              "kind": "ack",
+              "response": null,
+              "accepted_json": "null",
+              "result_json": "{\"passed\":true,\"rule\":\"ack: a row exists once recorded\"}",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 4,
+              "recruiter_id": "marta",
+              "role_id": "nw-be",
+              "version": 2,
+              "item_id": 6,
+              "kind": "ack",
+              "response": null,
+              "accepted_json": "null",
+              "result_json": "{\"passed\":true,\"rule\":\"ack: a row exists once recorded\"}",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 5,
+              "recruiter_id": "jon",
+              "role_id": "nw-be",
+              "version": 2,
+              "item_id": 6,
+              "kind": "ack",
+              "response": null,
+              "accepted_json": "null",
+              "result_json": "{\"passed\":true,\"rule\":\"ack: a row exists once recorded\"}",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 6,
+              "recruiter_id": "luis",
+              "role_id": "nw-be",
+              "version": 2,
+              "item_id": 7,
+              "kind": "ack",
+              "response": null,
+              "accepted_json": "null",
+              "result_json": "{\"passed\":true,\"rule\":\"ack: a row exists once recorded\"}",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 7,
+              "recruiter_id": "marta",
+              "role_id": "nw-be",
+              "version": 2,
+              "item_id": 7,
+              "kind": "ack",
+              "response": null,
+              "accepted_json": "null",
+              "result_json": "{\"passed\":true,\"rule\":\"ack: a row exists once recorded\"}",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 8,
+              "recruiter_id": "jon",
+              "role_id": "nw-be",
+              "version": 2,
+              "item_id": 7,
+              "kind": "ack",
+              "response": null,
+              "accepted_json": "null",
+              "result_json": "{\"passed\":true,\"rule\":\"ack: a row exists once recorded\"}",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 9,
+              "recruiter_id": "luis",
+              "role_id": "nw-be",
+              "version": 2,
+              "item_id": 8,
+              "kind": "ack",
+              "response": null,
+              "accepted_json": "null",
+              "result_json": "{\"passed\":true,\"rule\":\"ack: a row exists once recorded\"}",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 10,
+              "recruiter_id": "marta",
+              "role_id": "nw-be",
+              "version": 2,
+              "item_id": 8,
+              "kind": "ack",
+              "response": null,
+              "accepted_json": "null",
+              "result_json": "{\"passed\":true,\"rule\":\"ack: a row exists once recorded\"}",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 11,
+              "recruiter_id": "jon",
+              "role_id": "nw-be",
+              "version": 2,
+              "item_id": 8,
+              "kind": "ack",
+              "response": null,
+              "accepted_json": "null",
+              "result_json": "{\"passed\":true,\"rule\":\"ack: a row exists once recorded\"}",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 12,
+              "recruiter_id": "luis",
+              "role_id": "nw-be",
+              "version": 3,
+              "item_id": 21,
+              "kind": "ack",
+              "response": null,
+              "accepted_json": "null",
+              "result_json": "{\"passed\":true,\"rule\":\"ack: a row exists once recorded\"}",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 13,
+              "recruiter_id": "marta",
+              "role_id": "nw-be",
+              "version": 3,
+              "item_id": 21,
+              "kind": "ack",
+              "response": null,
+              "accepted_json": "null",
+              "result_json": "{\"passed\":true,\"rule\":\"ack: a row exists once recorded\"}",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 14,
+              "recruiter_id": "jon",
+              "role_id": "nw-be",
+              "version": 3,
+              "item_id": 21,
+              "kind": "ack",
+              "response": null,
+              "accepted_json": "null",
+              "result_json": "{\"passed\":true,\"rule\":\"ack: a row exists once recorded\"}",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 15,
+              "recruiter_id": "luis",
+              "role_id": "nw-be",
+              "version": 3,
+              "item_id": 22,
+              "kind": "ack",
+              "response": null,
+              "accepted_json": "null",
+              "result_json": "{\"passed\":true,\"rule\":\"ack: a row exists once recorded\"}",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 16,
+              "recruiter_id": "marta",
+              "role_id": "nw-be",
+              "version": 3,
+              "item_id": 22,
+              "kind": "ack",
+              "response": null,
+              "accepted_json": "null",
+              "result_json": "{\"passed\":true,\"rule\":\"ack: a row exists once recorded\"}",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 17,
+              "recruiter_id": "jon",
+              "role_id": "nw-be",
+              "version": 3,
+              "item_id": 22,
+              "kind": "ack",
+              "response": null,
+              "accepted_json": "null",
+              "result_json": "{\"passed\":true,\"rule\":\"ack: a row exists once recorded\"}",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 18,
+              "recruiter_id": "luis",
+              "role_id": "nw-be",
+              "version": 3,
+              "item_id": 23,
+              "kind": "study",
+              "response": "Seeded demo answer: I would ask for one concrete example I can verify, and what changed afterwards.",
+              "accepted_json": "null",
+              "result_json": "<sha256:a534f91614ed len=446>",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 19,
+              "recruiter_id": "marta",
+              "role_id": "nw-be",
+              "version": 3,
+              "item_id": 23,
+              "kind": "study",
+              "response": "Seeded demo answer: I would ask for one concrete example I can verify, and what changed afterwards.",
+              "accepted_json": "null",
+              "result_json": "<sha256:a534f91614ed len=446>",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 20,
+              "recruiter_id": "luis",
+              "role_id": "nw-be",
+              "version": 4,
+              "item_id": 25,
+              "kind": "review",
+              "response": null,
+              "accepted_json": "[0,1]",
+              "result_json": "{\"passed\":true,\"rule\":\"review: accept at least one suggestion, or say none is needed and give a reason\",\"accepted\":[0,1],\"none_needed\":false}",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 21,
+              "recruiter_id": "marta",
+              "role_id": "nw-be",
+              "version": 4,
+              "item_id": 25,
+              "kind": "review",
+              "response": null,
+              "accepted_json": "[0,1]",
+              "result_json": "{\"passed\":true,\"rule\":\"review: accept at least one suggestion, or say none is needed and give a reason\",\"accepted\":[0,1],\"none_needed\":false}",
+              "created_at": "<ts>"
+            }
+          ],
+          "candidates": [
+            {
+              "id": 1,
+              "role_id": "nw-be",
+              "name": "A. Lindqvist",
+              "stage": 1
+            },
+            {
+              "id": 2,
+              "role_id": "nw-be",
+              "name": "J. Haas",
+              "stage": 0
+            },
+            {
+              "id": 3,
+              "role_id": "nw-be",
+              "name": "P. Novak",
+              "stage": 0
+            },
+            {
+              "id": 4,
+              "role_id": "nw-be",
+              "name": "S. Haddad",
+              "stage": 1
+            },
+            {
+              "id": 5,
+              "role_id": "nw-be",
+              "name": "L. Brandt",
+              "stage": 1
+            },
+            {
+              "id": 6,
+              "role_id": "nw-be",
+              "name": "K. Osei",
+              "stage": 2
+            },
+            {
+              "id": 7,
+              "role_id": "nw-be",
+              "name": "D. Weber",
+              "stage": 3
+            },
+            {
+              "id": 8,
+              "role_id": "nw-ai",
+              "name": "R. Silva",
+              "stage": 0
+            },
+            {
+              "id": 9,
+              "role_id": "nw-ai",
+              "name": "E. Duval",
+              "stage": 0
+            },
+            {
+              "id": 10,
+              "role_id": "nw-ai",
+              "name": "N. Ivanova",
+              "stage": 1
+            },
+            {
+              "id": 11,
+              "role_id": "ks-fe",
+              "name": "T. Kowalski",
+              "stage": 0
+            },
+            {
+              "id": 12,
+              "role_id": "ks-fe",
+              "name": "H. Tanaka",
+              "stage": 1
+            },
+            {
+              "id": 13,
+              "role_id": "ks-fe",
+              "name": "J. Moreau",
+              "stage": 3
+            }
+          ],
+          "assignments": [
+            {
+              "item_id": 5,
+              "recruiter_id": "ana",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 5,
+              "recruiter_id": "jon",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 5,
+              "recruiter_id": "luis",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 5,
+              "recruiter_id": "marta",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 6,
+              "recruiter_id": "ana",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 6,
+              "recruiter_id": "jon",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 6,
+              "recruiter_id": "luis",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 6,
+              "recruiter_id": "marta",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 7,
+              "recruiter_id": "ana",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 7,
+              "recruiter_id": "jon",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 7,
+              "recruiter_id": "luis",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 7,
+              "recruiter_id": "marta",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 8,
+              "recruiter_id": "ana",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 8,
+              "recruiter_id": "jon",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 8,
+              "recruiter_id": "luis",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 8,
+              "recruiter_id": "marta",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 11,
+              "recruiter_id": "jon",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 11,
+              "recruiter_id": "luis",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 12,
+              "recruiter_id": "jon",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 12,
+              "recruiter_id": "luis",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 17,
+              "recruiter_id": "ana",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 17,
+              "recruiter_id": "marta",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 21,
+              "recruiter_id": "ana",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 21,
+              "recruiter_id": "jon",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 21,
+              "recruiter_id": "luis",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 21,
+              "recruiter_id": "marta",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 22,
+              "recruiter_id": "ana",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 22,
+              "recruiter_id": "jon",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 22,
+              "recruiter_id": "luis",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 22,
+              "recruiter_id": "marta",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 23,
+              "recruiter_id": "ana",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 23,
+              "recruiter_id": "jon",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 23,
+              "recruiter_id": "luis",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 23,
+              "recruiter_id": "marta",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 24,
+              "recruiter_id": "jon",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 24,
+              "recruiter_id": "luis",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 25,
+              "recruiter_id": "ana",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 25,
+              "recruiter_id": "jon",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 25,
+              "recruiter_id": "luis",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 25,
+              "recruiter_id": "marta",
+              "created_at": "<ts>"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "pipeline nw-be after move",
+      "request": {
+        "method": "GET",
+        "path": "/api/roles/nw-be/pipeline",
+        "headers": {},
+        "body": null
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "content-type": "application/json; charset=utf-8",
+          "cache-control": "no-store",
+          "x-content-type-options": "nosniff",
+          "content-security-policy": "default-src 'self'; style-src 'self' 'unsafe-inline'; base-uri 'none'; form-action 'self'"
+        },
+        "body": [
+          {
+            "id": 2,
+            "name": "J. Haas",
+            "stage": 0
+          },
+          {
+            "id": 3,
+            "name": "P. Novak",
+            "stage": 0
+          },
+          {
+            "id": 1,
+            "name": "A. Lindqvist",
+            "stage": 1
+          },
+          {
+            "id": 4,
+            "name": "S. Haddad",
+            "stage": 1
+          },
+          {
+            "id": 5,
+            "name": "L. Brandt",
+            "stage": 1
+          },
+          {
+            "id": 6,
+            "name": "K. Osei",
+            "stage": 2
+          },
+          {
+            "id": 7,
+            "name": "D. Weber",
+            "stage": 3
+          }
+        ]
+      }
+    },
+    {
+      "name": "move 1 to stage 99",
+      "request": {
+        "method": "POST",
+        "path": "/api/candidates/1/move",
+        "headers": {},
+        "body": {
+          "to": 99
+        }
+      },
+      "response": {
+        "status": 400,
+        "headers": {
+          "content-type": "application/json; charset=utf-8",
+          "cache-control": "no-store",
+          "x-content-type-options": "nosniff",
+          "content-security-policy": "default-src 'self'; style-src 'self' 'unsafe-inline'; base-uri 'none'; form-action 'self'"
+        },
+        "body": {
+          "error": "unknown stage \"99\""
+        }
+      },
+      "db": {
+        "counts": {
+          "analyses": 13,
+          "approvals": 10,
+          "assignments": 40,
+          "brief_versions": 8,
+          "candidates": 13,
+          "changes": 48,
+          "clients": 2,
+          "completions": 21,
+          "learning_items": 15,
+          "proposals": 9,
+          "recruiters": 4,
+          "role_recruiters": 8,
+          "roles": 3,
+          "screening_reviews": 2,
+          "sources": 13,
+          "stage_runs": 90
+        },
+        "rows": {
+          "proposals": [
+            {
+              "id": 1,
+              "source_row_id": 1,
+              "role_id": "nw-be",
+              "state": "approved",
+              "severity": "material",
+              "kind": "source",
+              "corrects": null,
+              "base_version": 0,
+              "version_created": 1,
+              "decided_by": "lead (seed)",
+              "decided_at": "<ts>",
+              "reason": null,
+              "created_at": "<ts>"
+            },
+            {
+              "id": 2,
+              "source_row_id": 2,
+              "role_id": "nw-be",
+              "state": "approved",
+              "severity": "material",
+              "kind": "source",
+              "corrects": null,
+              "base_version": 1,
+              "version_created": 2,
+              "decided_by": "lead (seed)",
+              "decided_at": "<ts>",
+              "reason": null,
+              "created_at": "<ts>"
+            },
+            {
+              "id": 3,
+              "source_row_id": 3,
+              "role_id": "ks-fe",
+              "state": "approved",
+              "severity": "material",
+              "kind": "source",
+              "corrects": null,
+              "base_version": 0,
+              "version_created": 1,
+              "decided_by": "lead (seed)",
+              "decided_at": "<ts>",
+              "reason": null,
+              "created_at": "<ts>"
+            },
+            {
+              "id": 4,
+              "source_row_id": 4,
+              "role_id": "ks-fe",
+              "state": "approved",
+              "severity": "material",
+              "kind": "source",
+              "corrects": null,
+              "base_version": 1,
+              "version_created": 2,
+              "decided_by": "lead (seed)",
+              "decided_at": "<ts>",
+              "reason": null,
+              "created_at": "<ts>"
+            },
+            {
+              "id": 5,
+              "source_row_id": 7,
+              "role_id": "nw-ai",
+              "state": "approved",
+              "severity": "material",
+              "kind": "source",
+              "corrects": null,
+              "base_version": 0,
+              "version_created": 1,
+              "decided_by": "lead (seed)",
+              "decided_at": "<ts>",
+              "reason": null,
+              "created_at": "<ts>"
+            },
+            {
+              "id": 6,
+              "source_row_id": 8,
+              "role_id": "ks-fe",
+              "state": "proposed",
+              "severity": "critical",
+              "kind": "source",
+              "corrects": null,
+              "base_version": 2,
+              "version_created": null,
+              "decided_by": null,
+              "decided_at": null,
+              "reason": null,
+              "created_at": "<ts>"
+            },
+            {
+              "id": 7,
+              "source_row_id": 9,
+              "role_id": "nw-ai",
+              "state": "approved",
+              "severity": "material",
+              "kind": "source",
+              "corrects": null,
+              "base_version": 1,
+              "version_created": 2,
+              "decided_by": "lead (seed)",
+              "decided_at": "<ts>",
+              "reason": null,
+              "created_at": "<ts>"
+            },
+            {
+              "id": 8,
+              "source_row_id": 10,
+              "role_id": "nw-be",
+              "state": "approved",
+              "severity": "material",
+              "kind": "source",
+              "corrects": null,
+              "base_version": 2,
+              "version_created": 3,
+              "decided_by": "lead (seed)",
+              "decided_at": "<ts>",
+              "reason": null,
+              "created_at": "<ts>"
+            },
+            {
+              "id": 9,
+              "source_row_id": 13,
+              "role_id": "nw-be",
+              "state": "approved",
+              "severity": "material",
+              "kind": "source",
+              "corrects": null,
+              "base_version": 3,
+              "version_created": 4,
+              "decided_by": "lead (seed)",
+              "decided_at": "<ts>",
+              "reason": null,
+              "created_at": "<ts>"
+            }
+          ],
+          "screening_reviews": [
+            {
+              "id": 1,
+              "source_row_id": 12,
+              "role_id": "ks-fe",
+              "candidate": "J. Moreau",
+              "screening_source_id": null,
+              "brief_version_at_screening": null,
+              "must_have_snapshot_json": "[]",
+              "coverage_json": "[]",
+              "overweighted_json": "[]",
+              "suggested_json": "[{\"text\":\"Ask whether they had paying users before anyone else joined\",\"why\":\"The client advanced J. Moreau for exactly this.\",\"future_screenings\":true}]",
+              "status": "insufficient_evidence",
+              "purpose": "retrospective",
+              "decision_json": "{\"candidate\":\"J. Moreau\",\"outcome\":\"advanced\",\"reason\":\"had paying users before anyone else joined; explained simply\"}",
+              "state": "approved",
+              "decided_by": "lead (seed)",
+              "decided_at": "<ts>",
+              "reason": null
+            },
+            {
+              "id": 2,
+              "source_row_id": 13,
+              "role_id": "nw-be",
+              "candidate": "D. Ruiz",
+              "screening_source_id": "nw-07",
+              "brief_version_at_screening": 3,
+              "must_have_snapshot_json": "<sha256:61ffe72b7e2f len=345>",
+              "coverage_json": "<sha256:ed09d362e406 len=457>",
+              "overweighted_json": "[{\"topic\":\"Go (trainable since 05 oct)\",\"count\":4,\"total\":11,\"quote\":\"How many years have you worked with Go?\"}]",
+              "suggested_json": "<sha256:fb3a76d0c429 len=309>",
+              "status": "ok",
+              "purpose": "retrospective",
+              "decision_json": "{\"candidate\":\"D. Ruiz\",\"outcome\":\"rejected\",\"reason\":\"weak on system design\"}",
+              "state": "approved",
+              "decided_by": "lead (seed)",
+              "decided_at": "<ts>",
+              "reason": null
+            }
+          ],
+          "brief_versions": [
+            {
+              "id": 1,
+              "role_id": "nw-be",
+              "n": 1,
+              "proposal_id": 1,
+              "source_id": "nw-01",
+              "effective_date": "2026-10-02",
+              "fields_json": "<sha256:5492978c6578 len=2785>",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 2,
+              "role_id": "nw-be",
+              "n": 2,
+              "proposal_id": 2,
+              "source_id": "nw-02",
+              "effective_date": "2026-10-05",
+              "fields_json": "<sha256:524c58ca1dd7 len=5004>",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 3,
+              "role_id": "ks-fe",
+              "n": 1,
+              "proposal_id": 3,
+              "source_id": "ks-01",
+              "effective_date": "2026-10-12",
+              "fields_json": "<sha256:7709e80990e6 len=1924>",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 4,
+              "role_id": "ks-fe",
+              "n": 2,
+              "proposal_id": 4,
+              "source_id": "ks-02",
+              "effective_date": "2026-10-14",
+              "fields_json": "<sha256:9ee29955b9f3 len=2808>",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 5,
+              "role_id": "nw-ai",
+              "n": 1,
+              "proposal_id": 5,
+              "source_id": "nw-04",
+              "effective_date": "2026-10-23",
+              "fields_json": "<sha256:f221d9b15cbc len=1588>",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 6,
+              "role_id": "nw-ai",
+              "n": 2,
+              "proposal_id": 7,
+              "source_id": "nw-05",
+              "effective_date": "2026-10-28",
+              "fields_json": "<sha256:488a31aa0e64 len=2465>",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 7,
+              "role_id": "nw-be",
+              "n": 3,
+              "proposal_id": 8,
+              "source_id": "nw-06",
+              "effective_date": "2026-11-03",
+              "fields_json": "<sha256:177748128815 len=5131>",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 8,
+              "role_id": "nw-be",
+              "n": 4,
+              "proposal_id": 9,
+              "source_id": "nw-08",
+              "effective_date": "2026-11-06",
+              "fields_json": "<sha256:817147e2bf38 len=5448>",
+              "created_at": "<ts>"
+            }
+          ],
+          "approvals": [
+            {
+              "id": 1,
+              "target_type": "proposal",
+              "target_id": 1,
+              "action": "approve",
+              "actor": "lead (seed)",
+              "reason": null,
+              "created_at": "<ts>"
+            },
+            {
+              "id": 2,
+              "target_type": "proposal",
+              "target_id": 2,
+              "action": "approve",
+              "actor": "lead (seed)",
+              "reason": null,
+              "created_at": "<ts>"
+            },
+            {
+              "id": 3,
+              "target_type": "proposal",
+              "target_id": 3,
+              "action": "approve",
+              "actor": "lead (seed)",
+              "reason": null,
+              "created_at": "<ts>"
+            },
+            {
+              "id": 4,
+              "target_type": "proposal",
+              "target_id": 4,
+              "action": "approve",
+              "actor": "lead (seed)",
+              "reason": null,
+              "created_at": "<ts>"
+            },
+            {
+              "id": 5,
+              "target_type": "proposal",
+              "target_id": 5,
+              "action": "approve",
+              "actor": "lead (seed)",
+              "reason": null,
+              "created_at": "<ts>"
+            },
+            {
+              "id": 6,
+              "target_type": "proposal",
+              "target_id": 7,
+              "action": "approve",
+              "actor": "lead (seed)",
+              "reason": null,
+              "created_at": "<ts>"
+            },
+            {
+              "id": 7,
+              "target_type": "proposal",
+              "target_id": 8,
+              "action": "approve",
+              "actor": "lead (seed)",
+              "reason": null,
+              "created_at": "<ts>"
+            },
+            {
+              "id": 8,
+              "target_type": "review",
+              "target_id": 1,
+              "action": "approve",
+              "actor": "lead (seed)",
+              "reason": null,
+              "created_at": "<ts>"
+            },
+            {
+              "id": 9,
+              "target_type": "proposal",
+              "target_id": 9,
+              "action": "approve",
+              "actor": "lead (seed)",
+              "reason": null,
+              "created_at": "<ts>"
+            },
+            {
+              "id": 10,
+              "target_type": "review",
+              "target_id": 2,
+              "action": "approve",
+              "actor": "lead (seed)",
+              "reason": null,
+              "created_at": "<ts>"
+            }
+          ],
+          "completions": [
+            {
+              "id": 1,
+              "recruiter_id": "luis",
+              "role_id": "nw-be",
+              "version": 2,
+              "item_id": 5,
+              "kind": "study",
+              "response": "Seeded demo answer: I would ask for one concrete example I can verify, and what changed afterwards.",
+              "accepted_json": "null",
+              "result_json": "<sha256:7208002ed949 len=458>",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 2,
+              "recruiter_id": "marta",
+              "role_id": "nw-be",
+              "version": 2,
+              "item_id": 5,
+              "kind": "study",
+              "response": "Seeded demo answer: I would ask for one concrete example I can verify, and what changed afterwards.",
+              "accepted_json": "null",
+              "result_json": "<sha256:7208002ed949 len=458>",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 3,
+              "recruiter_id": "luis",
+              "role_id": "nw-be",
+              "version": 2,
+              "item_id": 6,
+              "kind": "ack",
+              "response": null,
+              "accepted_json": "null",
+              "result_json": "{\"passed\":true,\"rule\":\"ack: a row exists once recorded\"}",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 4,
+              "recruiter_id": "marta",
+              "role_id": "nw-be",
+              "version": 2,
+              "item_id": 6,
+              "kind": "ack",
+              "response": null,
+              "accepted_json": "null",
+              "result_json": "{\"passed\":true,\"rule\":\"ack: a row exists once recorded\"}",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 5,
+              "recruiter_id": "jon",
+              "role_id": "nw-be",
+              "version": 2,
+              "item_id": 6,
+              "kind": "ack",
+              "response": null,
+              "accepted_json": "null",
+              "result_json": "{\"passed\":true,\"rule\":\"ack: a row exists once recorded\"}",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 6,
+              "recruiter_id": "luis",
+              "role_id": "nw-be",
+              "version": 2,
+              "item_id": 7,
+              "kind": "ack",
+              "response": null,
+              "accepted_json": "null",
+              "result_json": "{\"passed\":true,\"rule\":\"ack: a row exists once recorded\"}",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 7,
+              "recruiter_id": "marta",
+              "role_id": "nw-be",
+              "version": 2,
+              "item_id": 7,
+              "kind": "ack",
+              "response": null,
+              "accepted_json": "null",
+              "result_json": "{\"passed\":true,\"rule\":\"ack: a row exists once recorded\"}",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 8,
+              "recruiter_id": "jon",
+              "role_id": "nw-be",
+              "version": 2,
+              "item_id": 7,
+              "kind": "ack",
+              "response": null,
+              "accepted_json": "null",
+              "result_json": "{\"passed\":true,\"rule\":\"ack: a row exists once recorded\"}",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 9,
+              "recruiter_id": "luis",
+              "role_id": "nw-be",
+              "version": 2,
+              "item_id": 8,
+              "kind": "ack",
+              "response": null,
+              "accepted_json": "null",
+              "result_json": "{\"passed\":true,\"rule\":\"ack: a row exists once recorded\"}",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 10,
+              "recruiter_id": "marta",
+              "role_id": "nw-be",
+              "version": 2,
+              "item_id": 8,
+              "kind": "ack",
+              "response": null,
+              "accepted_json": "null",
+              "result_json": "{\"passed\":true,\"rule\":\"ack: a row exists once recorded\"}",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 11,
+              "recruiter_id": "jon",
+              "role_id": "nw-be",
+              "version": 2,
+              "item_id": 8,
+              "kind": "ack",
+              "response": null,
+              "accepted_json": "null",
+              "result_json": "{\"passed\":true,\"rule\":\"ack: a row exists once recorded\"}",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 12,
+              "recruiter_id": "luis",
+              "role_id": "nw-be",
+              "version": 3,
+              "item_id": 21,
+              "kind": "ack",
+              "response": null,
+              "accepted_json": "null",
+              "result_json": "{\"passed\":true,\"rule\":\"ack: a row exists once recorded\"}",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 13,
+              "recruiter_id": "marta",
+              "role_id": "nw-be",
+              "version": 3,
+              "item_id": 21,
+              "kind": "ack",
+              "response": null,
+              "accepted_json": "null",
+              "result_json": "{\"passed\":true,\"rule\":\"ack: a row exists once recorded\"}",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 14,
+              "recruiter_id": "jon",
+              "role_id": "nw-be",
+              "version": 3,
+              "item_id": 21,
+              "kind": "ack",
+              "response": null,
+              "accepted_json": "null",
+              "result_json": "{\"passed\":true,\"rule\":\"ack: a row exists once recorded\"}",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 15,
+              "recruiter_id": "luis",
+              "role_id": "nw-be",
+              "version": 3,
+              "item_id": 22,
+              "kind": "ack",
+              "response": null,
+              "accepted_json": "null",
+              "result_json": "{\"passed\":true,\"rule\":\"ack: a row exists once recorded\"}",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 16,
+              "recruiter_id": "marta",
+              "role_id": "nw-be",
+              "version": 3,
+              "item_id": 22,
+              "kind": "ack",
+              "response": null,
+              "accepted_json": "null",
+              "result_json": "{\"passed\":true,\"rule\":\"ack: a row exists once recorded\"}",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 17,
+              "recruiter_id": "jon",
+              "role_id": "nw-be",
+              "version": 3,
+              "item_id": 22,
+              "kind": "ack",
+              "response": null,
+              "accepted_json": "null",
+              "result_json": "{\"passed\":true,\"rule\":\"ack: a row exists once recorded\"}",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 18,
+              "recruiter_id": "luis",
+              "role_id": "nw-be",
+              "version": 3,
+              "item_id": 23,
+              "kind": "study",
+              "response": "Seeded demo answer: I would ask for one concrete example I can verify, and what changed afterwards.",
+              "accepted_json": "null",
+              "result_json": "<sha256:a534f91614ed len=446>",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 19,
+              "recruiter_id": "marta",
+              "role_id": "nw-be",
+              "version": 3,
+              "item_id": 23,
+              "kind": "study",
+              "response": "Seeded demo answer: I would ask for one concrete example I can verify, and what changed afterwards.",
+              "accepted_json": "null",
+              "result_json": "<sha256:a534f91614ed len=446>",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 20,
+              "recruiter_id": "luis",
+              "role_id": "nw-be",
+              "version": 4,
+              "item_id": 25,
+              "kind": "review",
+              "response": null,
+              "accepted_json": "[0,1]",
+              "result_json": "{\"passed\":true,\"rule\":\"review: accept at least one suggestion, or say none is needed and give a reason\",\"accepted\":[0,1],\"none_needed\":false}",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 21,
+              "recruiter_id": "marta",
+              "role_id": "nw-be",
+              "version": 4,
+              "item_id": 25,
+              "kind": "review",
+              "response": null,
+              "accepted_json": "[0,1]",
+              "result_json": "{\"passed\":true,\"rule\":\"review: accept at least one suggestion, or say none is needed and give a reason\",\"accepted\":[0,1],\"none_needed\":false}",
+              "created_at": "<ts>"
+            }
+          ],
+          "candidates": [
+            {
+              "id": 1,
+              "role_id": "nw-be",
+              "name": "A. Lindqvist",
+              "stage": 1
+            },
+            {
+              "id": 2,
+              "role_id": "nw-be",
+              "name": "J. Haas",
+              "stage": 0
+            },
+            {
+              "id": 3,
+              "role_id": "nw-be",
+              "name": "P. Novak",
+              "stage": 0
+            },
+            {
+              "id": 4,
+              "role_id": "nw-be",
+              "name": "S. Haddad",
+              "stage": 1
+            },
+            {
+              "id": 5,
+              "role_id": "nw-be",
+              "name": "L. Brandt",
+              "stage": 1
+            },
+            {
+              "id": 6,
+              "role_id": "nw-be",
+              "name": "K. Osei",
+              "stage": 2
+            },
+            {
+              "id": 7,
+              "role_id": "nw-be",
+              "name": "D. Weber",
+              "stage": 3
+            },
+            {
+              "id": 8,
+              "role_id": "nw-ai",
+              "name": "R. Silva",
+              "stage": 0
+            },
+            {
+              "id": 9,
+              "role_id": "nw-ai",
+              "name": "E. Duval",
+              "stage": 0
+            },
+            {
+              "id": 10,
+              "role_id": "nw-ai",
+              "name": "N. Ivanova",
+              "stage": 1
+            },
+            {
+              "id": 11,
+              "role_id": "ks-fe",
+              "name": "T. Kowalski",
+              "stage": 0
+            },
+            {
+              "id": 12,
+              "role_id": "ks-fe",
+              "name": "H. Tanaka",
+              "stage": 1
+            },
+            {
+              "id": 13,
+              "role_id": "ks-fe",
+              "name": "J. Moreau",
+              "stage": 3
+            }
+          ],
+          "assignments": [
+            {
+              "item_id": 5,
+              "recruiter_id": "ana",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 5,
+              "recruiter_id": "jon",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 5,
+              "recruiter_id": "luis",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 5,
+              "recruiter_id": "marta",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 6,
+              "recruiter_id": "ana",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 6,
+              "recruiter_id": "jon",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 6,
+              "recruiter_id": "luis",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 6,
+              "recruiter_id": "marta",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 7,
+              "recruiter_id": "ana",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 7,
+              "recruiter_id": "jon",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 7,
+              "recruiter_id": "luis",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 7,
+              "recruiter_id": "marta",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 8,
+              "recruiter_id": "ana",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 8,
+              "recruiter_id": "jon",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 8,
+              "recruiter_id": "luis",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 8,
+              "recruiter_id": "marta",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 11,
+              "recruiter_id": "jon",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 11,
+              "recruiter_id": "luis",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 12,
+              "recruiter_id": "jon",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 12,
+              "recruiter_id": "luis",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 17,
+              "recruiter_id": "ana",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 17,
+              "recruiter_id": "marta",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 21,
+              "recruiter_id": "ana",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 21,
+              "recruiter_id": "jon",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 21,
+              "recruiter_id": "luis",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 21,
+              "recruiter_id": "marta",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 22,
+              "recruiter_id": "ana",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 22,
+              "recruiter_id": "jon",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 22,
+              "recruiter_id": "luis",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 22,
+              "recruiter_id": "marta",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 23,
+              "recruiter_id": "ana",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 23,
+              "recruiter_id": "jon",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 23,
+              "recruiter_id": "luis",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 23,
+              "recruiter_id": "marta",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 24,
+              "recruiter_id": "jon",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 24,
+              "recruiter_id": "luis",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 25,
+              "recruiter_id": "ana",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 25,
+              "recruiter_id": "jon",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 25,
+              "recruiter_id": "luis",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 25,
+              "recruiter_id": "marta",
+              "created_at": "<ts>"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "move 1 to stage -1",
+      "request": {
+        "method": "POST",
+        "path": "/api/candidates/1/move",
+        "headers": {},
+        "body": {
+          "to": -1
+        }
+      },
+      "response": {
+        "status": 400,
+        "headers": {
+          "content-type": "application/json; charset=utf-8",
+          "cache-control": "no-store",
+          "x-content-type-options": "nosniff",
+          "content-security-policy": "default-src 'self'; style-src 'self' 'unsafe-inline'; base-uri 'none'; form-action 'self'"
+        },
+        "body": {
+          "error": "unknown stage \"-1\""
+        }
+      },
+      "db": {
+        "counts": {
+          "analyses": 13,
+          "approvals": 10,
+          "assignments": 40,
+          "brief_versions": 8,
+          "candidates": 13,
+          "changes": 48,
+          "clients": 2,
+          "completions": 21,
+          "learning_items": 15,
+          "proposals": 9,
+          "recruiters": 4,
+          "role_recruiters": 8,
+          "roles": 3,
+          "screening_reviews": 2,
+          "sources": 13,
+          "stage_runs": 90
+        },
+        "rows": {
+          "proposals": [
+            {
+              "id": 1,
+              "source_row_id": 1,
+              "role_id": "nw-be",
+              "state": "approved",
+              "severity": "material",
+              "kind": "source",
+              "corrects": null,
+              "base_version": 0,
+              "version_created": 1,
+              "decided_by": "lead (seed)",
+              "decided_at": "<ts>",
+              "reason": null,
+              "created_at": "<ts>"
+            },
+            {
+              "id": 2,
+              "source_row_id": 2,
+              "role_id": "nw-be",
+              "state": "approved",
+              "severity": "material",
+              "kind": "source",
+              "corrects": null,
+              "base_version": 1,
+              "version_created": 2,
+              "decided_by": "lead (seed)",
+              "decided_at": "<ts>",
+              "reason": null,
+              "created_at": "<ts>"
+            },
+            {
+              "id": 3,
+              "source_row_id": 3,
+              "role_id": "ks-fe",
+              "state": "approved",
+              "severity": "material",
+              "kind": "source",
+              "corrects": null,
+              "base_version": 0,
+              "version_created": 1,
+              "decided_by": "lead (seed)",
+              "decided_at": "<ts>",
+              "reason": null,
+              "created_at": "<ts>"
+            },
+            {
+              "id": 4,
+              "source_row_id": 4,
+              "role_id": "ks-fe",
+              "state": "approved",
+              "severity": "material",
+              "kind": "source",
+              "corrects": null,
+              "base_version": 1,
+              "version_created": 2,
+              "decided_by": "lead (seed)",
+              "decided_at": "<ts>",
+              "reason": null,
+              "created_at": "<ts>"
+            },
+            {
+              "id": 5,
+              "source_row_id": 7,
+              "role_id": "nw-ai",
+              "state": "approved",
+              "severity": "material",
+              "kind": "source",
+              "corrects": null,
+              "base_version": 0,
+              "version_created": 1,
+              "decided_by": "lead (seed)",
+              "decided_at": "<ts>",
+              "reason": null,
+              "created_at": "<ts>"
+            },
+            {
+              "id": 6,
+              "source_row_id": 8,
+              "role_id": "ks-fe",
+              "state": "proposed",
+              "severity": "critical",
+              "kind": "source",
+              "corrects": null,
+              "base_version": 2,
+              "version_created": null,
+              "decided_by": null,
+              "decided_at": null,
+              "reason": null,
+              "created_at": "<ts>"
+            },
+            {
+              "id": 7,
+              "source_row_id": 9,
+              "role_id": "nw-ai",
+              "state": "approved",
+              "severity": "material",
+              "kind": "source",
+              "corrects": null,
+              "base_version": 1,
+              "version_created": 2,
+              "decided_by": "lead (seed)",
+              "decided_at": "<ts>",
+              "reason": null,
+              "created_at": "<ts>"
+            },
+            {
+              "id": 8,
+              "source_row_id": 10,
+              "role_id": "nw-be",
+              "state": "approved",
+              "severity": "material",
+              "kind": "source",
+              "corrects": null,
+              "base_version": 2,
+              "version_created": 3,
+              "decided_by": "lead (seed)",
+              "decided_at": "<ts>",
+              "reason": null,
+              "created_at": "<ts>"
+            },
+            {
+              "id": 9,
+              "source_row_id": 13,
+              "role_id": "nw-be",
+              "state": "approved",
+              "severity": "material",
+              "kind": "source",
+              "corrects": null,
+              "base_version": 3,
+              "version_created": 4,
+              "decided_by": "lead (seed)",
+              "decided_at": "<ts>",
+              "reason": null,
+              "created_at": "<ts>"
+            }
+          ],
+          "screening_reviews": [
+            {
+              "id": 1,
+              "source_row_id": 12,
+              "role_id": "ks-fe",
+              "candidate": "J. Moreau",
+              "screening_source_id": null,
+              "brief_version_at_screening": null,
+              "must_have_snapshot_json": "[]",
+              "coverage_json": "[]",
+              "overweighted_json": "[]",
+              "suggested_json": "[{\"text\":\"Ask whether they had paying users before anyone else joined\",\"why\":\"The client advanced J. Moreau for exactly this.\",\"future_screenings\":true}]",
+              "status": "insufficient_evidence",
+              "purpose": "retrospective",
+              "decision_json": "{\"candidate\":\"J. Moreau\",\"outcome\":\"advanced\",\"reason\":\"had paying users before anyone else joined; explained simply\"}",
+              "state": "approved",
+              "decided_by": "lead (seed)",
+              "decided_at": "<ts>",
+              "reason": null
+            },
+            {
+              "id": 2,
+              "source_row_id": 13,
+              "role_id": "nw-be",
+              "candidate": "D. Ruiz",
+              "screening_source_id": "nw-07",
+              "brief_version_at_screening": 3,
+              "must_have_snapshot_json": "<sha256:61ffe72b7e2f len=345>",
+              "coverage_json": "<sha256:ed09d362e406 len=457>",
+              "overweighted_json": "[{\"topic\":\"Go (trainable since 05 oct)\",\"count\":4,\"total\":11,\"quote\":\"How many years have you worked with Go?\"}]",
+              "suggested_json": "<sha256:fb3a76d0c429 len=309>",
+              "status": "ok",
+              "purpose": "retrospective",
+              "decision_json": "{\"candidate\":\"D. Ruiz\",\"outcome\":\"rejected\",\"reason\":\"weak on system design\"}",
+              "state": "approved",
+              "decided_by": "lead (seed)",
+              "decided_at": "<ts>",
+              "reason": null
+            }
+          ],
+          "brief_versions": [
+            {
+              "id": 1,
+              "role_id": "nw-be",
+              "n": 1,
+              "proposal_id": 1,
+              "source_id": "nw-01",
+              "effective_date": "2026-10-02",
+              "fields_json": "<sha256:5492978c6578 len=2785>",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 2,
+              "role_id": "nw-be",
+              "n": 2,
+              "proposal_id": 2,
+              "source_id": "nw-02",
+              "effective_date": "2026-10-05",
+              "fields_json": "<sha256:524c58ca1dd7 len=5004>",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 3,
+              "role_id": "ks-fe",
+              "n": 1,
+              "proposal_id": 3,
+              "source_id": "ks-01",
+              "effective_date": "2026-10-12",
+              "fields_json": "<sha256:7709e80990e6 len=1924>",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 4,
+              "role_id": "ks-fe",
+              "n": 2,
+              "proposal_id": 4,
+              "source_id": "ks-02",
+              "effective_date": "2026-10-14",
+              "fields_json": "<sha256:9ee29955b9f3 len=2808>",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 5,
+              "role_id": "nw-ai",
+              "n": 1,
+              "proposal_id": 5,
+              "source_id": "nw-04",
+              "effective_date": "2026-10-23",
+              "fields_json": "<sha256:f221d9b15cbc len=1588>",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 6,
+              "role_id": "nw-ai",
+              "n": 2,
+              "proposal_id": 7,
+              "source_id": "nw-05",
+              "effective_date": "2026-10-28",
+              "fields_json": "<sha256:488a31aa0e64 len=2465>",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 7,
+              "role_id": "nw-be",
+              "n": 3,
+              "proposal_id": 8,
+              "source_id": "nw-06",
+              "effective_date": "2026-11-03",
+              "fields_json": "<sha256:177748128815 len=5131>",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 8,
+              "role_id": "nw-be",
+              "n": 4,
+              "proposal_id": 9,
+              "source_id": "nw-08",
+              "effective_date": "2026-11-06",
+              "fields_json": "<sha256:817147e2bf38 len=5448>",
+              "created_at": "<ts>"
+            }
+          ],
+          "approvals": [
+            {
+              "id": 1,
+              "target_type": "proposal",
+              "target_id": 1,
+              "action": "approve",
+              "actor": "lead (seed)",
+              "reason": null,
+              "created_at": "<ts>"
+            },
+            {
+              "id": 2,
+              "target_type": "proposal",
+              "target_id": 2,
+              "action": "approve",
+              "actor": "lead (seed)",
+              "reason": null,
+              "created_at": "<ts>"
+            },
+            {
+              "id": 3,
+              "target_type": "proposal",
+              "target_id": 3,
+              "action": "approve",
+              "actor": "lead (seed)",
+              "reason": null,
+              "created_at": "<ts>"
+            },
+            {
+              "id": 4,
+              "target_type": "proposal",
+              "target_id": 4,
+              "action": "approve",
+              "actor": "lead (seed)",
+              "reason": null,
+              "created_at": "<ts>"
+            },
+            {
+              "id": 5,
+              "target_type": "proposal",
+              "target_id": 5,
+              "action": "approve",
+              "actor": "lead (seed)",
+              "reason": null,
+              "created_at": "<ts>"
+            },
+            {
+              "id": 6,
+              "target_type": "proposal",
+              "target_id": 7,
+              "action": "approve",
+              "actor": "lead (seed)",
+              "reason": null,
+              "created_at": "<ts>"
+            },
+            {
+              "id": 7,
+              "target_type": "proposal",
+              "target_id": 8,
+              "action": "approve",
+              "actor": "lead (seed)",
+              "reason": null,
+              "created_at": "<ts>"
+            },
+            {
+              "id": 8,
+              "target_type": "review",
+              "target_id": 1,
+              "action": "approve",
+              "actor": "lead (seed)",
+              "reason": null,
+              "created_at": "<ts>"
+            },
+            {
+              "id": 9,
+              "target_type": "proposal",
+              "target_id": 9,
+              "action": "approve",
+              "actor": "lead (seed)",
+              "reason": null,
+              "created_at": "<ts>"
+            },
+            {
+              "id": 10,
+              "target_type": "review",
+              "target_id": 2,
+              "action": "approve",
+              "actor": "lead (seed)",
+              "reason": null,
+              "created_at": "<ts>"
+            }
+          ],
+          "completions": [
+            {
+              "id": 1,
+              "recruiter_id": "luis",
+              "role_id": "nw-be",
+              "version": 2,
+              "item_id": 5,
+              "kind": "study",
+              "response": "Seeded demo answer: I would ask for one concrete example I can verify, and what changed afterwards.",
+              "accepted_json": "null",
+              "result_json": "<sha256:7208002ed949 len=458>",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 2,
+              "recruiter_id": "marta",
+              "role_id": "nw-be",
+              "version": 2,
+              "item_id": 5,
+              "kind": "study",
+              "response": "Seeded demo answer: I would ask for one concrete example I can verify, and what changed afterwards.",
+              "accepted_json": "null",
+              "result_json": "<sha256:7208002ed949 len=458>",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 3,
+              "recruiter_id": "luis",
+              "role_id": "nw-be",
+              "version": 2,
+              "item_id": 6,
+              "kind": "ack",
+              "response": null,
+              "accepted_json": "null",
+              "result_json": "{\"passed\":true,\"rule\":\"ack: a row exists once recorded\"}",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 4,
+              "recruiter_id": "marta",
+              "role_id": "nw-be",
+              "version": 2,
+              "item_id": 6,
+              "kind": "ack",
+              "response": null,
+              "accepted_json": "null",
+              "result_json": "{\"passed\":true,\"rule\":\"ack: a row exists once recorded\"}",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 5,
+              "recruiter_id": "jon",
+              "role_id": "nw-be",
+              "version": 2,
+              "item_id": 6,
+              "kind": "ack",
+              "response": null,
+              "accepted_json": "null",
+              "result_json": "{\"passed\":true,\"rule\":\"ack: a row exists once recorded\"}",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 6,
+              "recruiter_id": "luis",
+              "role_id": "nw-be",
+              "version": 2,
+              "item_id": 7,
+              "kind": "ack",
+              "response": null,
+              "accepted_json": "null",
+              "result_json": "{\"passed\":true,\"rule\":\"ack: a row exists once recorded\"}",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 7,
+              "recruiter_id": "marta",
+              "role_id": "nw-be",
+              "version": 2,
+              "item_id": 7,
+              "kind": "ack",
+              "response": null,
+              "accepted_json": "null",
+              "result_json": "{\"passed\":true,\"rule\":\"ack: a row exists once recorded\"}",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 8,
+              "recruiter_id": "jon",
+              "role_id": "nw-be",
+              "version": 2,
+              "item_id": 7,
+              "kind": "ack",
+              "response": null,
+              "accepted_json": "null",
+              "result_json": "{\"passed\":true,\"rule\":\"ack: a row exists once recorded\"}",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 9,
+              "recruiter_id": "luis",
+              "role_id": "nw-be",
+              "version": 2,
+              "item_id": 8,
+              "kind": "ack",
+              "response": null,
+              "accepted_json": "null",
+              "result_json": "{\"passed\":true,\"rule\":\"ack: a row exists once recorded\"}",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 10,
+              "recruiter_id": "marta",
+              "role_id": "nw-be",
+              "version": 2,
+              "item_id": 8,
+              "kind": "ack",
+              "response": null,
+              "accepted_json": "null",
+              "result_json": "{\"passed\":true,\"rule\":\"ack: a row exists once recorded\"}",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 11,
+              "recruiter_id": "jon",
+              "role_id": "nw-be",
+              "version": 2,
+              "item_id": 8,
+              "kind": "ack",
+              "response": null,
+              "accepted_json": "null",
+              "result_json": "{\"passed\":true,\"rule\":\"ack: a row exists once recorded\"}",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 12,
+              "recruiter_id": "luis",
+              "role_id": "nw-be",
+              "version": 3,
+              "item_id": 21,
+              "kind": "ack",
+              "response": null,
+              "accepted_json": "null",
+              "result_json": "{\"passed\":true,\"rule\":\"ack: a row exists once recorded\"}",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 13,
+              "recruiter_id": "marta",
+              "role_id": "nw-be",
+              "version": 3,
+              "item_id": 21,
+              "kind": "ack",
+              "response": null,
+              "accepted_json": "null",
+              "result_json": "{\"passed\":true,\"rule\":\"ack: a row exists once recorded\"}",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 14,
+              "recruiter_id": "jon",
+              "role_id": "nw-be",
+              "version": 3,
+              "item_id": 21,
+              "kind": "ack",
+              "response": null,
+              "accepted_json": "null",
+              "result_json": "{\"passed\":true,\"rule\":\"ack: a row exists once recorded\"}",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 15,
+              "recruiter_id": "luis",
+              "role_id": "nw-be",
+              "version": 3,
+              "item_id": 22,
+              "kind": "ack",
+              "response": null,
+              "accepted_json": "null",
+              "result_json": "{\"passed\":true,\"rule\":\"ack: a row exists once recorded\"}",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 16,
+              "recruiter_id": "marta",
+              "role_id": "nw-be",
+              "version": 3,
+              "item_id": 22,
+              "kind": "ack",
+              "response": null,
+              "accepted_json": "null",
+              "result_json": "{\"passed\":true,\"rule\":\"ack: a row exists once recorded\"}",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 17,
+              "recruiter_id": "jon",
+              "role_id": "nw-be",
+              "version": 3,
+              "item_id": 22,
+              "kind": "ack",
+              "response": null,
+              "accepted_json": "null",
+              "result_json": "{\"passed\":true,\"rule\":\"ack: a row exists once recorded\"}",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 18,
+              "recruiter_id": "luis",
+              "role_id": "nw-be",
+              "version": 3,
+              "item_id": 23,
+              "kind": "study",
+              "response": "Seeded demo answer: I would ask for one concrete example I can verify, and what changed afterwards.",
+              "accepted_json": "null",
+              "result_json": "<sha256:a534f91614ed len=446>",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 19,
+              "recruiter_id": "marta",
+              "role_id": "nw-be",
+              "version": 3,
+              "item_id": 23,
+              "kind": "study",
+              "response": "Seeded demo answer: I would ask for one concrete example I can verify, and what changed afterwards.",
+              "accepted_json": "null",
+              "result_json": "<sha256:a534f91614ed len=446>",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 20,
+              "recruiter_id": "luis",
+              "role_id": "nw-be",
+              "version": 4,
+              "item_id": 25,
+              "kind": "review",
+              "response": null,
+              "accepted_json": "[0,1]",
+              "result_json": "{\"passed\":true,\"rule\":\"review: accept at least one suggestion, or say none is needed and give a reason\",\"accepted\":[0,1],\"none_needed\":false}",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 21,
+              "recruiter_id": "marta",
+              "role_id": "nw-be",
+              "version": 4,
+              "item_id": 25,
+              "kind": "review",
+              "response": null,
+              "accepted_json": "[0,1]",
+              "result_json": "{\"passed\":true,\"rule\":\"review: accept at least one suggestion, or say none is needed and give a reason\",\"accepted\":[0,1],\"none_needed\":false}",
+              "created_at": "<ts>"
+            }
+          ],
+          "candidates": [
+            {
+              "id": 1,
+              "role_id": "nw-be",
+              "name": "A. Lindqvist",
+              "stage": 1
+            },
+            {
+              "id": 2,
+              "role_id": "nw-be",
+              "name": "J. Haas",
+              "stage": 0
+            },
+            {
+              "id": 3,
+              "role_id": "nw-be",
+              "name": "P. Novak",
+              "stage": 0
+            },
+            {
+              "id": 4,
+              "role_id": "nw-be",
+              "name": "S. Haddad",
+              "stage": 1
+            },
+            {
+              "id": 5,
+              "role_id": "nw-be",
+              "name": "L. Brandt",
+              "stage": 1
+            },
+            {
+              "id": 6,
+              "role_id": "nw-be",
+              "name": "K. Osei",
+              "stage": 2
+            },
+            {
+              "id": 7,
+              "role_id": "nw-be",
+              "name": "D. Weber",
+              "stage": 3
+            },
+            {
+              "id": 8,
+              "role_id": "nw-ai",
+              "name": "R. Silva",
+              "stage": 0
+            },
+            {
+              "id": 9,
+              "role_id": "nw-ai",
+              "name": "E. Duval",
+              "stage": 0
+            },
+            {
+              "id": 10,
+              "role_id": "nw-ai",
+              "name": "N. Ivanova",
+              "stage": 1
+            },
+            {
+              "id": 11,
+              "role_id": "ks-fe",
+              "name": "T. Kowalski",
+              "stage": 0
+            },
+            {
+              "id": 12,
+              "role_id": "ks-fe",
+              "name": "H. Tanaka",
+              "stage": 1
+            },
+            {
+              "id": 13,
+              "role_id": "ks-fe",
+              "name": "J. Moreau",
+              "stage": 3
+            }
+          ],
+          "assignments": [
+            {
+              "item_id": 5,
+              "recruiter_id": "ana",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 5,
+              "recruiter_id": "jon",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 5,
+              "recruiter_id": "luis",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 5,
+              "recruiter_id": "marta",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 6,
+              "recruiter_id": "ana",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 6,
+              "recruiter_id": "jon",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 6,
+              "recruiter_id": "luis",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 6,
+              "recruiter_id": "marta",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 7,
+              "recruiter_id": "ana",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 7,
+              "recruiter_id": "jon",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 7,
+              "recruiter_id": "luis",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 7,
+              "recruiter_id": "marta",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 8,
+              "recruiter_id": "ana",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 8,
+              "recruiter_id": "jon",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 8,
+              "recruiter_id": "luis",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 8,
+              "recruiter_id": "marta",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 11,
+              "recruiter_id": "jon",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 11,
+              "recruiter_id": "luis",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 12,
+              "recruiter_id": "jon",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 12,
+              "recruiter_id": "luis",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 17,
+              "recruiter_id": "ana",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 17,
+              "recruiter_id": "marta",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 21,
+              "recruiter_id": "ana",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 21,
+              "recruiter_id": "jon",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 21,
+              "recruiter_id": "luis",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 21,
+              "recruiter_id": "marta",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 22,
+              "recruiter_id": "ana",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 22,
+              "recruiter_id": "jon",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 22,
+              "recruiter_id": "luis",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 22,
+              "recruiter_id": "marta",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 23,
+              "recruiter_id": "ana",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 23,
+              "recruiter_id": "jon",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 23,
+              "recruiter_id": "luis",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 23,
+              "recruiter_id": "marta",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 24,
+              "recruiter_id": "jon",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 24,
+              "recruiter_id": "luis",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 25,
+              "recruiter_id": "ana",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 25,
+              "recruiter_id": "jon",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 25,
+              "recruiter_id": "luis",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 25,
+              "recruiter_id": "marta",
+              "created_at": "<ts>"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "move 1 with no target",
+      "request": {
+        "method": "POST",
+        "path": "/api/candidates/1/move",
+        "headers": {},
+        "body": {}
+      },
+      "response": {
+        "status": 400,
+        "headers": {
+          "content-type": "application/json; charset=utf-8",
+          "cache-control": "no-store",
+          "x-content-type-options": "nosniff",
+          "content-security-policy": "default-src 'self'; style-src 'self' 'unsafe-inline'; base-uri 'none'; form-action 'self'"
+        },
+        "body": {
+          "error": "unknown stage \"undefined\""
+        }
+      },
+      "db": {
+        "counts": {
+          "analyses": 13,
+          "approvals": 10,
+          "assignments": 40,
+          "brief_versions": 8,
+          "candidates": 13,
+          "changes": 48,
+          "clients": 2,
+          "completions": 21,
+          "learning_items": 15,
+          "proposals": 9,
+          "recruiters": 4,
+          "role_recruiters": 8,
+          "roles": 3,
+          "screening_reviews": 2,
+          "sources": 13,
+          "stage_runs": 90
+        },
+        "rows": {
+          "proposals": [
+            {
+              "id": 1,
+              "source_row_id": 1,
+              "role_id": "nw-be",
+              "state": "approved",
+              "severity": "material",
+              "kind": "source",
+              "corrects": null,
+              "base_version": 0,
+              "version_created": 1,
+              "decided_by": "lead (seed)",
+              "decided_at": "<ts>",
+              "reason": null,
+              "created_at": "<ts>"
+            },
+            {
+              "id": 2,
+              "source_row_id": 2,
+              "role_id": "nw-be",
+              "state": "approved",
+              "severity": "material",
+              "kind": "source",
+              "corrects": null,
+              "base_version": 1,
+              "version_created": 2,
+              "decided_by": "lead (seed)",
+              "decided_at": "<ts>",
+              "reason": null,
+              "created_at": "<ts>"
+            },
+            {
+              "id": 3,
+              "source_row_id": 3,
+              "role_id": "ks-fe",
+              "state": "approved",
+              "severity": "material",
+              "kind": "source",
+              "corrects": null,
+              "base_version": 0,
+              "version_created": 1,
+              "decided_by": "lead (seed)",
+              "decided_at": "<ts>",
+              "reason": null,
+              "created_at": "<ts>"
+            },
+            {
+              "id": 4,
+              "source_row_id": 4,
+              "role_id": "ks-fe",
+              "state": "approved",
+              "severity": "material",
+              "kind": "source",
+              "corrects": null,
+              "base_version": 1,
+              "version_created": 2,
+              "decided_by": "lead (seed)",
+              "decided_at": "<ts>",
+              "reason": null,
+              "created_at": "<ts>"
+            },
+            {
+              "id": 5,
+              "source_row_id": 7,
+              "role_id": "nw-ai",
+              "state": "approved",
+              "severity": "material",
+              "kind": "source",
+              "corrects": null,
+              "base_version": 0,
+              "version_created": 1,
+              "decided_by": "lead (seed)",
+              "decided_at": "<ts>",
+              "reason": null,
+              "created_at": "<ts>"
+            },
+            {
+              "id": 6,
+              "source_row_id": 8,
+              "role_id": "ks-fe",
+              "state": "proposed",
+              "severity": "critical",
+              "kind": "source",
+              "corrects": null,
+              "base_version": 2,
+              "version_created": null,
+              "decided_by": null,
+              "decided_at": null,
+              "reason": null,
+              "created_at": "<ts>"
+            },
+            {
+              "id": 7,
+              "source_row_id": 9,
+              "role_id": "nw-ai",
+              "state": "approved",
+              "severity": "material",
+              "kind": "source",
+              "corrects": null,
+              "base_version": 1,
+              "version_created": 2,
+              "decided_by": "lead (seed)",
+              "decided_at": "<ts>",
+              "reason": null,
+              "created_at": "<ts>"
+            },
+            {
+              "id": 8,
+              "source_row_id": 10,
+              "role_id": "nw-be",
+              "state": "approved",
+              "severity": "material",
+              "kind": "source",
+              "corrects": null,
+              "base_version": 2,
+              "version_created": 3,
+              "decided_by": "lead (seed)",
+              "decided_at": "<ts>",
+              "reason": null,
+              "created_at": "<ts>"
+            },
+            {
+              "id": 9,
+              "source_row_id": 13,
+              "role_id": "nw-be",
+              "state": "approved",
+              "severity": "material",
+              "kind": "source",
+              "corrects": null,
+              "base_version": 3,
+              "version_created": 4,
+              "decided_by": "lead (seed)",
+              "decided_at": "<ts>",
+              "reason": null,
+              "created_at": "<ts>"
+            }
+          ],
+          "screening_reviews": [
+            {
+              "id": 1,
+              "source_row_id": 12,
+              "role_id": "ks-fe",
+              "candidate": "J. Moreau",
+              "screening_source_id": null,
+              "brief_version_at_screening": null,
+              "must_have_snapshot_json": "[]",
+              "coverage_json": "[]",
+              "overweighted_json": "[]",
+              "suggested_json": "[{\"text\":\"Ask whether they had paying users before anyone else joined\",\"why\":\"The client advanced J. Moreau for exactly this.\",\"future_screenings\":true}]",
+              "status": "insufficient_evidence",
+              "purpose": "retrospective",
+              "decision_json": "{\"candidate\":\"J. Moreau\",\"outcome\":\"advanced\",\"reason\":\"had paying users before anyone else joined; explained simply\"}",
+              "state": "approved",
+              "decided_by": "lead (seed)",
+              "decided_at": "<ts>",
+              "reason": null
+            },
+            {
+              "id": 2,
+              "source_row_id": 13,
+              "role_id": "nw-be",
+              "candidate": "D. Ruiz",
+              "screening_source_id": "nw-07",
+              "brief_version_at_screening": 3,
+              "must_have_snapshot_json": "<sha256:61ffe72b7e2f len=345>",
+              "coverage_json": "<sha256:ed09d362e406 len=457>",
+              "overweighted_json": "[{\"topic\":\"Go (trainable since 05 oct)\",\"count\":4,\"total\":11,\"quote\":\"How many years have you worked with Go?\"}]",
+              "suggested_json": "<sha256:fb3a76d0c429 len=309>",
+              "status": "ok",
+              "purpose": "retrospective",
+              "decision_json": "{\"candidate\":\"D. Ruiz\",\"outcome\":\"rejected\",\"reason\":\"weak on system design\"}",
+              "state": "approved",
+              "decided_by": "lead (seed)",
+              "decided_at": "<ts>",
+              "reason": null
+            }
+          ],
+          "brief_versions": [
+            {
+              "id": 1,
+              "role_id": "nw-be",
+              "n": 1,
+              "proposal_id": 1,
+              "source_id": "nw-01",
+              "effective_date": "2026-10-02",
+              "fields_json": "<sha256:5492978c6578 len=2785>",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 2,
+              "role_id": "nw-be",
+              "n": 2,
+              "proposal_id": 2,
+              "source_id": "nw-02",
+              "effective_date": "2026-10-05",
+              "fields_json": "<sha256:524c58ca1dd7 len=5004>",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 3,
+              "role_id": "ks-fe",
+              "n": 1,
+              "proposal_id": 3,
+              "source_id": "ks-01",
+              "effective_date": "2026-10-12",
+              "fields_json": "<sha256:7709e80990e6 len=1924>",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 4,
+              "role_id": "ks-fe",
+              "n": 2,
+              "proposal_id": 4,
+              "source_id": "ks-02",
+              "effective_date": "2026-10-14",
+              "fields_json": "<sha256:9ee29955b9f3 len=2808>",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 5,
+              "role_id": "nw-ai",
+              "n": 1,
+              "proposal_id": 5,
+              "source_id": "nw-04",
+              "effective_date": "2026-10-23",
+              "fields_json": "<sha256:f221d9b15cbc len=1588>",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 6,
+              "role_id": "nw-ai",
+              "n": 2,
+              "proposal_id": 7,
+              "source_id": "nw-05",
+              "effective_date": "2026-10-28",
+              "fields_json": "<sha256:488a31aa0e64 len=2465>",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 7,
+              "role_id": "nw-be",
+              "n": 3,
+              "proposal_id": 8,
+              "source_id": "nw-06",
+              "effective_date": "2026-11-03",
+              "fields_json": "<sha256:177748128815 len=5131>",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 8,
+              "role_id": "nw-be",
+              "n": 4,
+              "proposal_id": 9,
+              "source_id": "nw-08",
+              "effective_date": "2026-11-06",
+              "fields_json": "<sha256:817147e2bf38 len=5448>",
+              "created_at": "<ts>"
+            }
+          ],
+          "approvals": [
+            {
+              "id": 1,
+              "target_type": "proposal",
+              "target_id": 1,
+              "action": "approve",
+              "actor": "lead (seed)",
+              "reason": null,
+              "created_at": "<ts>"
+            },
+            {
+              "id": 2,
+              "target_type": "proposal",
+              "target_id": 2,
+              "action": "approve",
+              "actor": "lead (seed)",
+              "reason": null,
+              "created_at": "<ts>"
+            },
+            {
+              "id": 3,
+              "target_type": "proposal",
+              "target_id": 3,
+              "action": "approve",
+              "actor": "lead (seed)",
+              "reason": null,
+              "created_at": "<ts>"
+            },
+            {
+              "id": 4,
+              "target_type": "proposal",
+              "target_id": 4,
+              "action": "approve",
+              "actor": "lead (seed)",
+              "reason": null,
+              "created_at": "<ts>"
+            },
+            {
+              "id": 5,
+              "target_type": "proposal",
+              "target_id": 5,
+              "action": "approve",
+              "actor": "lead (seed)",
+              "reason": null,
+              "created_at": "<ts>"
+            },
+            {
+              "id": 6,
+              "target_type": "proposal",
+              "target_id": 7,
+              "action": "approve",
+              "actor": "lead (seed)",
+              "reason": null,
+              "created_at": "<ts>"
+            },
+            {
+              "id": 7,
+              "target_type": "proposal",
+              "target_id": 8,
+              "action": "approve",
+              "actor": "lead (seed)",
+              "reason": null,
+              "created_at": "<ts>"
+            },
+            {
+              "id": 8,
+              "target_type": "review",
+              "target_id": 1,
+              "action": "approve",
+              "actor": "lead (seed)",
+              "reason": null,
+              "created_at": "<ts>"
+            },
+            {
+              "id": 9,
+              "target_type": "proposal",
+              "target_id": 9,
+              "action": "approve",
+              "actor": "lead (seed)",
+              "reason": null,
+              "created_at": "<ts>"
+            },
+            {
+              "id": 10,
+              "target_type": "review",
+              "target_id": 2,
+              "action": "approve",
+              "actor": "lead (seed)",
+              "reason": null,
+              "created_at": "<ts>"
+            }
+          ],
+          "completions": [
+            {
+              "id": 1,
+              "recruiter_id": "luis",
+              "role_id": "nw-be",
+              "version": 2,
+              "item_id": 5,
+              "kind": "study",
+              "response": "Seeded demo answer: I would ask for one concrete example I can verify, and what changed afterwards.",
+              "accepted_json": "null",
+              "result_json": "<sha256:7208002ed949 len=458>",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 2,
+              "recruiter_id": "marta",
+              "role_id": "nw-be",
+              "version": 2,
+              "item_id": 5,
+              "kind": "study",
+              "response": "Seeded demo answer: I would ask for one concrete example I can verify, and what changed afterwards.",
+              "accepted_json": "null",
+              "result_json": "<sha256:7208002ed949 len=458>",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 3,
+              "recruiter_id": "luis",
+              "role_id": "nw-be",
+              "version": 2,
+              "item_id": 6,
+              "kind": "ack",
+              "response": null,
+              "accepted_json": "null",
+              "result_json": "{\"passed\":true,\"rule\":\"ack: a row exists once recorded\"}",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 4,
+              "recruiter_id": "marta",
+              "role_id": "nw-be",
+              "version": 2,
+              "item_id": 6,
+              "kind": "ack",
+              "response": null,
+              "accepted_json": "null",
+              "result_json": "{\"passed\":true,\"rule\":\"ack: a row exists once recorded\"}",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 5,
+              "recruiter_id": "jon",
+              "role_id": "nw-be",
+              "version": 2,
+              "item_id": 6,
+              "kind": "ack",
+              "response": null,
+              "accepted_json": "null",
+              "result_json": "{\"passed\":true,\"rule\":\"ack: a row exists once recorded\"}",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 6,
+              "recruiter_id": "luis",
+              "role_id": "nw-be",
+              "version": 2,
+              "item_id": 7,
+              "kind": "ack",
+              "response": null,
+              "accepted_json": "null",
+              "result_json": "{\"passed\":true,\"rule\":\"ack: a row exists once recorded\"}",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 7,
+              "recruiter_id": "marta",
+              "role_id": "nw-be",
+              "version": 2,
+              "item_id": 7,
+              "kind": "ack",
+              "response": null,
+              "accepted_json": "null",
+              "result_json": "{\"passed\":true,\"rule\":\"ack: a row exists once recorded\"}",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 8,
+              "recruiter_id": "jon",
+              "role_id": "nw-be",
+              "version": 2,
+              "item_id": 7,
+              "kind": "ack",
+              "response": null,
+              "accepted_json": "null",
+              "result_json": "{\"passed\":true,\"rule\":\"ack: a row exists once recorded\"}",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 9,
+              "recruiter_id": "luis",
+              "role_id": "nw-be",
+              "version": 2,
+              "item_id": 8,
+              "kind": "ack",
+              "response": null,
+              "accepted_json": "null",
+              "result_json": "{\"passed\":true,\"rule\":\"ack: a row exists once recorded\"}",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 10,
+              "recruiter_id": "marta",
+              "role_id": "nw-be",
+              "version": 2,
+              "item_id": 8,
+              "kind": "ack",
+              "response": null,
+              "accepted_json": "null",
+              "result_json": "{\"passed\":true,\"rule\":\"ack: a row exists once recorded\"}",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 11,
+              "recruiter_id": "jon",
+              "role_id": "nw-be",
+              "version": 2,
+              "item_id": 8,
+              "kind": "ack",
+              "response": null,
+              "accepted_json": "null",
+              "result_json": "{\"passed\":true,\"rule\":\"ack: a row exists once recorded\"}",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 12,
+              "recruiter_id": "luis",
+              "role_id": "nw-be",
+              "version": 3,
+              "item_id": 21,
+              "kind": "ack",
+              "response": null,
+              "accepted_json": "null",
+              "result_json": "{\"passed\":true,\"rule\":\"ack: a row exists once recorded\"}",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 13,
+              "recruiter_id": "marta",
+              "role_id": "nw-be",
+              "version": 3,
+              "item_id": 21,
+              "kind": "ack",
+              "response": null,
+              "accepted_json": "null",
+              "result_json": "{\"passed\":true,\"rule\":\"ack: a row exists once recorded\"}",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 14,
+              "recruiter_id": "jon",
+              "role_id": "nw-be",
+              "version": 3,
+              "item_id": 21,
+              "kind": "ack",
+              "response": null,
+              "accepted_json": "null",
+              "result_json": "{\"passed\":true,\"rule\":\"ack: a row exists once recorded\"}",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 15,
+              "recruiter_id": "luis",
+              "role_id": "nw-be",
+              "version": 3,
+              "item_id": 22,
+              "kind": "ack",
+              "response": null,
+              "accepted_json": "null",
+              "result_json": "{\"passed\":true,\"rule\":\"ack: a row exists once recorded\"}",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 16,
+              "recruiter_id": "marta",
+              "role_id": "nw-be",
+              "version": 3,
+              "item_id": 22,
+              "kind": "ack",
+              "response": null,
+              "accepted_json": "null",
+              "result_json": "{\"passed\":true,\"rule\":\"ack: a row exists once recorded\"}",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 17,
+              "recruiter_id": "jon",
+              "role_id": "nw-be",
+              "version": 3,
+              "item_id": 22,
+              "kind": "ack",
+              "response": null,
+              "accepted_json": "null",
+              "result_json": "{\"passed\":true,\"rule\":\"ack: a row exists once recorded\"}",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 18,
+              "recruiter_id": "luis",
+              "role_id": "nw-be",
+              "version": 3,
+              "item_id": 23,
+              "kind": "study",
+              "response": "Seeded demo answer: I would ask for one concrete example I can verify, and what changed afterwards.",
+              "accepted_json": "null",
+              "result_json": "<sha256:a534f91614ed len=446>",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 19,
+              "recruiter_id": "marta",
+              "role_id": "nw-be",
+              "version": 3,
+              "item_id": 23,
+              "kind": "study",
+              "response": "Seeded demo answer: I would ask for one concrete example I can verify, and what changed afterwards.",
+              "accepted_json": "null",
+              "result_json": "<sha256:a534f91614ed len=446>",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 20,
+              "recruiter_id": "luis",
+              "role_id": "nw-be",
+              "version": 4,
+              "item_id": 25,
+              "kind": "review",
+              "response": null,
+              "accepted_json": "[0,1]",
+              "result_json": "{\"passed\":true,\"rule\":\"review: accept at least one suggestion, or say none is needed and give a reason\",\"accepted\":[0,1],\"none_needed\":false}",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 21,
+              "recruiter_id": "marta",
+              "role_id": "nw-be",
+              "version": 4,
+              "item_id": 25,
+              "kind": "review",
+              "response": null,
+              "accepted_json": "[0,1]",
+              "result_json": "{\"passed\":true,\"rule\":\"review: accept at least one suggestion, or say none is needed and give a reason\",\"accepted\":[0,1],\"none_needed\":false}",
+              "created_at": "<ts>"
+            }
+          ],
+          "candidates": [
+            {
+              "id": 1,
+              "role_id": "nw-be",
+              "name": "A. Lindqvist",
+              "stage": 1
+            },
+            {
+              "id": 2,
+              "role_id": "nw-be",
+              "name": "J. Haas",
+              "stage": 0
+            },
+            {
+              "id": 3,
+              "role_id": "nw-be",
+              "name": "P. Novak",
+              "stage": 0
+            },
+            {
+              "id": 4,
+              "role_id": "nw-be",
+              "name": "S. Haddad",
+              "stage": 1
+            },
+            {
+              "id": 5,
+              "role_id": "nw-be",
+              "name": "L. Brandt",
+              "stage": 1
+            },
+            {
+              "id": 6,
+              "role_id": "nw-be",
+              "name": "K. Osei",
+              "stage": 2
+            },
+            {
+              "id": 7,
+              "role_id": "nw-be",
+              "name": "D. Weber",
+              "stage": 3
+            },
+            {
+              "id": 8,
+              "role_id": "nw-ai",
+              "name": "R. Silva",
+              "stage": 0
+            },
+            {
+              "id": 9,
+              "role_id": "nw-ai",
+              "name": "E. Duval",
+              "stage": 0
+            },
+            {
+              "id": 10,
+              "role_id": "nw-ai",
+              "name": "N. Ivanova",
+              "stage": 1
+            },
+            {
+              "id": 11,
+              "role_id": "ks-fe",
+              "name": "T. Kowalski",
+              "stage": 0
+            },
+            {
+              "id": 12,
+              "role_id": "ks-fe",
+              "name": "H. Tanaka",
+              "stage": 1
+            },
+            {
+              "id": 13,
+              "role_id": "ks-fe",
+              "name": "J. Moreau",
+              "stage": 3
+            }
+          ],
+          "assignments": [
+            {
+              "item_id": 5,
+              "recruiter_id": "ana",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 5,
+              "recruiter_id": "jon",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 5,
+              "recruiter_id": "luis",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 5,
+              "recruiter_id": "marta",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 6,
+              "recruiter_id": "ana",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 6,
+              "recruiter_id": "jon",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 6,
+              "recruiter_id": "luis",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 6,
+              "recruiter_id": "marta",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 7,
+              "recruiter_id": "ana",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 7,
+              "recruiter_id": "jon",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 7,
+              "recruiter_id": "luis",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 7,
+              "recruiter_id": "marta",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 8,
+              "recruiter_id": "ana",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 8,
+              "recruiter_id": "jon",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 8,
+              "recruiter_id": "luis",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 8,
+              "recruiter_id": "marta",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 11,
+              "recruiter_id": "jon",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 11,
+              "recruiter_id": "luis",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 12,
+              "recruiter_id": "jon",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 12,
+              "recruiter_id": "luis",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 17,
+              "recruiter_id": "ana",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 17,
+              "recruiter_id": "marta",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 21,
+              "recruiter_id": "ana",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 21,
+              "recruiter_id": "jon",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 21,
+              "recruiter_id": "luis",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 21,
+              "recruiter_id": "marta",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 22,
+              "recruiter_id": "ana",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 22,
+              "recruiter_id": "jon",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 22,
+              "recruiter_id": "luis",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 22,
+              "recruiter_id": "marta",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 23,
+              "recruiter_id": "ana",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 23,
+              "recruiter_id": "jon",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 23,
+              "recruiter_id": "luis",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 23,
+              "recruiter_id": "marta",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 24,
+              "recruiter_id": "jon",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 24,
+              "recruiter_id": "luis",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 25,
+              "recruiter_id": "ana",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 25,
+              "recruiter_id": "jon",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 25,
+              "recruiter_id": "luis",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 25,
+              "recruiter_id": "marta",
+              "created_at": "<ts>"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "move 1 with a string target",
+      "request": {
+        "method": "POST",
+        "path": "/api/candidates/1/move",
+        "headers": {},
+        "body": {
+          "to": "two"
+        }
+      },
+      "response": {
+        "status": 400,
+        "headers": {
+          "content-type": "application/json; charset=utf-8",
+          "cache-control": "no-store",
+          "x-content-type-options": "nosniff",
+          "content-security-policy": "default-src 'self'; style-src 'self' 'unsafe-inline'; base-uri 'none'; form-action 'self'"
+        },
+        "body": {
+          "error": "unknown stage \"two\""
+        }
+      },
+      "db": {
+        "counts": {
+          "analyses": 13,
+          "approvals": 10,
+          "assignments": 40,
+          "brief_versions": 8,
+          "candidates": 13,
+          "changes": 48,
+          "clients": 2,
+          "completions": 21,
+          "learning_items": 15,
+          "proposals": 9,
+          "recruiters": 4,
+          "role_recruiters": 8,
+          "roles": 3,
+          "screening_reviews": 2,
+          "sources": 13,
+          "stage_runs": 90
+        },
+        "rows": {
+          "proposals": [
+            {
+              "id": 1,
+              "source_row_id": 1,
+              "role_id": "nw-be",
+              "state": "approved",
+              "severity": "material",
+              "kind": "source",
+              "corrects": null,
+              "base_version": 0,
+              "version_created": 1,
+              "decided_by": "lead (seed)",
+              "decided_at": "<ts>",
+              "reason": null,
+              "created_at": "<ts>"
+            },
+            {
+              "id": 2,
+              "source_row_id": 2,
+              "role_id": "nw-be",
+              "state": "approved",
+              "severity": "material",
+              "kind": "source",
+              "corrects": null,
+              "base_version": 1,
+              "version_created": 2,
+              "decided_by": "lead (seed)",
+              "decided_at": "<ts>",
+              "reason": null,
+              "created_at": "<ts>"
+            },
+            {
+              "id": 3,
+              "source_row_id": 3,
+              "role_id": "ks-fe",
+              "state": "approved",
+              "severity": "material",
+              "kind": "source",
+              "corrects": null,
+              "base_version": 0,
+              "version_created": 1,
+              "decided_by": "lead (seed)",
+              "decided_at": "<ts>",
+              "reason": null,
+              "created_at": "<ts>"
+            },
+            {
+              "id": 4,
+              "source_row_id": 4,
+              "role_id": "ks-fe",
+              "state": "approved",
+              "severity": "material",
+              "kind": "source",
+              "corrects": null,
+              "base_version": 1,
+              "version_created": 2,
+              "decided_by": "lead (seed)",
+              "decided_at": "<ts>",
+              "reason": null,
+              "created_at": "<ts>"
+            },
+            {
+              "id": 5,
+              "source_row_id": 7,
+              "role_id": "nw-ai",
+              "state": "approved",
+              "severity": "material",
+              "kind": "source",
+              "corrects": null,
+              "base_version": 0,
+              "version_created": 1,
+              "decided_by": "lead (seed)",
+              "decided_at": "<ts>",
+              "reason": null,
+              "created_at": "<ts>"
+            },
+            {
+              "id": 6,
+              "source_row_id": 8,
+              "role_id": "ks-fe",
+              "state": "proposed",
+              "severity": "critical",
+              "kind": "source",
+              "corrects": null,
+              "base_version": 2,
+              "version_created": null,
+              "decided_by": null,
+              "decided_at": null,
+              "reason": null,
+              "created_at": "<ts>"
+            },
+            {
+              "id": 7,
+              "source_row_id": 9,
+              "role_id": "nw-ai",
+              "state": "approved",
+              "severity": "material",
+              "kind": "source",
+              "corrects": null,
+              "base_version": 1,
+              "version_created": 2,
+              "decided_by": "lead (seed)",
+              "decided_at": "<ts>",
+              "reason": null,
+              "created_at": "<ts>"
+            },
+            {
+              "id": 8,
+              "source_row_id": 10,
+              "role_id": "nw-be",
+              "state": "approved",
+              "severity": "material",
+              "kind": "source",
+              "corrects": null,
+              "base_version": 2,
+              "version_created": 3,
+              "decided_by": "lead (seed)",
+              "decided_at": "<ts>",
+              "reason": null,
+              "created_at": "<ts>"
+            },
+            {
+              "id": 9,
+              "source_row_id": 13,
+              "role_id": "nw-be",
+              "state": "approved",
+              "severity": "material",
+              "kind": "source",
+              "corrects": null,
+              "base_version": 3,
+              "version_created": 4,
+              "decided_by": "lead (seed)",
+              "decided_at": "<ts>",
+              "reason": null,
+              "created_at": "<ts>"
+            }
+          ],
+          "screening_reviews": [
+            {
+              "id": 1,
+              "source_row_id": 12,
+              "role_id": "ks-fe",
+              "candidate": "J. Moreau",
+              "screening_source_id": null,
+              "brief_version_at_screening": null,
+              "must_have_snapshot_json": "[]",
+              "coverage_json": "[]",
+              "overweighted_json": "[]",
+              "suggested_json": "[{\"text\":\"Ask whether they had paying users before anyone else joined\",\"why\":\"The client advanced J. Moreau for exactly this.\",\"future_screenings\":true}]",
+              "status": "insufficient_evidence",
+              "purpose": "retrospective",
+              "decision_json": "{\"candidate\":\"J. Moreau\",\"outcome\":\"advanced\",\"reason\":\"had paying users before anyone else joined; explained simply\"}",
+              "state": "approved",
+              "decided_by": "lead (seed)",
+              "decided_at": "<ts>",
+              "reason": null
+            },
+            {
+              "id": 2,
+              "source_row_id": 13,
+              "role_id": "nw-be",
+              "candidate": "D. Ruiz",
+              "screening_source_id": "nw-07",
+              "brief_version_at_screening": 3,
+              "must_have_snapshot_json": "<sha256:61ffe72b7e2f len=345>",
+              "coverage_json": "<sha256:ed09d362e406 len=457>",
+              "overweighted_json": "[{\"topic\":\"Go (trainable since 05 oct)\",\"count\":4,\"total\":11,\"quote\":\"How many years have you worked with Go?\"}]",
+              "suggested_json": "<sha256:fb3a76d0c429 len=309>",
+              "status": "ok",
+              "purpose": "retrospective",
+              "decision_json": "{\"candidate\":\"D. Ruiz\",\"outcome\":\"rejected\",\"reason\":\"weak on system design\"}",
+              "state": "approved",
+              "decided_by": "lead (seed)",
+              "decided_at": "<ts>",
+              "reason": null
+            }
+          ],
+          "brief_versions": [
+            {
+              "id": 1,
+              "role_id": "nw-be",
+              "n": 1,
+              "proposal_id": 1,
+              "source_id": "nw-01",
+              "effective_date": "2026-10-02",
+              "fields_json": "<sha256:5492978c6578 len=2785>",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 2,
+              "role_id": "nw-be",
+              "n": 2,
+              "proposal_id": 2,
+              "source_id": "nw-02",
+              "effective_date": "2026-10-05",
+              "fields_json": "<sha256:524c58ca1dd7 len=5004>",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 3,
+              "role_id": "ks-fe",
+              "n": 1,
+              "proposal_id": 3,
+              "source_id": "ks-01",
+              "effective_date": "2026-10-12",
+              "fields_json": "<sha256:7709e80990e6 len=1924>",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 4,
+              "role_id": "ks-fe",
+              "n": 2,
+              "proposal_id": 4,
+              "source_id": "ks-02",
+              "effective_date": "2026-10-14",
+              "fields_json": "<sha256:9ee29955b9f3 len=2808>",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 5,
+              "role_id": "nw-ai",
+              "n": 1,
+              "proposal_id": 5,
+              "source_id": "nw-04",
+              "effective_date": "2026-10-23",
+              "fields_json": "<sha256:f221d9b15cbc len=1588>",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 6,
+              "role_id": "nw-ai",
+              "n": 2,
+              "proposal_id": 7,
+              "source_id": "nw-05",
+              "effective_date": "2026-10-28",
+              "fields_json": "<sha256:488a31aa0e64 len=2465>",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 7,
+              "role_id": "nw-be",
+              "n": 3,
+              "proposal_id": 8,
+              "source_id": "nw-06",
+              "effective_date": "2026-11-03",
+              "fields_json": "<sha256:177748128815 len=5131>",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 8,
+              "role_id": "nw-be",
+              "n": 4,
+              "proposal_id": 9,
+              "source_id": "nw-08",
+              "effective_date": "2026-11-06",
+              "fields_json": "<sha256:817147e2bf38 len=5448>",
+              "created_at": "<ts>"
+            }
+          ],
+          "approvals": [
+            {
+              "id": 1,
+              "target_type": "proposal",
+              "target_id": 1,
+              "action": "approve",
+              "actor": "lead (seed)",
+              "reason": null,
+              "created_at": "<ts>"
+            },
+            {
+              "id": 2,
+              "target_type": "proposal",
+              "target_id": 2,
+              "action": "approve",
+              "actor": "lead (seed)",
+              "reason": null,
+              "created_at": "<ts>"
+            },
+            {
+              "id": 3,
+              "target_type": "proposal",
+              "target_id": 3,
+              "action": "approve",
+              "actor": "lead (seed)",
+              "reason": null,
+              "created_at": "<ts>"
+            },
+            {
+              "id": 4,
+              "target_type": "proposal",
+              "target_id": 4,
+              "action": "approve",
+              "actor": "lead (seed)",
+              "reason": null,
+              "created_at": "<ts>"
+            },
+            {
+              "id": 5,
+              "target_type": "proposal",
+              "target_id": 5,
+              "action": "approve",
+              "actor": "lead (seed)",
+              "reason": null,
+              "created_at": "<ts>"
+            },
+            {
+              "id": 6,
+              "target_type": "proposal",
+              "target_id": 7,
+              "action": "approve",
+              "actor": "lead (seed)",
+              "reason": null,
+              "created_at": "<ts>"
+            },
+            {
+              "id": 7,
+              "target_type": "proposal",
+              "target_id": 8,
+              "action": "approve",
+              "actor": "lead (seed)",
+              "reason": null,
+              "created_at": "<ts>"
+            },
+            {
+              "id": 8,
+              "target_type": "review",
+              "target_id": 1,
+              "action": "approve",
+              "actor": "lead (seed)",
+              "reason": null,
+              "created_at": "<ts>"
+            },
+            {
+              "id": 9,
+              "target_type": "proposal",
+              "target_id": 9,
+              "action": "approve",
+              "actor": "lead (seed)",
+              "reason": null,
+              "created_at": "<ts>"
+            },
+            {
+              "id": 10,
+              "target_type": "review",
+              "target_id": 2,
+              "action": "approve",
+              "actor": "lead (seed)",
+              "reason": null,
+              "created_at": "<ts>"
+            }
+          ],
+          "completions": [
+            {
+              "id": 1,
+              "recruiter_id": "luis",
+              "role_id": "nw-be",
+              "version": 2,
+              "item_id": 5,
+              "kind": "study",
+              "response": "Seeded demo answer: I would ask for one concrete example I can verify, and what changed afterwards.",
+              "accepted_json": "null",
+              "result_json": "<sha256:7208002ed949 len=458>",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 2,
+              "recruiter_id": "marta",
+              "role_id": "nw-be",
+              "version": 2,
+              "item_id": 5,
+              "kind": "study",
+              "response": "Seeded demo answer: I would ask for one concrete example I can verify, and what changed afterwards.",
+              "accepted_json": "null",
+              "result_json": "<sha256:7208002ed949 len=458>",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 3,
+              "recruiter_id": "luis",
+              "role_id": "nw-be",
+              "version": 2,
+              "item_id": 6,
+              "kind": "ack",
+              "response": null,
+              "accepted_json": "null",
+              "result_json": "{\"passed\":true,\"rule\":\"ack: a row exists once recorded\"}",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 4,
+              "recruiter_id": "marta",
+              "role_id": "nw-be",
+              "version": 2,
+              "item_id": 6,
+              "kind": "ack",
+              "response": null,
+              "accepted_json": "null",
+              "result_json": "{\"passed\":true,\"rule\":\"ack: a row exists once recorded\"}",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 5,
+              "recruiter_id": "jon",
+              "role_id": "nw-be",
+              "version": 2,
+              "item_id": 6,
+              "kind": "ack",
+              "response": null,
+              "accepted_json": "null",
+              "result_json": "{\"passed\":true,\"rule\":\"ack: a row exists once recorded\"}",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 6,
+              "recruiter_id": "luis",
+              "role_id": "nw-be",
+              "version": 2,
+              "item_id": 7,
+              "kind": "ack",
+              "response": null,
+              "accepted_json": "null",
+              "result_json": "{\"passed\":true,\"rule\":\"ack: a row exists once recorded\"}",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 7,
+              "recruiter_id": "marta",
+              "role_id": "nw-be",
+              "version": 2,
+              "item_id": 7,
+              "kind": "ack",
+              "response": null,
+              "accepted_json": "null",
+              "result_json": "{\"passed\":true,\"rule\":\"ack: a row exists once recorded\"}",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 8,
+              "recruiter_id": "jon",
+              "role_id": "nw-be",
+              "version": 2,
+              "item_id": 7,
+              "kind": "ack",
+              "response": null,
+              "accepted_json": "null",
+              "result_json": "{\"passed\":true,\"rule\":\"ack: a row exists once recorded\"}",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 9,
+              "recruiter_id": "luis",
+              "role_id": "nw-be",
+              "version": 2,
+              "item_id": 8,
+              "kind": "ack",
+              "response": null,
+              "accepted_json": "null",
+              "result_json": "{\"passed\":true,\"rule\":\"ack: a row exists once recorded\"}",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 10,
+              "recruiter_id": "marta",
+              "role_id": "nw-be",
+              "version": 2,
+              "item_id": 8,
+              "kind": "ack",
+              "response": null,
+              "accepted_json": "null",
+              "result_json": "{\"passed\":true,\"rule\":\"ack: a row exists once recorded\"}",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 11,
+              "recruiter_id": "jon",
+              "role_id": "nw-be",
+              "version": 2,
+              "item_id": 8,
+              "kind": "ack",
+              "response": null,
+              "accepted_json": "null",
+              "result_json": "{\"passed\":true,\"rule\":\"ack: a row exists once recorded\"}",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 12,
+              "recruiter_id": "luis",
+              "role_id": "nw-be",
+              "version": 3,
+              "item_id": 21,
+              "kind": "ack",
+              "response": null,
+              "accepted_json": "null",
+              "result_json": "{\"passed\":true,\"rule\":\"ack: a row exists once recorded\"}",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 13,
+              "recruiter_id": "marta",
+              "role_id": "nw-be",
+              "version": 3,
+              "item_id": 21,
+              "kind": "ack",
+              "response": null,
+              "accepted_json": "null",
+              "result_json": "{\"passed\":true,\"rule\":\"ack: a row exists once recorded\"}",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 14,
+              "recruiter_id": "jon",
+              "role_id": "nw-be",
+              "version": 3,
+              "item_id": 21,
+              "kind": "ack",
+              "response": null,
+              "accepted_json": "null",
+              "result_json": "{\"passed\":true,\"rule\":\"ack: a row exists once recorded\"}",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 15,
+              "recruiter_id": "luis",
+              "role_id": "nw-be",
+              "version": 3,
+              "item_id": 22,
+              "kind": "ack",
+              "response": null,
+              "accepted_json": "null",
+              "result_json": "{\"passed\":true,\"rule\":\"ack: a row exists once recorded\"}",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 16,
+              "recruiter_id": "marta",
+              "role_id": "nw-be",
+              "version": 3,
+              "item_id": 22,
+              "kind": "ack",
+              "response": null,
+              "accepted_json": "null",
+              "result_json": "{\"passed\":true,\"rule\":\"ack: a row exists once recorded\"}",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 17,
+              "recruiter_id": "jon",
+              "role_id": "nw-be",
+              "version": 3,
+              "item_id": 22,
+              "kind": "ack",
+              "response": null,
+              "accepted_json": "null",
+              "result_json": "{\"passed\":true,\"rule\":\"ack: a row exists once recorded\"}",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 18,
+              "recruiter_id": "luis",
+              "role_id": "nw-be",
+              "version": 3,
+              "item_id": 23,
+              "kind": "study",
+              "response": "Seeded demo answer: I would ask for one concrete example I can verify, and what changed afterwards.",
+              "accepted_json": "null",
+              "result_json": "<sha256:a534f91614ed len=446>",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 19,
+              "recruiter_id": "marta",
+              "role_id": "nw-be",
+              "version": 3,
+              "item_id": 23,
+              "kind": "study",
+              "response": "Seeded demo answer: I would ask for one concrete example I can verify, and what changed afterwards.",
+              "accepted_json": "null",
+              "result_json": "<sha256:a534f91614ed len=446>",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 20,
+              "recruiter_id": "luis",
+              "role_id": "nw-be",
+              "version": 4,
+              "item_id": 25,
+              "kind": "review",
+              "response": null,
+              "accepted_json": "[0,1]",
+              "result_json": "{\"passed\":true,\"rule\":\"review: accept at least one suggestion, or say none is needed and give a reason\",\"accepted\":[0,1],\"none_needed\":false}",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 21,
+              "recruiter_id": "marta",
+              "role_id": "nw-be",
+              "version": 4,
+              "item_id": 25,
+              "kind": "review",
+              "response": null,
+              "accepted_json": "[0,1]",
+              "result_json": "{\"passed\":true,\"rule\":\"review: accept at least one suggestion, or say none is needed and give a reason\",\"accepted\":[0,1],\"none_needed\":false}",
+              "created_at": "<ts>"
+            }
+          ],
+          "candidates": [
+            {
+              "id": 1,
+              "role_id": "nw-be",
+              "name": "A. Lindqvist",
+              "stage": 1
+            },
+            {
+              "id": 2,
+              "role_id": "nw-be",
+              "name": "J. Haas",
+              "stage": 0
+            },
+            {
+              "id": 3,
+              "role_id": "nw-be",
+              "name": "P. Novak",
+              "stage": 0
+            },
+            {
+              "id": 4,
+              "role_id": "nw-be",
+              "name": "S. Haddad",
+              "stage": 1
+            },
+            {
+              "id": 5,
+              "role_id": "nw-be",
+              "name": "L. Brandt",
+              "stage": 1
+            },
+            {
+              "id": 6,
+              "role_id": "nw-be",
+              "name": "K. Osei",
+              "stage": 2
+            },
+            {
+              "id": 7,
+              "role_id": "nw-be",
+              "name": "D. Weber",
+              "stage": 3
+            },
+            {
+              "id": 8,
+              "role_id": "nw-ai",
+              "name": "R. Silva",
+              "stage": 0
+            },
+            {
+              "id": 9,
+              "role_id": "nw-ai",
+              "name": "E. Duval",
+              "stage": 0
+            },
+            {
+              "id": 10,
+              "role_id": "nw-ai",
+              "name": "N. Ivanova",
+              "stage": 1
+            },
+            {
+              "id": 11,
+              "role_id": "ks-fe",
+              "name": "T. Kowalski",
+              "stage": 0
+            },
+            {
+              "id": 12,
+              "role_id": "ks-fe",
+              "name": "H. Tanaka",
+              "stage": 1
+            },
+            {
+              "id": 13,
+              "role_id": "ks-fe",
+              "name": "J. Moreau",
+              "stage": 3
+            }
+          ],
+          "assignments": [
+            {
+              "item_id": 5,
+              "recruiter_id": "ana",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 5,
+              "recruiter_id": "jon",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 5,
+              "recruiter_id": "luis",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 5,
+              "recruiter_id": "marta",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 6,
+              "recruiter_id": "ana",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 6,
+              "recruiter_id": "jon",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 6,
+              "recruiter_id": "luis",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 6,
+              "recruiter_id": "marta",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 7,
+              "recruiter_id": "ana",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 7,
+              "recruiter_id": "jon",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 7,
+              "recruiter_id": "luis",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 7,
+              "recruiter_id": "marta",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 8,
+              "recruiter_id": "ana",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 8,
+              "recruiter_id": "jon",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 8,
+              "recruiter_id": "luis",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 8,
+              "recruiter_id": "marta",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 11,
+              "recruiter_id": "jon",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 11,
+              "recruiter_id": "luis",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 12,
+              "recruiter_id": "jon",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 12,
+              "recruiter_id": "luis",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 17,
+              "recruiter_id": "ana",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 17,
+              "recruiter_id": "marta",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 21,
+              "recruiter_id": "ana",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 21,
+              "recruiter_id": "jon",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 21,
+              "recruiter_id": "luis",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 21,
+              "recruiter_id": "marta",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 22,
+              "recruiter_id": "ana",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 22,
+              "recruiter_id": "jon",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 22,
+              "recruiter_id": "luis",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 22,
+              "recruiter_id": "marta",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 23,
+              "recruiter_id": "ana",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 23,
+              "recruiter_id": "jon",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 23,
+              "recruiter_id": "luis",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 23,
+              "recruiter_id": "marta",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 24,
+              "recruiter_id": "jon",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 24,
+              "recruiter_id": "luis",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 25,
+              "recruiter_id": "ana",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 25,
+              "recruiter_id": "jon",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 25,
+              "recruiter_id": "luis",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 25,
+              "recruiter_id": "marta",
+              "created_at": "<ts>"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "move an unknown candidate",
+      "request": {
+        "method": "POST",
+        "path": "/api/candidates/999/move",
+        "headers": {},
+        "body": {
+          "to": 1
+        }
+      },
+      "response": {
+        "status": 400,
+        "headers": {
+          "content-type": "application/json; charset=utf-8",
+          "cache-control": "no-store",
+          "x-content-type-options": "nosniff",
+          "content-security-policy": "default-src 'self'; style-src 'self' 'unsafe-inline'; base-uri 'none'; form-action 'self'"
+        },
+        "body": {
+          "error": "unknown candidate 999"
+        }
+      },
+      "db": {
+        "counts": {
+          "analyses": 13,
+          "approvals": 10,
+          "assignments": 40,
+          "brief_versions": 8,
+          "candidates": 13,
+          "changes": 48,
+          "clients": 2,
+          "completions": 21,
+          "learning_items": 15,
+          "proposals": 9,
+          "recruiters": 4,
+          "role_recruiters": 8,
+          "roles": 3,
+          "screening_reviews": 2,
+          "sources": 13,
+          "stage_runs": 90
+        },
+        "rows": {
+          "proposals": [
+            {
+              "id": 1,
+              "source_row_id": 1,
+              "role_id": "nw-be",
+              "state": "approved",
+              "severity": "material",
+              "kind": "source",
+              "corrects": null,
+              "base_version": 0,
+              "version_created": 1,
+              "decided_by": "lead (seed)",
+              "decided_at": "<ts>",
+              "reason": null,
+              "created_at": "<ts>"
+            },
+            {
+              "id": 2,
+              "source_row_id": 2,
+              "role_id": "nw-be",
+              "state": "approved",
+              "severity": "material",
+              "kind": "source",
+              "corrects": null,
+              "base_version": 1,
+              "version_created": 2,
+              "decided_by": "lead (seed)",
+              "decided_at": "<ts>",
+              "reason": null,
+              "created_at": "<ts>"
+            },
+            {
+              "id": 3,
+              "source_row_id": 3,
+              "role_id": "ks-fe",
+              "state": "approved",
+              "severity": "material",
+              "kind": "source",
+              "corrects": null,
+              "base_version": 0,
+              "version_created": 1,
+              "decided_by": "lead (seed)",
+              "decided_at": "<ts>",
+              "reason": null,
+              "created_at": "<ts>"
+            },
+            {
+              "id": 4,
+              "source_row_id": 4,
+              "role_id": "ks-fe",
+              "state": "approved",
+              "severity": "material",
+              "kind": "source",
+              "corrects": null,
+              "base_version": 1,
+              "version_created": 2,
+              "decided_by": "lead (seed)",
+              "decided_at": "<ts>",
+              "reason": null,
+              "created_at": "<ts>"
+            },
+            {
+              "id": 5,
+              "source_row_id": 7,
+              "role_id": "nw-ai",
+              "state": "approved",
+              "severity": "material",
+              "kind": "source",
+              "corrects": null,
+              "base_version": 0,
+              "version_created": 1,
+              "decided_by": "lead (seed)",
+              "decided_at": "<ts>",
+              "reason": null,
+              "created_at": "<ts>"
+            },
+            {
+              "id": 6,
+              "source_row_id": 8,
+              "role_id": "ks-fe",
+              "state": "proposed",
+              "severity": "critical",
+              "kind": "source",
+              "corrects": null,
+              "base_version": 2,
+              "version_created": null,
+              "decided_by": null,
+              "decided_at": null,
+              "reason": null,
+              "created_at": "<ts>"
+            },
+            {
+              "id": 7,
+              "source_row_id": 9,
+              "role_id": "nw-ai",
+              "state": "approved",
+              "severity": "material",
+              "kind": "source",
+              "corrects": null,
+              "base_version": 1,
+              "version_created": 2,
+              "decided_by": "lead (seed)",
+              "decided_at": "<ts>",
+              "reason": null,
+              "created_at": "<ts>"
+            },
+            {
+              "id": 8,
+              "source_row_id": 10,
+              "role_id": "nw-be",
+              "state": "approved",
+              "severity": "material",
+              "kind": "source",
+              "corrects": null,
+              "base_version": 2,
+              "version_created": 3,
+              "decided_by": "lead (seed)",
+              "decided_at": "<ts>",
+              "reason": null,
+              "created_at": "<ts>"
+            },
+            {
+              "id": 9,
+              "source_row_id": 13,
+              "role_id": "nw-be",
+              "state": "approved",
+              "severity": "material",
+              "kind": "source",
+              "corrects": null,
+              "base_version": 3,
+              "version_created": 4,
+              "decided_by": "lead (seed)",
+              "decided_at": "<ts>",
+              "reason": null,
+              "created_at": "<ts>"
+            }
+          ],
+          "screening_reviews": [
+            {
+              "id": 1,
+              "source_row_id": 12,
+              "role_id": "ks-fe",
+              "candidate": "J. Moreau",
+              "screening_source_id": null,
+              "brief_version_at_screening": null,
+              "must_have_snapshot_json": "[]",
+              "coverage_json": "[]",
+              "overweighted_json": "[]",
+              "suggested_json": "[{\"text\":\"Ask whether they had paying users before anyone else joined\",\"why\":\"The client advanced J. Moreau for exactly this.\",\"future_screenings\":true}]",
+              "status": "insufficient_evidence",
+              "purpose": "retrospective",
+              "decision_json": "{\"candidate\":\"J. Moreau\",\"outcome\":\"advanced\",\"reason\":\"had paying users before anyone else joined; explained simply\"}",
+              "state": "approved",
+              "decided_by": "lead (seed)",
+              "decided_at": "<ts>",
+              "reason": null
+            },
+            {
+              "id": 2,
+              "source_row_id": 13,
+              "role_id": "nw-be",
+              "candidate": "D. Ruiz",
+              "screening_source_id": "nw-07",
+              "brief_version_at_screening": 3,
+              "must_have_snapshot_json": "<sha256:61ffe72b7e2f len=345>",
+              "coverage_json": "<sha256:ed09d362e406 len=457>",
+              "overweighted_json": "[{\"topic\":\"Go (trainable since 05 oct)\",\"count\":4,\"total\":11,\"quote\":\"How many years have you worked with Go?\"}]",
+              "suggested_json": "<sha256:fb3a76d0c429 len=309>",
+              "status": "ok",
+              "purpose": "retrospective",
+              "decision_json": "{\"candidate\":\"D. Ruiz\",\"outcome\":\"rejected\",\"reason\":\"weak on system design\"}",
+              "state": "approved",
+              "decided_by": "lead (seed)",
+              "decided_at": "<ts>",
+              "reason": null
+            }
+          ],
+          "brief_versions": [
+            {
+              "id": 1,
+              "role_id": "nw-be",
+              "n": 1,
+              "proposal_id": 1,
+              "source_id": "nw-01",
+              "effective_date": "2026-10-02",
+              "fields_json": "<sha256:5492978c6578 len=2785>",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 2,
+              "role_id": "nw-be",
+              "n": 2,
+              "proposal_id": 2,
+              "source_id": "nw-02",
+              "effective_date": "2026-10-05",
+              "fields_json": "<sha256:524c58ca1dd7 len=5004>",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 3,
+              "role_id": "ks-fe",
+              "n": 1,
+              "proposal_id": 3,
+              "source_id": "ks-01",
+              "effective_date": "2026-10-12",
+              "fields_json": "<sha256:7709e80990e6 len=1924>",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 4,
+              "role_id": "ks-fe",
+              "n": 2,
+              "proposal_id": 4,
+              "source_id": "ks-02",
+              "effective_date": "2026-10-14",
+              "fields_json": "<sha256:9ee29955b9f3 len=2808>",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 5,
+              "role_id": "nw-ai",
+              "n": 1,
+              "proposal_id": 5,
+              "source_id": "nw-04",
+              "effective_date": "2026-10-23",
+              "fields_json": "<sha256:f221d9b15cbc len=1588>",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 6,
+              "role_id": "nw-ai",
+              "n": 2,
+              "proposal_id": 7,
+              "source_id": "nw-05",
+              "effective_date": "2026-10-28",
+              "fields_json": "<sha256:488a31aa0e64 len=2465>",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 7,
+              "role_id": "nw-be",
+              "n": 3,
+              "proposal_id": 8,
+              "source_id": "nw-06",
+              "effective_date": "2026-11-03",
+              "fields_json": "<sha256:177748128815 len=5131>",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 8,
+              "role_id": "nw-be",
+              "n": 4,
+              "proposal_id": 9,
+              "source_id": "nw-08",
+              "effective_date": "2026-11-06",
+              "fields_json": "<sha256:817147e2bf38 len=5448>",
+              "created_at": "<ts>"
+            }
+          ],
+          "approvals": [
+            {
+              "id": 1,
+              "target_type": "proposal",
+              "target_id": 1,
+              "action": "approve",
+              "actor": "lead (seed)",
+              "reason": null,
+              "created_at": "<ts>"
+            },
+            {
+              "id": 2,
+              "target_type": "proposal",
+              "target_id": 2,
+              "action": "approve",
+              "actor": "lead (seed)",
+              "reason": null,
+              "created_at": "<ts>"
+            },
+            {
+              "id": 3,
+              "target_type": "proposal",
+              "target_id": 3,
+              "action": "approve",
+              "actor": "lead (seed)",
+              "reason": null,
+              "created_at": "<ts>"
+            },
+            {
+              "id": 4,
+              "target_type": "proposal",
+              "target_id": 4,
+              "action": "approve",
+              "actor": "lead (seed)",
+              "reason": null,
+              "created_at": "<ts>"
+            },
+            {
+              "id": 5,
+              "target_type": "proposal",
+              "target_id": 5,
+              "action": "approve",
+              "actor": "lead (seed)",
+              "reason": null,
+              "created_at": "<ts>"
+            },
+            {
+              "id": 6,
+              "target_type": "proposal",
+              "target_id": 7,
+              "action": "approve",
+              "actor": "lead (seed)",
+              "reason": null,
+              "created_at": "<ts>"
+            },
+            {
+              "id": 7,
+              "target_type": "proposal",
+              "target_id": 8,
+              "action": "approve",
+              "actor": "lead (seed)",
+              "reason": null,
+              "created_at": "<ts>"
+            },
+            {
+              "id": 8,
+              "target_type": "review",
+              "target_id": 1,
+              "action": "approve",
+              "actor": "lead (seed)",
+              "reason": null,
+              "created_at": "<ts>"
+            },
+            {
+              "id": 9,
+              "target_type": "proposal",
+              "target_id": 9,
+              "action": "approve",
+              "actor": "lead (seed)",
+              "reason": null,
+              "created_at": "<ts>"
+            },
+            {
+              "id": 10,
+              "target_type": "review",
+              "target_id": 2,
+              "action": "approve",
+              "actor": "lead (seed)",
+              "reason": null,
+              "created_at": "<ts>"
+            }
+          ],
+          "completions": [
+            {
+              "id": 1,
+              "recruiter_id": "luis",
+              "role_id": "nw-be",
+              "version": 2,
+              "item_id": 5,
+              "kind": "study",
+              "response": "Seeded demo answer: I would ask for one concrete example I can verify, and what changed afterwards.",
+              "accepted_json": "null",
+              "result_json": "<sha256:7208002ed949 len=458>",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 2,
+              "recruiter_id": "marta",
+              "role_id": "nw-be",
+              "version": 2,
+              "item_id": 5,
+              "kind": "study",
+              "response": "Seeded demo answer: I would ask for one concrete example I can verify, and what changed afterwards.",
+              "accepted_json": "null",
+              "result_json": "<sha256:7208002ed949 len=458>",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 3,
+              "recruiter_id": "luis",
+              "role_id": "nw-be",
+              "version": 2,
+              "item_id": 6,
+              "kind": "ack",
+              "response": null,
+              "accepted_json": "null",
+              "result_json": "{\"passed\":true,\"rule\":\"ack: a row exists once recorded\"}",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 4,
+              "recruiter_id": "marta",
+              "role_id": "nw-be",
+              "version": 2,
+              "item_id": 6,
+              "kind": "ack",
+              "response": null,
+              "accepted_json": "null",
+              "result_json": "{\"passed\":true,\"rule\":\"ack: a row exists once recorded\"}",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 5,
+              "recruiter_id": "jon",
+              "role_id": "nw-be",
+              "version": 2,
+              "item_id": 6,
+              "kind": "ack",
+              "response": null,
+              "accepted_json": "null",
+              "result_json": "{\"passed\":true,\"rule\":\"ack: a row exists once recorded\"}",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 6,
+              "recruiter_id": "luis",
+              "role_id": "nw-be",
+              "version": 2,
+              "item_id": 7,
+              "kind": "ack",
+              "response": null,
+              "accepted_json": "null",
+              "result_json": "{\"passed\":true,\"rule\":\"ack: a row exists once recorded\"}",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 7,
+              "recruiter_id": "marta",
+              "role_id": "nw-be",
+              "version": 2,
+              "item_id": 7,
+              "kind": "ack",
+              "response": null,
+              "accepted_json": "null",
+              "result_json": "{\"passed\":true,\"rule\":\"ack: a row exists once recorded\"}",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 8,
+              "recruiter_id": "jon",
+              "role_id": "nw-be",
+              "version": 2,
+              "item_id": 7,
+              "kind": "ack",
+              "response": null,
+              "accepted_json": "null",
+              "result_json": "{\"passed\":true,\"rule\":\"ack: a row exists once recorded\"}",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 9,
+              "recruiter_id": "luis",
+              "role_id": "nw-be",
+              "version": 2,
+              "item_id": 8,
+              "kind": "ack",
+              "response": null,
+              "accepted_json": "null",
+              "result_json": "{\"passed\":true,\"rule\":\"ack: a row exists once recorded\"}",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 10,
+              "recruiter_id": "marta",
+              "role_id": "nw-be",
+              "version": 2,
+              "item_id": 8,
+              "kind": "ack",
+              "response": null,
+              "accepted_json": "null",
+              "result_json": "{\"passed\":true,\"rule\":\"ack: a row exists once recorded\"}",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 11,
+              "recruiter_id": "jon",
+              "role_id": "nw-be",
+              "version": 2,
+              "item_id": 8,
+              "kind": "ack",
+              "response": null,
+              "accepted_json": "null",
+              "result_json": "{\"passed\":true,\"rule\":\"ack: a row exists once recorded\"}",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 12,
+              "recruiter_id": "luis",
+              "role_id": "nw-be",
+              "version": 3,
+              "item_id": 21,
+              "kind": "ack",
+              "response": null,
+              "accepted_json": "null",
+              "result_json": "{\"passed\":true,\"rule\":\"ack: a row exists once recorded\"}",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 13,
+              "recruiter_id": "marta",
+              "role_id": "nw-be",
+              "version": 3,
+              "item_id": 21,
+              "kind": "ack",
+              "response": null,
+              "accepted_json": "null",
+              "result_json": "{\"passed\":true,\"rule\":\"ack: a row exists once recorded\"}",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 14,
+              "recruiter_id": "jon",
+              "role_id": "nw-be",
+              "version": 3,
+              "item_id": 21,
+              "kind": "ack",
+              "response": null,
+              "accepted_json": "null",
+              "result_json": "{\"passed\":true,\"rule\":\"ack: a row exists once recorded\"}",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 15,
+              "recruiter_id": "luis",
+              "role_id": "nw-be",
+              "version": 3,
+              "item_id": 22,
+              "kind": "ack",
+              "response": null,
+              "accepted_json": "null",
+              "result_json": "{\"passed\":true,\"rule\":\"ack: a row exists once recorded\"}",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 16,
+              "recruiter_id": "marta",
+              "role_id": "nw-be",
+              "version": 3,
+              "item_id": 22,
+              "kind": "ack",
+              "response": null,
+              "accepted_json": "null",
+              "result_json": "{\"passed\":true,\"rule\":\"ack: a row exists once recorded\"}",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 17,
+              "recruiter_id": "jon",
+              "role_id": "nw-be",
+              "version": 3,
+              "item_id": 22,
+              "kind": "ack",
+              "response": null,
+              "accepted_json": "null",
+              "result_json": "{\"passed\":true,\"rule\":\"ack: a row exists once recorded\"}",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 18,
+              "recruiter_id": "luis",
+              "role_id": "nw-be",
+              "version": 3,
+              "item_id": 23,
+              "kind": "study",
+              "response": "Seeded demo answer: I would ask for one concrete example I can verify, and what changed afterwards.",
+              "accepted_json": "null",
+              "result_json": "<sha256:a534f91614ed len=446>",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 19,
+              "recruiter_id": "marta",
+              "role_id": "nw-be",
+              "version": 3,
+              "item_id": 23,
+              "kind": "study",
+              "response": "Seeded demo answer: I would ask for one concrete example I can verify, and what changed afterwards.",
+              "accepted_json": "null",
+              "result_json": "<sha256:a534f91614ed len=446>",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 20,
+              "recruiter_id": "luis",
+              "role_id": "nw-be",
+              "version": 4,
+              "item_id": 25,
+              "kind": "review",
+              "response": null,
+              "accepted_json": "[0,1]",
+              "result_json": "{\"passed\":true,\"rule\":\"review: accept at least one suggestion, or say none is needed and give a reason\",\"accepted\":[0,1],\"none_needed\":false}",
+              "created_at": "<ts>"
+            },
+            {
+              "id": 21,
+              "recruiter_id": "marta",
+              "role_id": "nw-be",
+              "version": 4,
+              "item_id": 25,
+              "kind": "review",
+              "response": null,
+              "accepted_json": "[0,1]",
+              "result_json": "{\"passed\":true,\"rule\":\"review: accept at least one suggestion, or say none is needed and give a reason\",\"accepted\":[0,1],\"none_needed\":false}",
+              "created_at": "<ts>"
+            }
+          ],
+          "candidates": [
+            {
+              "id": 1,
+              "role_id": "nw-be",
+              "name": "A. Lindqvist",
+              "stage": 1
+            },
+            {
+              "id": 2,
+              "role_id": "nw-be",
+              "name": "J. Haas",
+              "stage": 0
+            },
+            {
+              "id": 3,
+              "role_id": "nw-be",
+              "name": "P. Novak",
+              "stage": 0
+            },
+            {
+              "id": 4,
+              "role_id": "nw-be",
+              "name": "S. Haddad",
+              "stage": 1
+            },
+            {
+              "id": 5,
+              "role_id": "nw-be",
+              "name": "L. Brandt",
+              "stage": 1
+            },
+            {
+              "id": 6,
+              "role_id": "nw-be",
+              "name": "K. Osei",
+              "stage": 2
+            },
+            {
+              "id": 7,
+              "role_id": "nw-be",
+              "name": "D. Weber",
+              "stage": 3
+            },
+            {
+              "id": 8,
+              "role_id": "nw-ai",
+              "name": "R. Silva",
+              "stage": 0
+            },
+            {
+              "id": 9,
+              "role_id": "nw-ai",
+              "name": "E. Duval",
+              "stage": 0
+            },
+            {
+              "id": 10,
+              "role_id": "nw-ai",
+              "name": "N. Ivanova",
+              "stage": 1
+            },
+            {
+              "id": 11,
+              "role_id": "ks-fe",
+              "name": "T. Kowalski",
+              "stage": 0
+            },
+            {
+              "id": 12,
+              "role_id": "ks-fe",
+              "name": "H. Tanaka",
+              "stage": 1
+            },
+            {
+              "id": 13,
+              "role_id": "ks-fe",
+              "name": "J. Moreau",
+              "stage": 3
+            }
+          ],
+          "assignments": [
+            {
+              "item_id": 5,
+              "recruiter_id": "ana",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 5,
+              "recruiter_id": "jon",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 5,
+              "recruiter_id": "luis",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 5,
+              "recruiter_id": "marta",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 6,
+              "recruiter_id": "ana",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 6,
+              "recruiter_id": "jon",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 6,
+              "recruiter_id": "luis",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 6,
+              "recruiter_id": "marta",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 7,
+              "recruiter_id": "ana",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 7,
+              "recruiter_id": "jon",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 7,
+              "recruiter_id": "luis",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 7,
+              "recruiter_id": "marta",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 8,
+              "recruiter_id": "ana",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 8,
+              "recruiter_id": "jon",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 8,
+              "recruiter_id": "luis",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 8,
+              "recruiter_id": "marta",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 11,
+              "recruiter_id": "jon",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 11,
+              "recruiter_id": "luis",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 12,
+              "recruiter_id": "jon",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 12,
+              "recruiter_id": "luis",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 17,
+              "recruiter_id": "ana",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 17,
+              "recruiter_id": "marta",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 21,
+              "recruiter_id": "ana",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 21,
+              "recruiter_id": "jon",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 21,
+              "recruiter_id": "luis",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 21,
+              "recruiter_id": "marta",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 22,
+              "recruiter_id": "ana",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 22,
+              "recruiter_id": "jon",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 22,
+              "recruiter_id": "luis",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 22,
+              "recruiter_id": "marta",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 23,
+              "recruiter_id": "ana",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 23,
+              "recruiter_id": "jon",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 23,
+              "recruiter_id": "luis",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 23,
+              "recruiter_id": "marta",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 24,
+              "recruiter_id": "jon",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 24,
+              "recruiter_id": "luis",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 25,
+              "recruiter_id": "ana",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 25,
+              "recruiter_id": "jon",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 25,
+              "recruiter_id": "luis",
+              "created_at": "<ts>"
+            },
+            {
+              "item_id": 25,
+              "recruiter_id": "marta",
+              "created_at": "<ts>"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

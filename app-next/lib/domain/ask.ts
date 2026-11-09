@@ -45,7 +45,9 @@ export async function askRole(db: Db, model: any, roleId: any, { question, histo
   const recent = db.prepare(`SELECT s.date, s.channel, s.title, a.summary FROM sources s LEFT JOIN analyses a ON a.source_row_id = s.id
     WHERE s.status <> 'superseded' AND (s.role_id = ? OR (s.scope = 'company' AND s.client_id = (SELECT client_id FROM roles WHERE id = ?)))
     ORDER BY s.date DESC LIMIT 5`).all(roleId, roleId);
-  const raw = await model.ask({ role: { title: role.title, client: role.client }, brief, recent, question: q, history: cleanHistory(history) });
+  let raw: any;
+  try { raw = await model.ask({ role: { title: role.title, client: role.client }, brief, recent, question: q, history: cleanHistory(history) }); }
+  catch (e) { throw new ModelFailure(`The model could not answer (${e.message}). Try again.`); }
   const res = checkAnswer(raw, brief);
   if (!res.ok) throw new ModelFailure(`No answer: ${res.error}. Try again.`);
   return { ...res, model: model.name };

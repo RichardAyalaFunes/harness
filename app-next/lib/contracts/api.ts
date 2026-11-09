@@ -17,7 +17,7 @@ export const SlugParam = z.string().regex(/^[a-z0-9][a-z0-9-]{0,39}$/, 'must be 
 export const ApproveBody = z.object({ by: actor.optional() }).strict();
 export const RejectBody = z.object({
   by: actor.optional(),
-  reason: z.string().trim().min(MIN_REASON, `write at least ${MIN_REASON} characters`).max(MAX_REASON, `keep it under ${MAX_REASON} characters`),
+  reason: z.string({ error: `write at least ${MIN_REASON} characters` }).trim().min(MIN_REASON, `write at least ${MIN_REASON} characters`).max(MAX_REASON, `keep it under ${MAX_REASON} characters`),
 }).strict();
 export const MoveBody = z.object({ to: z.number({ error: 'choose a stage' }).int('choose a stage').min(0, 'choose a stage').max(4, 'choose a stage') }).strict();
 export const CompleteBody = z.object({
@@ -28,7 +28,7 @@ export const CompleteBody = z.object({
 }).strict();
 // History is tolerant on purpose: entries with other roles are dropped by the domain (as before), not rejected.
 export const AskBody = z.object({
-  question: z.string().trim().min(3, 'write a question first').max(MAX_QUESTION, `keep the question under ${MAX_QUESTION} characters`),
+  question: z.string({ error: 'write a question first' }).trim().min(3, 'write a question first').max(MAX_QUESTION, `keep the question under ${MAX_QUESTION} characters`),
   history: z.array(z.object({ role: z.string().max(20), content: z.string().max(5000) })).max(50).optional(),
 }).strict();
 
