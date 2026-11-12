@@ -13,11 +13,12 @@ export function PipelineTab({ d, cands }: { d: any; cands: any[] }) {
         {d.stages.map((s: string, i: number) => (
           <section key={s} className="glass col" aria-label={s}>
             <h4>{s}<span>{cands.filter((c) => c.stage === i).length}</span></h4>
+            {cands.some((c) => c.stage === i) ? null : <p className="colempty">No candidates</p>}
             {cands.filter((c) => c.stage === i).map((c) => (
               <div key={c.id} className="tile cand" data-cand={c.id}>
                 <div className="who">
                   <div className="av" style={{ background: AVATAR_COLORS[c.id % AVATAR_COLORS.length] }}>{c.name.split(/[ .]+/).map((x: string) => x[0]).slice(0, 2).join('')}</div>
-                  <div><b>{c.name}</b><small>{s}</small></div>
+                  <div><b>{c.name}</b></div>
                 </div>
                 {i < d.stages.length - 1 ? (
                   <button className="mv" aria-label={`Move ${c.name} to ${d.stages[i + 1]}`}

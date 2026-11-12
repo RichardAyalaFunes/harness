@@ -7,7 +7,11 @@ import { RejectBody, fieldMessage } from '../../lib/contracts/api.ts';
 import { useSrc } from '../src-context.ts';
 import { WeightChip } from './shared.tsx';
 
-const SevChip = ({ s }: { s: string }) => <Chip text={s} cls={s === 'critical' ? 'r' : s === 'material' ? 'y' : 'g'} />;
+const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
+const SevChip = ({ s }: { s: string }) => <Chip text={cap(s)} cls={s === 'critical' ? 'r' : s === 'material' ? 'y' : 'g'} />;
+// Source channels are stored as slugs ("meeting-transcript"); show them as words.
+const CHANNEL: Record<string, string> = { jd: 'Job description', 'meeting-transcript': 'Call notes', email: 'Email', news: 'News', 'client-decision': 'Client decision', 'screening-transcript': 'Screening notes', 'manual-correction': 'Manual correction' };
+const channelLabel = (c: string) => CHANNEL[c] ?? cap(String(c).replace(/-/g, ' '));
 function StateChip({ s }: { s: string }) {
   switch (s) {
     case 'proposed': return <Chip text="Awaiting approval" cls="y" />;
@@ -25,7 +29,7 @@ function ChangeBox({ c }: { c: any }) {
     <div className={`cg${c.bias ? ' bias' : ''}`}>
       <b>{c.label}</b> <span>{c.old ? `${c.old} → ${shown}` : `→ ${shown}`}</span> <SevChip s={c.severity} /> <WeightChip w={c.weight} />
       {c.status === 'applied' ? <Chip text="applied, shown in brief only" cls="g" /> : null}
-      {c.status === 'not_applied_bias' ? <Chip text={`NOT APPLIED · possible bias (${c.bias ? c.bias.kind : '?'})`} cls="r" /> : null}
+      {c.status === 'not_applied_bias' ? <Chip text={`Not applied · possible bias (${c.bias ? c.bias.kind : '?'})`} cls="r" /> : null}
       {c.confirmed === false ? <Chip text="not confirmed" cls="ys" /> : null}
       {c.conflicts_with ? <Chip text={`conflicts with ${c.conflicts_with}`} cls="r" /> : null}
       {c.bias ? <div className="q">{c.bias.note}</div> : null}
@@ -210,11 +214,11 @@ export function ChangesTab({ d }: { d: any }) {
         <ul className="tlist">
           {d.timeline.map((s: any) => (
             <li key={s.source_id}>
-              <div className="d">{fmtDate(s.date)}<br />{s.channel}</div>
+              <div className="d"><b>{fmtDate(s.date)}</b>{channelLabel(s.channel)}</div>
               <div>
                 <div className="t">{s.title} <Outcome o={s.outcome} />
                   {s.decision ? <Chip text={`Client ${s.decision.outcome} ${s.decision.candidate}`} cls="b" /> : null}
-                  {s.review_state ? <Chip text={`review ${s.review_state}`} cls={s.review_state === 'approved' ? 'ok' : s.review_state === 'rejected' ? 'r' : 'y'} /> : null}
+                  {s.review_state ? <Chip text={`Review ${s.review_state}`} cls={s.review_state === 'approved' ? 'ok' : s.review_state === 'rejected' ? 'r' : 'y'} /> : null}
                 </div>
                 <div className="s">{s.summary || 'No analysis yet.'}</div>
                 <HowProcessed s={s} />

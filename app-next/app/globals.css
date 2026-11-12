@@ -436,3 +436,40 @@ textarea:focus,input[type=text]:focus{border-color:var(--ink);box-shadow:0 0 0 4
 
 /* Narrow screens: long chips wrap instead of widening the page (found by the 375 px e2e check) */
 @media (max-width:560px){.list li .chip,.cov li .chip{white-space:normal;max-width:100%}}
+
+/* ---- UI polish pass (branch ui/polish) ---- */
+/* hero: three KPIs on three columns (a fourth empty slot squeezed the labels onto two lines) */
+.kpis{grid-template-columns:repeat(3,minmax(0,1fr))}
+.kpi small{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+@media (max-width:900px){.kpis{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (max-width:560px){
+.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.kpi small{white-space:normal}
+.hero{padding:22px 20px}
+/* tabs stay on one row and scroll sideways, so the sliding pill always sits under the active tab */
+.seg{display:flex;flex-wrap:nowrap;overflow-x:auto;max-width:100%;scrollbar-width:none}.seg::-webkit-scrollbar{display:none}
+.seg button{flex:none;padding:9px 16px}
+}
+/* list rows: the text fills the row next to its badge instead of dropping under it */
+.list li>div{flex:1 1 0}
+.list li{align-items:flex-start}
+/* empty pipeline column */
+.colempty{margin:4px 6px;padding:18px 10px;border:1.5px dashed rgba(107,113,128,.25);border-radius:16px;text-align:center;font-size:13px;color:var(--muted)}
+/* acknowledge step: old value as a readable line, button with breathing room */
+.before{display:flex;gap:10px;align-items:baseline;margin:12px 0 0;font-size:14px;color:var(--ink2)}
+.before span{font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
+.before s{text-decoration-color:var(--red)}
+.item .acts{margin-top:14px}
+/* review step: the reason field matches the other text inputs and slides in */
+input.field{display:block;width:100%;height:40px;margin:4px 0 0;border-radius:20px;border:1.5px solid #d3d8e0;padding:0 14px;font:inherit;font-size:14px;background:#fff;animation:rise .25s var(--ease) both}
+/* inline validation messages (were unstyled) */
+.fielderr{display:block;margin:8px 4px 0;font-size:13px;font-weight:600;color:#a8324a;animation:rise .2s var(--ease) both}
+input[aria-invalid=true]{border-color:#e59aa9;background:#fff7f8}
+/* timeline: date and channel on two clear lines */
+.tlist .d b{display:block;color:var(--ink);font-weight:600}
+/* team rows: progress in its own column so names, counts and buttons line up */
+.trow{display:grid;grid-template-columns:1fr auto auto;gap:14px}
+.trow .frac{color:var(--muted);font-variant-numeric:tabular-nums}
+/* not-found link: no underline on a pill */
+a.pill{text-decoration:none}
+/* checked boxes: tick in */
+.chk input:checked{animation:pop .25s var(--ease)}

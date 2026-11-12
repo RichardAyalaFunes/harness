@@ -21,11 +21,13 @@ function ItemShell({ it, children }: { it: any; children: ReactNode }) {
 
 function AckItem({ it, d }: { it: any; d: any }) {
   const { act } = useApp();
+  // The old value is shown only when the title does not already say it (e.g. "Budget is now X" shows what it was before).
+  const was = it.detail.was && !String(it.title).includes(it.detail.was) ? it.detail.was : null;
   return (
     <ItemShell it={it}>
-      <div className="was">{it.detail.was ? <small>{`was: ${it.detail.was}`}</small> : null}</div>
+      {was ? <p className="before"><span>Before</span><s>{was}</s></p> : null}
       {it.detail.note ? <p className="sub">{it.detail.note}</p> : null}
-      {it.completion ? null : <button className="pill dark" onClick={() => act(() => api(`/api/items/${it.id}/complete`, { recruiter: d.me }), 'Confirmed', { mark: ['item', it.id] })}>I have read and understood this</button>}
+      {it.completion ? null : <div className="acts"><button className="pill dark" onClick={() => act(() => api(`/api/items/${it.id}/complete`, { recruiter: d.me }), 'Confirmed', { mark: ['item', it.id] })}>I have read and understood this</button></div>}
     </ItemShell>
   );
 }
@@ -97,7 +99,7 @@ function ReviewItem({ it, d }: { it: any; d: any }) {
         <label key={i} className="chk"><input type="checkbox" checked={picked.includes(i)} disabled={done} onChange={(e) => setPicked(e.target.checked ? [...picked, i] : picked.filter((x) => x !== i))} /><span>{s.text}<br /><small>{s.why}</small></span></label>
       ))}
       <label className="chk"><input type="checkbox" checked={none} disabled={done} onChange={(e) => setNone(e.target.checked)} /><span>None of these is needed</span></label>
-      <input type="text" placeholder="Why none is needed" aria-label="Why none is needed" value={why} disabled={done} onChange={(e) => setWhy(e.target.value)} />
+      {none || why ? <input className="field" type="text" placeholder="Why none is needed" aria-label="Why none is needed" value={why} disabled={done} onChange={(e) => setWhy(e.target.value)} /> : null}
       {done ? null : <div className="acts"><button className="pill dark" onClick={submit}>Accept review</button></div>}
     </ItemShell>
   );
@@ -207,7 +209,7 @@ export function CurrentTab({ d }: { d: any }) {
           <p className="sub">Who has learned every approved change.</p>
           {d.team.map((t: any) => (
             <div key={t.id} className={`trow${t.id === d.me ? ' me' : ''}`}>
-              <b>{t.name}</b><span data-num={`team-${t.id}`}>{`${t.done}/${t.total}`}</span>
+              <b>{t.name}</b><span className="frac" data-num={`team-${t.id}`}>{`${t.done} of ${t.total}`}</span>
               {t.up_to_date ? <Chip text="Up to date" cls="ok" /> : t.id === d.me ? <button className="pill dark sm" onClick={goToNext}>{`Do it now (${t.pending})`}</button> : <Chip text={`${t.pending} to do`} cls="y" />}
             </div>
           ))}

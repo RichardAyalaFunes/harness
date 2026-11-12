@@ -48,6 +48,8 @@ export function RoleScreen({ d, cands, initialTab }: { d: any; cands: any[]; ini
     const at = (b: HTMLElement) => { ind.style.width = `${b.offsetWidth}px`; ind.style.transform = `translateX(${b.offsetLeft}px)`; };
     const from = prev.current !== tab ? (el.querySelector(`button[data-tab="${prev.current}"]`) as HTMLElement | null) : null;
     ind.style.transition = 'none'; at(from || on); ind.getBoundingClientRect(); ind.style.transition = ''; at(on);
+    // on phones the tab row scrolls sideways: keep the active tab in view
+    if (el.scrollWidth > el.clientWidth) el.scrollTo({ left: on.offsetLeft - (el.clientWidth - on.offsetWidth) / 2, behavior: 'smooth' });
   }, [tab]);
 
   // after the data refreshes: highlight what arrived, and numbers that changed
