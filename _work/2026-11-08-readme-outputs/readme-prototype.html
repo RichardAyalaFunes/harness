@@ -6,6 +6,12 @@
 *{box-sizing:border-box}html,body{margin:0}html{scroll-behavior:smooth}
 body{font:18px/1.65 var(--font);color:var(--ink);background:#eef0f3;background-image:radial-gradient(1000px 700px at 5% 0%,#c3d9f2 0%,transparent 62%),radial-gradient(900px 700px at 100% 100%,#f3d996 0%,transparent 62%);background-attachment:fixed}
 a{color:var(--ink)}:focus-visible{outline:3px solid var(--ink);outline-offset:3px}
+button,a,[role=button]{-webkit-tap-highlight-color:transparent}
+button:focus:not(:focus-visible){outline:none}
+button.btn,.steps button,.reeltabs button,button.more{transition:transform .12s ease,background .25s,color .25s,border-color .25s}
+button.btn:active,.steps button:active{transform:scale(.97)}
+button.btn:not(.dark):active{background:rgba(22,24,29,.06)}
+.reeltabs button:focus-visible{outline-offset:2px;border-radius:6px}
 img{max-width:100%;display:block}
 .wrap{max-width:880px;margin:0 auto;padding:20px 20px 120px}
 .proto{background:var(--ink);color:#fff;border-radius:16px;padding:10px 16px;font-size:14px;margin-bottom:18px;line-height:1.5}
@@ -291,9 +297,10 @@ dialog img{border-radius:12px;border:1px solid var(--line)}
 .reel{position:relative;aspect-ratio:1440/1000;border-radius:16px;overflow:hidden;border:1px solid var(--line);box-shadow:0 6px 24px rgba(40,55,80,.08);background:#eef0f3}
 .reel img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top left;opacity:0;transition:opacity .8s ease}
 .reel img.on{opacity:1}
-.reeltabs{display:inline-flex;gap:4px;margin-top:16px;padding:4px;border-radius:24px;background:rgba(255,255,255,.7);border:1px solid var(--line)}
-.reeltabs button{font:inherit;font-size:14px;font-weight:600;min-height:40px;padding:0 16px;border-radius:20px;border:0;background:transparent;color:var(--ink2);cursor:pointer;transition:background .3s,color .3s}
-.reeltabs button.on{background:var(--ink);color:#fff}
+.reeltabs{display:inline-flex;gap:28px;margin-top:18px;border-bottom:1px solid var(--line)}
+.reeltabs button{font:inherit;font-size:14.5px;font-weight:500;min-height:44px;padding:0 2px;border:0;border-bottom:2px solid transparent;margin-bottom:-1px;background:none;color:var(--muted);cursor:pointer;transition:color .25s,border-color .25s}
+.reeltabs button:hover{color:var(--ink)}
+.reeltabs button.on{color:var(--ink);font-weight:600;border-bottom-color:var(--ink)}
 .reelcap{font-size:15px;color:var(--muted);margin:12px auto 0;min-height:24px}
 .stance{font-size:19px;line-height:1.5;color:var(--ink);max-width:600px;margin:0 auto 26px}
 .steps button{font:inherit;font-size:13.5px;font-weight:600;border-radius:12px;padding:0 12px;min-height:36px;background:rgba(255,255,255,.7);border:1px solid var(--line);color:var(--muted);cursor:pointer;transition:all .3s}
@@ -424,7 +431,7 @@ After the board meeting we need to be more careful with spend. For the Senior Ba
 <p class="label">What it took</p>
 <div class="trio nums">
 <div class="card neu num"><div class="big">9–11 h</div><p>From deciding what to build to this presentation and the video.</p></div>
-<div class="card neu num"><div class="big">&lt; $0.25</div><p>OpenAI tokens for every live run and test of the app.</p></div>
+<div class="card neu num"><div class="big">&lt; $0.10</div><p>OpenAI tokens for every live run and test of the app.</p></div>
 <div class="card neu num"><div class="big">$65–75</div><p>Claude tokens used to build it with an AI assistant, at list prices.</p></div>
 </div>
 <p class="fine">Estimates from usage logs, not a bill. Not counted yet: second-model review calls and the work still to come. <span class="ph">provisional</span></p>

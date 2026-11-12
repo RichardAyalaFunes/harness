@@ -35,3 +35,6 @@ Owner facts (prompt, this chat): total effort about 9-11 hours (deciding, planni
 
 ## Round 7 (2026-11-11)
 Removed the prototype banner. Chapter 5 now has a "What it took" block: 9-11 h, <$0.25 OpenAI (both from the owner), $65-75 Claude (all Claude Code sessions of this repo, 10 transcript files incl. subagents, list prices, cache writes at 1.25x-2x input; Codex/second-model calls and remaining work not counted; marked provisional). Chapter 6 quote replaced by an agent-drafted line without the "own words" label; options offered in chat. Checked 1280px.
+
+## Round 8 (2026-11-11)
+OpenAI cost corrected to < $0.10 (owner read it from OpenAI). Chapter 3 tabs restyled as text with an underline for the selected one. All buttons: no square tap highlight, no focus ring on mouse click (kept for keyboard), soft press scale instead.
