@@ -285,6 +285,23 @@ dialog img{border-radius:12px;border:1px solid var(--line)}
 .ch .stage{text-align:left}
 .ch .bars{text-align:left;max-width:640px;margin:0 auto}
 .ch .thanks{font-size:16px;color:var(--muted)}
+.reel{position:relative;aspect-ratio:1440/1000;border-radius:16px;overflow:hidden;border:1px solid var(--line);box-shadow:0 6px 24px rgba(40,55,80,.08);background:#eef0f3}
+.reel img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top left;opacity:0;transition:opacity .8s ease}
+.reel img.on{opacity:1}
+.reeltabs{display:inline-flex;gap:4px;margin-top:16px;padding:4px;border-radius:24px;background:rgba(255,255,255,.7);border:1px solid var(--line)}
+.reeltabs button{font:inherit;font-size:14px;font-weight:600;min-height:40px;padding:0 16px;border-radius:20px;border:0;background:transparent;color:var(--ink2);cursor:pointer;transition:background .3s,color .3s}
+.reeltabs button.on{background:var(--ink);color:#fff}
+.reelcap{font-size:15px;color:var(--muted);margin:12px auto 0;min-height:24px}
+.stance{font-size:19px;line-height:1.5;color:var(--ink);max-width:600px;margin:0 auto 26px}
+.steps button{font:inherit;font-size:13.5px;font-weight:600;border-radius:12px;padding:0 12px;min-height:36px;background:rgba(255,255,255,.7);border:1px solid var(--line);color:var(--muted);cursor:pointer;transition:all .3s}
+.steps button:hover{border-color:var(--ink)}
+.steps button.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.steps button.done{background:var(--gs);color:var(--g);border-color:var(--gs)}
+.steps button.done::before{content:"✓ "}.steps button.fail::before{content:"✕ "}
+.steps button.fail{background:var(--rs);color:var(--r);border-color:var(--rs)}
+.ch .controls.three{display:grid;grid-template-columns:1fr auto 1fr;max-width:640px;margin:0 auto}
+.ch .controls.three #prev{justify-self:start}.ch .controls.three #next{justify-self:end}
+@media (max-width:720px){.reeltabs{flex-wrap:wrap;justify-content:center}.ch .controls.three{grid-template-columns:1fr 1fr}.ch .controls.three #bad{grid-column:1/-1;grid-row:2}}
 @media (max-width:720px){.ch{padding:44px 18px}.ch .blk{margin-bottom:48px}.ch .pair,.ch .trio{grid-template-columns:1fr}.ch .colhead{display:none}}
 </style>
 
@@ -309,11 +326,29 @@ dialog img{border-radius:12px;border:1px solid var(--line)}
 <section class="glass rv ch" id="c3" aria-labelledby="h3x">
 <div class="blk">
 <div class="kicker">Chapter 3 · The recruiter's view</div>
-<h2 id="h3x">One tab: what changed, and what to do about it</h2>
-<p class="lede">The harness lives inside the ATS recruiters already open every morning.</p>
+<h2 id="h3x">An app should explain itself</h2>
+<p class="lede">The harness lives inside the ATS recruiters already open every morning, one role, four tabs.</p>
 </div>
 <div class="blk wide">
-<figure><img src="shots/current.jpg" alt="Stay current tab for the Senior Backend Engineer role: 8 steps waiting for Ana, an Ask about this role box, Confirm items, and a team panel showing 2 of 4 up to date" loading="lazy"><figcaption>Stay current, Senior Backend Engineer. Ana has 8 steps waiting; the team is 2 of 4 up to date.</figcaption></figure>
+<div class="reel" id="reel" aria-roledescription="slideshow" aria-label="The four tabs of a role">
+<img class="on" src="shots/tab-pipeline.jpg" alt="Pipeline tab: candidates by stage for the Senior Backend Engineer role">
+<img src="shots/tab-brief.jpg" alt="Role brief tab: the approved brief as tables, with what changed in the latest version">
+<img src="shots/tab-changes.jpg" alt="Changes tab: everything the client sent, and what each message changed">
+<img src="shots/tab-current.jpg" alt="Stay current tab: 8 steps waiting for Ana, and the team at 2 of 4 up to date">
+</div>
+<div class="reeltabs" id="reeltabs" role="group" aria-label="Show a tab">
+<button type="button" class="on" data-i="0">Pipeline</button><button type="button" data-i="1">Role brief</button><button type="button" data-i="2">Changes</button><button type="button" data-i="3">Stay current</button>
+</div>
+<p class="reelcap" id="reelcap" aria-live="polite">Candidates by stage. Moving a card is never blocked.</p>
+</div>
+<div class="blk wide">
+<p class="label">Why this interface</p>
+<p class="stance">Most people open a tool without knowing where to start, or why it's asking them for something. So every screen leads with one clear next step and the reason behind it.</p>
+<div class="trio">
+<div class="card neu"><h3>It shows where to start</h3><p>"8 steps waiting for you. Start now." One action first, everything else below it.</p></div>
+<div class="card neu"><h3>It says why you're here</h3><p>Each step names the client message it came from: "From the founder's email, 3 Nov".</p></div>
+<div class="card neu"><h3>It stays out of the way</h3><p>It lives in the ATS recruiters already use, and it never blocks moving a candidate.</p></div>
+</div>
 </div>
 <div class="blk wide">
 <p class="label">Three kinds of change, three kinds of effort</p>
@@ -333,7 +368,7 @@ dialog img{border-radius:12px;border:1px solid var(--line)}
 <p class="lede">The AI reads and proposes. Checks and a person decide. Step through it at your own pace.</p>
 </div>
 <div class="blk wide">
-<div class="steps" id="steps" aria-hidden="true"><span>1 Read</span><span>2 Find what changed</span><span>3 Check it's really there</span><span>4 Lead approves</span><span>5 Team learns</span></div>
+<div class="steps" id="steps" role="group" aria-label="Go to step"><button type="button" data-i="1">1 Read</button><button type="button" data-i="2">2 Find what changed</button><button type="button" data-i="3">3 Check it's really there</button><button type="button" data-i="4">4 Lead approves</button><button type="button" data-i="5">5 Team learns</button></div>
 <div class="stage">
 <div class="mail" id="mail"><span class="stamp">Filed with brief v3</span>
 <div class="hd"><b>From:</b> Northwind founder · 3 Nov<br><b>Re:</b> budget and timing for the backend hire</div>
@@ -354,10 +389,10 @@ After the board meeting we need to be more careful with spend. For the Senior Ba
 </div>
 </div>
 <p class="caption" id="cap" aria-live="polite"></p>
-<div class="controls">
+<div class="controls three">
 <button class="btn" type="button" id="prev">← Back</button>
-<button class="btn dark" type="button" id="next">Next →</button>
 <button class="btn" type="button" id="bad">What if the AI makes it up?</button>
+<button class="btn dark" type="button" id="next">Next →</button>
 </div>
 <button class="more" type="button" data-open="d-arch">All 7 stages, checks and tracing</button>
 </div>
@@ -388,7 +423,7 @@ After the board meeting we need to be more careful with spend. For the Senior Ba
 <div class="card ok"><h3>Real</h3><p>The checked pipeline, lead approval, bias flags, learning steps, team progress, live OpenAI path, tracing, <span class="ph">N</span> tests.</p></div>
 <div class="card lim"><h3>Stubbed or limited</h3><p>Synthetic data. The demo replays recorded answers by default. The live model finds fewer changes than my reference. One demo user.</p></div>
 <div class="card neu"><h3>Least sure about</h3><p>Whether my rules for "how big is this change" match a real lead's judgment.</p></div>
-<div class="card neu"><h3>Time spent</h3><p><span class="ph">pending</span></p></div>
+<div class="card neu"><h3>Time and cost</h3><p>About 9 to 11 hours in total: deciding what to build, planning, building, testing, publishing and this presentation. All live-model runs and testing cost under $0.25 in OpenAI tokens.</p></div>
 </div>
 </div>
 </section>
@@ -439,7 +474,7 @@ pnpm dev            # http://localhost:3000</pre>
 
 <dialog id="d-arch" aria-labelledby="dl3"><div class="db"><button class="close" type="button" aria-label="Close">×</button><h2 id="dl3">All 7 stages</h2>
 <ul><li><b>Register:</b> the file is hashed; the original stays readable.</li><li><b>Extract:</b> the model returns JSON in a fixed shape, and every quote must appear word for word. One retry with the error, then it stops.</li><li><b>Propose:</b> a new version only for material changes; a budget change can't be marked "minor".</li><li><b>Bias screen:</b> "top-10 universities" or an age limit is shown as "not applied" and never filters anyone.</li><li><b>Learning:</b> confirm, study or review, by kind of change.</li><li><b>Screening review:</b> only after a client decision, against the brief as it was that day.</li><li><b>Publish:</b> invisible to the team until the lead approves.</li></ul>
-<p>Each stage has a check written before it runs, and the result is stored. A failure stops that email at that stage, visibly. The model sees only the current brief and the new email, never the whole history. Every AI call is traced in SQLite.</p><p>Details: <a href="DESIGN.md">DESIGN.md §3</a></p></div></dialog>
+<p>Each stage has a check written before it runs, and the result is stored. A failure stops that email at that stage, visibly. The model sees only the current brief and the new email, never the whole history. Every AI call is traced in SQLite.</p></div></dialog>
 
 <dialog id="d-live" aria-labelledby="dl4"><div class="db"><button class="close" type="button" aria-label="Close">×</button><h2 id="dl4">What failed, and why</h2>
 <ul><li><b>Try 1:</b> the model copied <code>"weight?"</code> literally from my prompt. My offline tests couldn't catch it, because they replay perfect answers. I rewrote the prompt with two worked examples.</li><li><b>Tries 2–4:</b> small slips, like a quote that wasn't word for word or a missing field. One retry with the error message fixed most of them.</li><li><b>gpt-4o:</b> 12 of 13. The one failure (a client rejection) uses different labels than the brief, so the review is correctly refused.</li><li>The live model finds fewer changes than my hand-written reference. That's why every proposal still goes to a person.</li></ul>
@@ -472,7 +507,7 @@ document.querySelectorAll('[data-zoom]').forEach(function(img){img.tabIndex=0;im
   function open(){$('zoomImg').src=img.src;$('zoomImg').alt=img.alt;$('d-zoom').showModal();}
   img.addEventListener('click',open);img.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();open();}});});
 
-var steps=document.querySelectorAll('#steps span'),mail=$('mail'),pF=$('pFound'),pB=$('pBrief'),pA=$('pAppr'),pT=$('pTeam'),f1=$('f1');
+var steps=document.querySelectorAll('#steps button'),mail=$('mail'),pF=$('pFound'),pB=$('pBrief'),pA=$('pAppr'),pT=$('pTeam'),f1=$('f1');
 var caps=[
  'An email from the founder arrives. Press Next.',
  'Read: the email is filed next to the current brief (v3). The AI sees only these two, never the whole history.',
@@ -505,11 +540,27 @@ function bad(){
   $('cap').textContent='The AI paraphrased: "around €70k" isn’t in the email. It gets one retry with the error. Still wrong, so it stops, and nothing reaches the team.';
   $('next').disabled=true;$('prev').disabled=false;$('next').textContent='Next →';
 }
-$('next').addEventListener('click',function(){if(s<5){s++;render();}});
-$('prev').addEventListener('click',function(){if(badMode){s=0;}else if(s>0){s--;}render();});
-$('bad').addEventListener('click',bad);
+var walk=null;
+function goTo(t){
+  clearInterval(walk);
+  if(badMode){badMode=false;s=0;render();}
+  if(reduce||t===s){s=t;render();return;}
+  walk=setInterval(function(){s+=t>s?1:-1;render();if(s===t)clearInterval(walk);},380);
+}
+steps.forEach(function(b){b.addEventListener('click',function(){goTo(+b.dataset.i);});});
+$('next').addEventListener('click',function(){clearInterval(walk);if(s<5){s++;render();}});
+$('prev').addEventListener('click',function(){clearInterval(walk);if(badMode){s=0;}else if(s>0){s--;}render();});
+$('bad').addEventListener('click',function(){clearInterval(walk);bad();});
 render();
 
+(function(){
+  var imgs=document.querySelectorAll('#reel img'),tabs=document.querySelectorAll('#reeltabs button'),cap=$('reelcap'),i=0,timer=null;
+  var caps=['Candidates by stage. Moving a card is never blocked.','The approved brief as tables, with what changed in the latest version.','Everything the client sent, and what each message changed.','What Ana needs to do now, and who on the team is up to date.'];
+  function show(n){i=n;imgs.forEach(function(im,k){im.classList.toggle('on',k===n);});tabs.forEach(function(t,k){t.classList.toggle('on',k===n);t.setAttribute('aria-pressed',k===n);});cap.textContent=caps[n];}
+  function start(){if(reduce)return;clearInterval(timer);timer=setInterval(function(){show((i+1)%imgs.length);},2600);}
+  tabs.forEach(function(t){t.addEventListener('click',function(){show(+t.dataset.i);start();});});
+  show(0);start();
+})();
 function bars(){document.querySelectorAll('#bars .fill').forEach(function(f,i){setTimeout(function(){f.style.width=(f.dataset.v/13*100)+'%';},reduce?0:200*i);});}
 })();
 </script>
