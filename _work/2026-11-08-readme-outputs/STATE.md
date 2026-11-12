@@ -26,3 +26,6 @@ Checked in browser at 1280px: ch3 images load, ch4 good and bad paths render wit
 
 ## Round 4 (2026-11-11)
 Chapter 1 only, per owner: centred layout, 72px between blocks, labelled sections (Day one / Same candidate, two first screenings / What you get), explicit VS comparison with bad/good markers, benefits as three cards, closing question at 19px in a labelled box. Checked at 1280px: fits the card, no overflow. Mobile not checked.
+
+## Round 5 (2026-11-11)
+Chapters 2-6 given the chapter 1 treatment: centred headers with one-line ledes, labelled blocks, ~64px between blocks, coloured top accents on status cards (Real / Limited / Least sure / Time), callout for the key claim, next-steps as three cards, column headers on the decision turns. Fixed a bug: chapter 5 bar fills were inline spans so width was ignored. Opening card keeps only the video link, so README/DESIGN/RUN-NOTES links are no longer on the page (to place, e.g. in chapter 6). Checked at 1280px, no overflow. Not checked: mobile, keyboard in dialogs.

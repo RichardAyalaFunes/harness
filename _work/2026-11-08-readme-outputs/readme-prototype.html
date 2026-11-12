@@ -110,7 +110,7 @@ figcaption{font-size:14px;color:var(--muted);margin-top:8px}
 .bar{display:grid;grid-template-columns:180px 1fr 54px;gap:10px;align-items:center;font-size:14.5px}
 .bar .lab small{display:block;color:var(--muted);font-size:12.5px}
 .bar .bg{height:22px;border-radius:11px;background:rgba(255,255,255,.7);border:1px solid var(--line);overflow:hidden}
-.bar .fill{height:100%;width:0;background:var(--ink);border-radius:11px;transition:width 1.1s cubic-bezier(.2,.7,.2,1)}
+.bar .fill{display:block;height:100%;width:0;background:var(--ink);border-radius:11px;transition:width 1.1s cubic-bezier(.2,.7,.2,1)}
 .bar.best .fill{background:var(--g)}.bar .v{font-weight:700;text-align:right}
 table{width:100%;border-collapse:separate;border-spacing:0 6px;font-size:15px}
 td{background:rgba(255,255,255,.66);padding:9px 14px;vertical-align:top;color:var(--ink2)}td:first-child{border-radius:14px 0 0 14px;font-weight:600;color:var(--ink);width:30%}td:last-child{border-radius:0 14px 14px 0}
@@ -254,35 +254,85 @@ dialog img{border-radius:12px;border:1px solid var(--line)}
 </div>
 </section>
 
-<section class="glass rv" id="c2" aria-labelledby="h2x">
+<style>
+.ch{text-align:center;padding:64px 40px}
+.ch .blk{margin:0 auto 64px;max-width:640px}
+.ch .blk.wide{max-width:none}
+.ch .blk:last-child{margin-bottom:0}
+.ch .kicker{margin-bottom:14px}
+.ch h2{font-size:clamp(28px,4vw,40px);max-width:620px;margin:0 auto 18px}
+.ch .lede{font-size:19px;color:var(--ink2);max-width:540px;margin:0 auto}
+.ch .label{font-size:13px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:0 0 18px}
+.ch .left{text-align:left}
+.ch .more{margin-top:20px}
+.ch .colhead{display:grid;grid-template-columns:1fr 30px 1fr;gap:10px;margin-bottom:8px;font-size:12.5px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);text-align:left}
+.ch .colhead span{padding-left:14px}
+.ch .turn .from,.ch .turn .to{padding:14px 16px;font-size:15.5px}
+.ch .kinds{margin-top:0}
+.ch .callout{display:inline-block;background:#fff;border:1px solid var(--line);border-left:3px solid var(--g);border-radius:16px;padding:16px 22px;max-width:560px;text-align:left;font-size:17px;color:var(--ink)}
+.ch .pair{display:grid;grid-template-columns:1fr 1fr;gap:14px;text-align:left}
+.ch .trio{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;text-align:left}
+.ch .card{background:#fff;border:1px solid var(--line);border-radius:20px;padding:20px}
+.ch .card h3{font-size:16px;margin-bottom:8px}
+.ch .card p{font-size:15px;margin:0;color:var(--ink2);line-height:1.55}
+.ch .card.ok{border-top:3px solid var(--g)}.ch .card.lim{border-top:3px solid var(--r)}.ch .card.neu{border-top:3px solid var(--ink)}
+.ch .quote{text-align:left;max-width:600px;margin:0 auto}
+.ch pre{text-align:left;max-width:480px;margin:0 auto 14px}
+.ch .runnote{font-size:15px;max-width:520px;margin:0 auto}
+.ch .controls{justify-content:center}
+.ch .caption{text-align:center;max-width:640px;margin:20px auto 16px}
+.ch .steps{justify-content:center;margin-bottom:22px}
+.ch .stage{text-align:left}
+.ch .bars{text-align:left;max-width:640px;margin:0 auto}
+.ch .thanks{font-size:16px;color:var(--muted)}
+@media (max-width:720px){.ch{padding:44px 18px}.ch .blk{margin-bottom:48px}.ch .pair,.ch .trio{grid-template-columns:1fr}.ch .colhead{display:none}}
+</style>
+
+<section class="glass rv ch" id="c2" aria-labelledby="h2x">
+<div class="blk">
 <div class="kicker">Chapter 2 · Decisions</div>
 <h2 id="h2x">Four times I changed course</h2>
-<div class="turns">
+<p class="lede">I prototyped, looked at the result, and threw parts away. These turns shaped what I built.</p>
+</div>
+<div class="blk wide">
+<div class="colhead" aria-hidden="true"><span>First idea</span><span></span><span>What I built instead</span></div>
+<div class="turns left">
 <div class="turn"><div class="from">Score recruiters with a test before each new role.</div><div class="arr" aria-hidden="true">→</div><div class="to">Keep the role current first. A test against a stale brief is useless.</div></div>
 <div class="turn"><div class="from">Score or match candidates, like most AI recruiting demos.</div><div class="arr" aria-hidden="true">→</div><div class="to">Review the <b>recruiter's</b> screening, never the candidate.</div></div>
 <div class="turn"><div class="from">Block "submit candidate" until the recruiter passes a check.</div><div class="arr" aria-hidden="true">→</div><div class="to">Never block. Learning is triggered when the role changes.</div></div>
 <div class="turn"><div class="from">A polished, editorial page. It read like selling.</div><div class="arr" aria-hidden="true">→</div><div class="to">Plain tables inside a mock ATS, where recruiters already work.</div></div>
 </div>
-<p style="margin-top:12px"><button class="more" type="button" data-open="d-log">Where each decision came from</button></p>
+<button class="more" type="button" data-open="d-log">Where each decision came from</button>
+</div>
 </section>
 
-<section class="glass rv" id="c3" aria-labelledby="h3x">
+<section class="glass rv ch" id="c3" aria-labelledby="h3x">
+<div class="blk">
 <div class="kicker">Chapter 3 · The recruiter's view</div>
 <h2 id="h3x">One tab: what changed, and what to do about it</h2>
+<p class="lede">The harness lives inside the ATS recruiters already open every morning.</p>
+</div>
+<div class="blk wide">
 <figure><img src="shots/current.jpg" alt="Stay current tab for the Senior Backend Engineer role: 8 steps waiting for Ana, an Ask about this role box, Confirm items, and a team panel showing 2 of 4 up to date" loading="lazy"><figcaption>Stay current, Senior Backend Engineer. Ana has 8 steps waiting; the team is 2 of 4 up to date.</figcaption></figure>
-<p style="margin-top:16px">Not every change deserves the same effort, so each kind asks for something different. Click a screen to enlarge it.</p>
-<div class="kinds">
+</div>
+<div class="blk wide">
+<p class="label">Three kinds of change, three kinds of effort</p>
+<div class="kinds left">
 <div class="tile kind"><h3><span class="chip yc">Confirm</span></h3><p>Budget is now up to €72k. One tick. The lead sees who's done.</p><img src="shots/team.png" alt="Team panel: Ana 0 of 8, Jon 5 of 8, Luis and Marta up to date" data-zoom loading="lazy"></div>
 <div class="tile kind"><h3><span class="chip k">Study</span></h3><p>Incident ownership is a new must-have. Answer in your own words.</p><img src="shots/study.png" alt="Study step: how would you tell, in a screening, that someone led an incident rather than just joined it" data-zoom loading="lazy"></div>
 <div class="tile kind"><h3><span class="chip gs">Review</span></h3><p>The client rejected D. Ruiz. Pick what the team checks next time.</p><img src="shots/review.png" alt="Review step: D. Ruiz rejected, weak on system design, with checks to adopt" data-zoom loading="lazy"></div>
 </div>
-<p style="margin-top:12px"><button class="more" type="button" data-open="d-changes">See the Changes tab</button></p>
+<button class="more" type="button" data-open="d-changes">See the Changes tab</button>
+</div>
 </section>
 
-<section class="glass rv" id="c4" aria-labelledby="h4x">
+<section class="glass rv ch" id="c4" aria-labelledby="h4x">
+<div class="blk">
 <div class="kicker">Chapter 4 · The harness</div>
 <h2 id="h4x">Follow one email through the harness</h2>
-<p>The AI reads and proposes. Checks and a person decide. Step through it at your own pace.</p>
+<p class="lede">The AI reads and proposes. Checks and a person decide. Step through it at your own pace.</p>
+</div>
+<div class="blk wide">
 <div class="steps" id="steps" aria-hidden="true"><span>1 Read</span><span>2 Find what changed</span><span>3 Check it's really there</span><span>4 Lead approves</span><span>5 Team learns</span></div>
 <div class="stage">
 <div class="mail" id="mail"><span class="stamp">Filed with brief v3</span>
@@ -309,46 +359,76 @@ After the board meeting we need to be more careful with spend. For the Senior Ba
 <button class="btn dark" type="button" id="next">Next →</button>
 <button class="btn" type="button" id="bad">What if the AI makes it up?</button>
 </div>
-<p style="margin-top:14px"><button class="more" type="button" data-open="d-arch">All 7 stages, checks and tracing</button></p>
+<button class="more" type="button" data-open="d-arch">All 7 stages, checks and tracing</button>
+</div>
 </section>
 
-<section class="glass rv" id="c5" aria-labelledby="h5x">
+<section class="glass rv ch" id="c5" aria-labelledby="h5x">
+<div class="blk">
 <div class="kicker">Chapter 5 · Quality and honesty</div>
 <h2 id="h5x">How I know it works</h2>
-<p class="say">I ran a live model through the same checks on all 13 demo sources.</p>
+<p class="lede">I ran a live model through the same checks on all 13 demo sources.</p>
+</div>
+<div class="blk wide">
+<p class="label">Sources that passed every check</p>
 <div class="bars" id="bars">
 <div class="bar"><span class="lab">gpt-4o-mini · try 1<small>first prompt</small></span><span class="bg"><span class="fill" data-v="1"></span></span><span class="v">1/13</span></div>
 <div class="bar"><span class="lab">gpt-4o-mini · try 2<small>added examples</small></span><span class="bg"><span class="fill" data-v="6"></span></span><span class="v">6/13</span></div>
 <div class="bar"><span class="lab">gpt-4o-mini · try 4<small>one retry on errors</small></span><span class="bg"><span class="fill" data-v="8"></span></span><span class="v">8/13</span></div>
 <div class="bar best"><span class="lab">gpt-4o<small>same harness</small></span><span class="bg"><span class="fill" data-v="12"></span></span><span class="v">12/13</span></div>
 </div>
-<p>The part I care about most: in every run, a bad answer was rejected and nothing wrong was saved.</p>
-<div class="grid g2">
-<div class="tile"><h3><span class="chip gs">Real</span></h3><p>The checked pipeline, lead approval, bias flags, learning steps, team progress, live OpenAI path, tracing, <span class="ph">N</span> tests.</p></div>
-<div class="tile"><h3><span class="chip rs">Stubbed or limited</span></h3><p>Synthetic data. The demo replays recorded answers by default. The live model finds fewer changes than my reference. One demo user.</p></div>
+<button class="more" type="button" data-open="d-live">What failed in the live runs, and why</button>
 </div>
-<p style="margin-top:14px"><b style="color:var(--ink)">Least sure about:</b> whether my rules for "how big is this change" match a real lead's judgment. <b style="color:var(--ink)">Time spent:</b> <span class="ph">pending</span></p>
-<p><button class="more" type="button" data-open="d-live">What failed in the live runs, and why</button></p>
+<div class="blk">
+<div class="callout">In every run, a bad answer was rejected and nothing wrong was saved. That's the behaviour I care about most.</div>
+</div>
+<div class="blk wide">
+<p class="label">Honest status</p>
+<div class="pair">
+<div class="card ok"><h3>Real</h3><p>The checked pipeline, lead approval, bias flags, learning steps, team progress, live OpenAI path, tracing, <span class="ph">N</span> tests.</p></div>
+<div class="card lim"><h3>Stubbed or limited</h3><p>Synthetic data. The demo replays recorded answers by default. The live model finds fewer changes than my reference. One demo user.</p></div>
+<div class="card neu"><h3>Least sure about</h3><p>Whether my rules for "how big is this change" match a real lead's judgment.</p></div>
+<div class="card neu"><h3>Time spent</h3><p><span class="ph">pending</span></p></div>
+</div>
+</div>
 </section>
 
-<section class="glass rv" id="c6" aria-labelledby="h6x">
+<section class="glass rv ch" id="c6" aria-labelledby="h6x">
+<div class="blk">
 <div class="kicker">Chapter 6 · Choices and reference</div>
 <h2 id="h6x">What I left out, and how to run it</h2>
+</div>
+<div class="blk">
 <p class="quote"><span class="ph">Richard's own words</span> I've built RAG pipelines and app integrations many times. They depend on each agency's tools. Here they'd hide the part worth showing: how what the client said becomes what the recruiter knows.</p>
-<table><tbody>
+</div>
+<div class="blk wide">
+<p class="label">What I chose, and why</p>
+<table class="left"><tbody>
 <tr><td>No RAG</td><td>One brief plus one new email fits the model's context. Retrieval would add a way to fail with nothing gained.</td></tr>
 <tr><td>No connectors</td><td>Emails, transcripts and news are files. A connector only changes how a file arrives.</td></tr>
 <tr><td>Next.js + Zod</td><td>I proved the workflow with zero dependencies first. Then I moved to one Next.js service so the UI and API share validation and every AI call is traced and tested.</td></tr>
 <tr><td>SQLite</td><td>Built into Node 24, nothing to install. Original emails and transcripts stay readable, so every change traces back to the exact text.</td></tr>
 </tbody></table>
-<h3 style="margin-top:20px">Run it (offline, no key needed)</h3>
+</div>
+<div class="blk">
+<p class="label">Run it · offline, no key needed</p>
 <pre>cd app-next
 pnpm install
 pnpm harness rebuild
 pnpm dev            # http://localhost:3000</pre>
-<p>Node 24.12+ and pnpm. For the live model, set <code>OPENAI_API_KEY</code> and <code>OPENAI_MODEL=gpt-4o</code> in <code>.env</code>. <span class="ph">confirm after cutover</span></p>
-<p><b style="color:var(--ink)">Next, with more time:</b> make the model reuse existing field names (fixes the one failing source), a lead view across roles, and short primers when a recruiter meets an unfamiliar kind of role.</p>
-<p style="color:var(--muted);font-size:15px">Thanks for reading. Happy to walk through any of it on a call.</p>
+<p class="runnote">Node 24.12+ and pnpm. For the live model, set <code>OPENAI_API_KEY</code> and <code>OPENAI_MODEL=gpt-4o</code> in <code>.env</code>. <span class="ph">confirm after cutover</span></p>
+</div>
+<div class="blk wide">
+<p class="label">Next, with more time</p>
+<div class="trio">
+<div class="card neu"><h3>Reuse field names</h3><p>Make the model reuse the brief's existing labels. Fixes the one failing source.</p></div>
+<div class="card neu"><h3>A lead view</h3><p>One screen across all roles: who's behind, and on what.</p></div>
+<div class="card neu"><h3>Role primers</h3><p>A short primer when a recruiter meets an unfamiliar kind of role.</p></div>
+</div>
+</div>
+<div class="blk">
+<p class="thanks">Thanks for reading. Happy to walk through any of it on a call.</p>
+</div>
 </section>
 </div>
 
