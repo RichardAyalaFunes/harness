@@ -131,7 +131,6 @@ dialog img{border-radius:12px;border:1px solid var(--line)}
 <div class="progress" id="prog" aria-hidden="true"></div>
 <div class="wrap">
 
-<p class="proto" role="note"><b>Prototype v3 · draft in Richard's voice.</b> First-person lines are proposals for Richard to edit. <span class="ph">Yellow dashed</span> = pending. Screenshots are from the running app (replay data).</p>
 
 <header class="glass rv" id="intro">
 <style>
@@ -285,6 +284,10 @@ dialog img{border-radius:12px;border:1px solid var(--line)}
 .ch .stage{text-align:left}
 .ch .bars{text-align:left;max-width:640px;margin:0 auto}
 .ch .thanks{font-size:16px;color:var(--muted)}
+.ch .num{text-align:center;padding:24px 18px}
+.ch .num .big{font-size:40px;font-weight:600;letter-spacing:-.02em;line-height:1;color:var(--ink);margin-bottom:10px}
+.ch .pair .full{grid-column:1/-1}
+.ch .fine{font-size:13.5px;color:var(--muted);margin:16px auto 0;max-width:520px}
 .reel{position:relative;aspect-ratio:1440/1000;border-radius:16px;overflow:hidden;border:1px solid var(--line);box-shadow:0 6px 24px rgba(40,55,80,.08);background:#eef0f3}
 .reel img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top left;opacity:0;transition:opacity .8s ease}
 .reel img.on{opacity:1}
@@ -418,12 +421,20 @@ After the board meeting we need to be more careful with spend. For the Senior Ba
 <div class="callout">In every run, a bad answer was rejected and nothing wrong was saved. That's the behaviour I care about most.</div>
 </div>
 <div class="blk wide">
+<p class="label">What it took</p>
+<div class="trio nums">
+<div class="card neu num"><div class="big">9–11 h</div><p>From deciding what to build to this presentation and the video.</p></div>
+<div class="card neu num"><div class="big">&lt; $0.25</div><p>OpenAI tokens for every live run and test of the app.</p></div>
+<div class="card neu num"><div class="big">$65–75</div><p>Claude tokens used to build it with an AI assistant, at list prices.</p></div>
+</div>
+<p class="fine">Estimates from usage logs, not a bill. Not counted yet: second-model review calls and the work still to come. <span class="ph">provisional</span></p>
+</div>
+<div class="blk wide">
 <p class="label">Honest status</p>
 <div class="pair">
 <div class="card ok"><h3>Real</h3><p>The checked pipeline, lead approval, bias flags, learning steps, team progress, live OpenAI path, tracing, <span class="ph">N</span> tests.</p></div>
 <div class="card lim"><h3>Stubbed or limited</h3><p>Synthetic data. The demo replays recorded answers by default. The live model finds fewer changes than my reference. One demo user.</p></div>
-<div class="card neu"><h3>Least sure about</h3><p>Whether my rules for "how big is this change" match a real lead's judgment.</p></div>
-<div class="card neu"><h3>Time and cost</h3><p>About 9 to 11 hours in total: deciding what to build, planning, building, testing, publishing and this presentation. All live-model runs and testing cost under $0.25 in OpenAI tokens.</p></div>
+<div class="card neu full"><h3>Least sure about</h3><p>Whether my rules for "how big is this change" match a real lead's judgment.</p></div>
 </div>
 </div>
 </section>
@@ -434,7 +445,7 @@ After the board meeting we need to be more careful with spend. For the Senior Ba
 <h2 id="h6x">What I left out, and how to run it</h2>
 </div>
 <div class="blk">
-<p class="quote"><span class="ph">Richard's own words</span> I've built RAG pipelines and app integrations many times. They depend on each agency's tools. Here they'd hide the part worth showing: how what the client said becomes what the recruiter knows.</p>
+<p class="quote">I've built RAG pipelines and agentic systems with tool calling many times. What actually moves a company is quality and speed, so that's where I spent my time: how what the client says becomes what the recruiter understands.</p>
 </div>
 <div class="blk wide">
 <p class="label">What I chose, and why</p>
