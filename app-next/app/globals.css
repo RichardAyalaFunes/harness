@@ -471,5 +471,12 @@ input[aria-invalid=true]{border-color:#e59aa9;background:#fff7f8}
 .trow .frac{color:var(--muted);font-variant-numeric:tabular-nums}
 /* not-found link: no underline on a pill */
 a.pill{text-decoration:none}
+/* no rectangular tap flash (Chrome, Edge, Safari, Android, Samsung Internet); no mouse-click focus ring.
+   Keyboard focus keeps its outline via :focus-visible above, and press feedback comes from the existing :active styles. */
+html{-webkit-tap-highlight-color:transparent}
+*,*::before,*::after{-webkit-tap-highlight-color:transparent}
+button,a,summary,label,input,textarea,select,[role=tab],[tabindex]{-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+:focus:not(:focus-visible){outline:none}
+button::-moz-focus-inner{border:0}
 /* checked boxes: tick in */
 .chk input:checked{animation:pop .25s var(--ease)}
