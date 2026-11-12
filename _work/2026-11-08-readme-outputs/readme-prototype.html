@@ -457,7 +457,7 @@ After the board meeting we need to be more careful with spend. For the Senior Ba
 <div class="blk wide">
 <p class="label">What I chose, and why</p>
 <table class="left"><tbody>
-<tr><td>No RAG</td><td>One brief plus one new email fits the model's context. Retrieval would add a way to fail with nothing gained.</td></tr>
+<tr><td>No RAG</td><td>RAG pays off when there's a large body of data to ask about. Here the model reads one brief and one new email, which fit in its context, so retrieval would add a way to fail and nothing else.</td></tr>
 <tr><td>No connectors</td><td>Emails, transcripts and news are files. A connector only changes how a file arrives.</td></tr>
 <tr><td>Next.js + Zod</td><td>I proved the workflow with zero dependencies first. Then I moved to one Next.js service so the UI and API share validation and every AI call is traced and tested.</td></tr>
 <tr><td>SQLite</td><td>Built into Node 24, nothing to install. Original emails and transcripts stay readable, so every change traces back to the exact text.</td></tr>
@@ -469,7 +469,7 @@ After the board meeting we need to be more careful with spend. For the Senior Ba
 pnpm install
 pnpm harness rebuild
 pnpm dev            # http://localhost:3000</pre>
-<p class="runnote">Node 24.12+ and pnpm. For the live model, set <code>OPENAI_API_KEY</code> and <code>OPENAI_MODEL=gpt-4o</code> in <code>.env</code>. <span class="ph">confirm after cutover</span></p>
+<p class="runnote">Node 24.12+ and pnpm. For the live model, set <code>OPENAI_API_KEY</code> and <code>OPENAI_MODEL=gpt-4o</code> in <code>.env</code>.</p>
 </div>
 <div class="blk wide">
 <p class="label">Next, with more time</p>
