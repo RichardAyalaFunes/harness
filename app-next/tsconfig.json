@@ -24,16 +24,22 @@
         "name": "next"
       }
     ],
-    "allowJs": true
+    "allowJs": true,
+    "useUnknownInCatchVariables": false
   },
   "include": [
     "next-env.d.ts",
-    "**/*.ts",
-    "**/*.tsx",
+    "app/**/*.ts",
+    "app/**/*.tsx",
+    "components/**/*.ts*",
+    "lib/**/*.ts",
+    "cli/**/*.ts",
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    ".next",
+    "test"
   ]
 }

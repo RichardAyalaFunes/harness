@@ -1,5 +1,7 @@
 # Next.js migration plan (revision 4, plan gate PASSED on Codex pass 4; human answers recorded below)
 
+> **Status 2026-11-08: P0 to P7 done on branch claude/vibrant-goldstine-051d8a.** Pre-merge gate PASS (pass 5). Final gate pending. Differences from this plan: see `parity-exceptions.md` (X1 to X16), `review-dispositions.claude.md`, and the notes at the end of this file.
+
 ID 2026-11-08-nextjs-migration · author Claude · planning on branch claude/vibrant-goldstine-051d8a; the implementation gets its own worktree and branch · canonical record: main `_work/2026-11-08-nextjs-migration/`.
 Plan gate: Codex returned PASS WITH CHANGES (`plan-review.codex.md`). The findings from passes 1–3 were all accepted and folded in below; see `review-dispositions.claude.md`.
 
@@ -302,3 +304,13 @@ The full live run on the **current** app (NQ4) produces the baseline real-model 
 - Pass 3 (revision 3): Codex, PASS WITH CHANGES (2 material, 1 minor), all accepted in revision 4.
 - Pass 4 (revision 4): Codex, **PASS**. Its four verification scenarios were added to O6 and I2a. **The plan gate passed.**
 - Dispositions: `review-dispositions.claude.md`.
+
+
+## Delivery notes (what differs from the plan above)
+- Vitest was not used (the plan was already changed to `node:test`); `outputFileTracingIncludes` is set but unused in non-standalone mode.
+- I3: completing an item twice stays an idempotent 200 (`already: true`), not 409 (X12).
+- I7: the CLI-while-serving case is covered for a read (the CLI opens the same file); a CLI write while serving is not tested.
+- `llm_calls` allows up to 6 attempt rows per logical call (first try plus 2 retries, for the original and the repair call), not 3.
+- The route table, in-process shim and Next route files share one definition (`lib/api/routes.ts`), which the plan did not specify.
+- `TRUSTED_ORIGINS` was added for proxies (pre-merge review).
+- The final-gate review, the owner's time and the first-person quote in the README remain open.

@@ -28,3 +28,12 @@ In every run the checks rejected the bad answers and nothing invalid was stored:
 5. Follow-ups (not done): ask the model to reuse existing slugs listed in the brief more strongly, which should help nw-08; compare against a stronger model than gpt-4o if the owner wants.
 
 Cost: 5 runs of 13 sources plus up to 13 repair calls each, on `gpt-4o-mini` and one run on `gpt-4o`. Not metered here.
+
+
+## P7 live smoke on the migrated Next.js app (2026-11-08)
+`HARNESS_MODEL=openai OPENAI_MODEL=gpt-4o pnpm harness rebuild` on a temp database, then Ask and a study answer through the migrated API.
+- Pipeline: 11 of 13 sources clean; nw-05 failed at stage 5 (a study entry missing for `offer.level`) and nw-08 at stage 6 (review criteria that are not the must-haves at screening time). Both are downstream consistency checks, not extraction failures: every extraction check passed (13 llm spans, `check=pass`), and 2 sources needed the repair attempt. The earlier run on the old app got 12 of 13; the difference is run-to-run model variance.
+- Trace of the run (one `cli` trace): 13 source spans, 77 stage spans, 13 llm spans, 15 attempt rows (13 + 2 repairs), 32,635 prompt tokens, 4,150 completion tokens, about 2.6 s per attempt, one prompt hash for the whole run, no truncation. No key or email in any trace row.
+- Ask (live, role nw-be): answer in the requested shape (what it is, an everyday analogy, why the client cares, what to check), citing `req.incident-ownership`; trace holds `ask.md`, 908 prompt and 97 completion tokens, 1.7 s.
+- Study feedback (live): which points were covered, one comment, one question to try; trace holds `feedback.md`, 607 and 80 tokens, 1.2 s.
+- A first attempt returned 500 because a leftover dev server from the spike was still listening on the chosen port and answered with a different database; the retry on a free port worked. Noted because it is an easy trap: use a fresh port.

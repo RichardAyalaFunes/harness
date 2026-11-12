@@ -1,6 +1,6 @@
 # Parity exceptions (intended differences between the Node app and the Next.js app)
 
-Anything not listed here must match the golden recordings in `harness/test/golden/`. This file is the only place a difference can be approved. Status: **proposed** (made from the P0 golden capture); the human can reject any row.
+Anything not listed here must match the golden recordings in `app-next/test/golden/`. This file is the only place a difference can be approved. Status: **implemented and verified by test/integration/golden.test.ts**; the human can reject any row.
 
 | # | Area | Node app today (golden) | Next.js app | Why |
 |---|---|---|---|---|
@@ -14,3 +14,16 @@ Anything not listed here must match the golden recordings in `harness/test/golde
 | X8 | Static files | `/` serves `web/index.html` with CSP headers | Next-rendered pages; CSP and `nosniff` kept via `next.config` headers | Framework change |
 
 Rows are added during P2–P6 when a difference is found. Each addition needs a reason.
+
+Added during the port (all covered by `test/integration/golden.test.ts` or the unit tests):
+
+| # | Area | Node app (golden) | Next.js app | Why |
+|---|---|---|---|---|
+| X9 | Unknown entity (proposal, review, item, candidate, role) | 400 | 404 `not_found` | The status says what happened. Changed one assertion in `mock-data.test.ts` (400 to 404) |
+| X10 | Acting on something already decided | 400 `is approved, not proposed` | 409 `conflict` | Same |
+| X11 | `/api/stages` rows | no `trace_id` | one additive key `trace_id` (links an audit row to its trace) | Traceability |
+| X12 | Completing an item twice | 200 with `already: true` | unchanged (200, idempotent). The plan said 409; the recorded behaviour is the better contract | Plan text corrected |
+| X13 | A POST to a page | 405 | 200 (Next renders the page); pages are read-only and define no server actions, and the test checks the database is unchanged | Framework behaviour |
+| X14 | Model failure on Ask | 400 with the message | 502 `model_failure`, generic text plus trace id | Plan I4 |
+| X15 | Config default model | `gpt-4o-mini` | `gpt-4o` | Live baseline (the mini model passed 8 of 13 sources) |
+| X16 | Test edits | n/a | `mock-data.test.ts` imports the in-process API shim; `learning.test.ts` reads `lib/domain/candidates.ts`; the fixtures moved to `test/unit/fixtures`; type annotations added | Mechanical; no assertion changed except X9 |

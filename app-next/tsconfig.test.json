@@ -1,0 +1,19 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "strict": false,
+    "noImplicitAny": false,
+    "strictNullChecks": false,
+    "noEmit": true,
+    "incremental": false
+  },
+  "include": [
+    "lib/**/*.ts",
+    "test/**/*.ts",
+    "cli/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    ".next"
+  ]
+}
