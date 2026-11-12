@@ -163,16 +163,15 @@ dialog img{border-radius:12px;border:1px solid var(--line)}
 <div class="kicker">RadHires harness challenge · Richard Ayala</div>
 <h1>Are your recruiters screening for the right thing?</h1>
 <p class="say"><span>Most people would show you RAG and agents.</span> <span class="strong">I run a business, so I put the effort into quality, speed and revenue.</span></p>
-<a class="cue" href="#toc">Six short chapters<span aria-hidden="true">↓</span></a>
+<a class="cue" href="#toc">Five short chapters<span aria-hidden="true">↓</span></a>
 </div>
-<p class="label" id="toc">Six short chapters</p>
+<p class="label" id="toc">Five short chapters</p>
 <ol class="toc" aria-label="Chapters">
 <li class="rec"><a href="#c1"><span class="n">1</span><span class="t"><b>The problem</b><small>What recruiters don't know they don't know</small></span><span class="meta"><span class="star">Start here</span><span class="time">2 min</span></span></a></li>
-<li><a href="#c2"><span class="n">2</span><span class="t"><b>Four times I changed course</b><small>The decisions that shaped it</small></span><span class="meta"><span class="time">1 min</span></span></a></li>
-<li><a href="#c3"><span class="n">3</span><span class="t"><b>What the recruiter sees</b><small>Real screens from the app</small></span><span class="meta"><span class="time">1 min</span></span></a></li>
-<li class="rec"><a href="#c4"><span class="n">4</span><span class="t"><b>Follow one email through the harness</b><small>Interactive, 5 steps</small></span><span class="meta"><span class="star">Recommended</span><span class="time">2 min</span></span></a></li>
-<li class="rec"><a href="#c5"><span class="n">5</span><span class="t"><b>How I know it works</b><small>Live model results, what's stubbed</small></span><span class="meta"><span class="star">Recommended</span><span class="time">1 min</span></span></a></li>
-<li><a href="#c6"><span class="n">6</span><span class="t"><b>What I left out, and how to run it</b><small>Stack, tradeoffs, commands</small></span><span class="meta"><span class="time">reference</span></span></a></li>
+<li><a href="#c3"><span class="n">2</span><span class="t"><b>What the recruiter sees</b><small>Real screens from the app</small></span><span class="meta"><span class="time">1 min</span></span></a></li>
+<li class="rec"><a href="#c4"><span class="n">3</span><span class="t"><b>Follow one email through the harness</b><small>Interactive, 5 steps</small></span><span class="meta"><span class="star">Recommended</span><span class="time">2 min</span></span></a></li>
+<li class="rec"><a href="#c5"><span class="n">4</span><span class="t"><b>How I know it works</b><small>Live model results, what's stubbed</small></span><span class="meta"><span class="star">Recommended</span><span class="time">1 min</span></span></a></li>
+<li><a href="#c6"><span class="n">5</span><span class="t"><b>What I left out, and how to run it</b><small>Stack, tradeoffs, commands</small></span><span class="meta"><span class="time">reference</span></span></a></li>
 </ol>
 <p class="tocnote">Video walkthrough: <span class="ph">link pending</span></p>
 </header>
@@ -268,6 +267,7 @@ dialog img{border-radius:12px;border:1px solid var(--line)}
 <div class="blk">
 <p class="turnline">And the role doesn't stay still: a month later the founder cuts the budget, and that email reaches one inbox.</p>
 <div class="answer"><p class="label">The question this harness answers</p><p>Does every recruiter on this search understand what the client needs, today?</p></div>
+<p class="note">It reviews the recruiter's screening, never the candidate. Most AI recruiting demos score candidates; that wasn't the gap.</p>
 </div>
 </section>
 
@@ -327,27 +327,9 @@ dialog img{border-radius:12px;border:1px solid var(--line)}
 @media (max-width:720px){.ch{padding:44px 18px}.ch .blk{margin-bottom:48px}.ch .pair,.ch .trio{grid-template-columns:1fr}.ch .colhead{display:none}}
 </style>
 
-<section class="glass rv ch" id="c2" aria-labelledby="h2x">
-<div class="blk">
-<div class="kicker">Chapter 2 · Decisions</div>
-<h2 id="h2x">Four times I changed course</h2>
-<p class="lede">I prototyped, looked at the result, and threw parts away. These turns shaped what I built.</p>
-</div>
-<div class="blk wide">
-<div class="colhead" aria-hidden="true"><span>First idea</span><span></span><span>What I built instead</span></div>
-<div class="turns left">
-<div class="turn"><div class="from">Score recruiters with a test before each new role.</div><div class="arr" aria-hidden="true">→</div><div class="to">Keep the role current first. A test against a stale brief is useless.</div></div>
-<div class="turn"><div class="from">Score or match candidates, like most AI recruiting demos.</div><div class="arr" aria-hidden="true">→</div><div class="to">Review the <b>recruiter's</b> screening, never the candidate.</div></div>
-<div class="turn"><div class="from">Block "submit candidate" until the recruiter passes a check.</div><div class="arr" aria-hidden="true">→</div><div class="to">Never block. Learning is triggered when the role changes.</div></div>
-<div class="turn"><div class="from">A polished, editorial page. It read like selling.</div><div class="arr" aria-hidden="true">→</div><div class="to">Plain tables inside a mock ATS, where recruiters already work.</div></div>
-</div>
-<button class="more" type="button" data-open="d-log">Where each decision came from</button>
-</div>
-</section>
-
 <section class="glass rv ch" id="c3" aria-labelledby="h3x">
 <div class="blk">
-<div class="kicker">Chapter 3 · The recruiter's view</div>
+<div class="kicker">Chapter 2 · The recruiter's view</div>
 <h2 id="h3x">An app should explain itself</h2>
 <p class="lede">The harness lives inside the ATS recruiters already open every morning, one role, four tabs.</p>
 </div>
@@ -369,7 +351,7 @@ dialog img{border-radius:12px;border:1px solid var(--line)}
 <div class="trio">
 <div class="card neu"><h3>It shows where to start</h3><p>"8 steps waiting for you. Start now." One action first, everything else below it.</p></div>
 <div class="card neu"><h3>It says why you're here</h3><p>Each step names the client message it came from: "From the founder's email, 3 Nov".</p></div>
-<div class="card neu"><h3>It stays out of the way</h3><p>It lives in the ATS recruiters already use, and it never blocks moving a candidate.</p></div>
+<div class="card neu"><h3>It stays out of the way</h3><p>It lives in the ATS recruiters already use. I first tried blocking "submit candidate" until a check passed, and dropped it: learning starts when the role changes, never as a gate.</p></div>
 </div>
 </div>
 <div class="blk wide">
@@ -385,7 +367,7 @@ dialog img{border-radius:12px;border:1px solid var(--line)}
 
 <section class="glass rv ch" id="c4" aria-labelledby="h4x">
 <div class="blk">
-<div class="kicker">Chapter 4 · The harness</div>
+<div class="kicker">Chapter 3 · The harness</div>
 <h2 id="h4x">Follow one email through the harness</h2>
 <p class="lede">The AI reads and proposes. Checks and a person decide. Step through it at your own pace.</p>
 </div>
@@ -422,7 +404,7 @@ After the board meeting we need to be more careful with spend. For the Senior Ba
 
 <section class="glass rv ch" id="c5" aria-labelledby="h5x">
 <div class="blk">
-<div class="kicker">Chapter 5 · Quality and honesty</div>
+<div class="kicker">Chapter 4 · Quality and honesty</div>
 <h2 id="h5x">How I know it works</h2>
 <p class="lede">I ran a live model through the same checks on all 13 demo sources.</p>
 </div>
@@ -460,7 +442,7 @@ After the board meeting we need to be more careful with spend. For the Senior Ba
 
 <section class="glass rv ch" id="c6" aria-labelledby="h6x">
 <div class="blk">
-<div class="kicker">Chapter 6 · Choices and reference</div>
+<div class="kicker">Chapter 5 · Choices and reference</div>
 <h2 id="h6x">What I left out, and how to run it</h2>
 </div>
 <div class="blk">
@@ -469,11 +451,13 @@ After the board meeting we need to be more careful with spend. For the Senior Ba
 <div class="blk wide">
 <p class="label">What I chose, and why</p>
 <table class="left"><tbody>
+<tr><td>Role first, then people</td><td>My first idea was to test recruiters before each role. A test against an outdated brief is useless, so the harness keeps the brief current first.</td></tr>
 <tr><td>No RAG</td><td>RAG pays off when there's a large body of data to ask about. Here the model reads one brief and one new email, which fit in its context, so retrieval would add a way to fail and nothing else.</td></tr>
 <tr><td>No connectors</td><td>Emails, transcripts and news are files. A connector only changes how a file arrives.</td></tr>
 <tr><td>Next.js + Zod</td><td>I proved the workflow with zero dependencies first. Then I moved to one Next.js service so the UI and API share validation and every AI call is traced and tested.</td></tr>
 <tr><td>SQLite</td><td>Built into Node 24, nothing to install. Original emails and transcripts stay readable, so every change traces back to the exact text.</td></tr>
 </tbody></table>
+<button class="more" type="button" data-open="d-log">Where each decision came from</button>
 </div>
 <div class="blk">
 <p class="label">Run it · offline, no key needed</p>
