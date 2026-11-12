@@ -149,10 +149,49 @@ dialog img{border-radius:12px;border:1px solid var(--line)}
 </header>
 
 <section class="glass rv" id="c1" aria-labelledby="h1x">
+<style>
+#c1{text-align:center;padding:64px 40px}
+#c1 .blk{margin:0 auto 72px;max-width:720px}
+#c1 .blk:last-child{margin-bottom:0}
+#c1 .blk.wide{max-width:none}
+#c1 .kicker{margin-bottom:14px}
+#c1 h2{font-size:clamp(30px,4.4vw,44px);max-width:640px;margin:0 auto 20px}
+#c1 .lede{font-size:20px;color:var(--ink2);max-width:540px;margin:0 auto}
+#c1 .lede b{color:var(--ink);font-weight:600}
+#c1 .label{font-size:13px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:0 0 20px}
+#c1 .start{grid-template-columns:1fr 40px 1fr;gap:20px;margin:0;text-align:left}
+#c1 .mind{text-align:center;padding:22px 18px}
+#c1 .vsrow{display:grid;grid-template-columns:1fr 44px 1fr;gap:14px;align-items:stretch;text-align:left}
+#c1 .vs{align-self:center;width:44px;height:44px;border-radius:50%;background:var(--ink);color:#fff;display:grid;place-items:center;font-size:13px;font-weight:700}
+#c1 .call{min-height:0;padding:18px}
+#c1 .call h3{justify-content:flex-start;gap:10px;font-size:16px;margin-bottom:4px}
+#c1 .call h3 .ic{width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font-size:14px}
+#c1 .call.bad{border-color:#e8c3cc}#c1 .call.bad .ic{background:var(--rs);color:var(--r)}
+#c1 .call.good{border-color:var(--g);background:#fff}#c1 .call.good .ic{background:var(--gs);color:var(--g)}
+#c1 .call .sub{font-size:13.5px;color:var(--muted);margin:0}
+#c1 .chat{margin:16px 0}
+#c1 .note{font-size:13.5px;color:var(--muted);margin:16px auto 0;max-width:520px}
+#c1 .gains{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;text-align:left}
+#c1 .gain{background:#fff;border:1px solid var(--line);border-radius:20px;padding:20px}
+#c1 .gain .ic{width:40px;height:40px;border-radius:12px;background:var(--gs);color:var(--g);display:grid;place-items:center;font-size:19px;margin-bottom:14px}
+#c1 .gain b{display:block;font-size:16.5px;color:var(--ink);margin-bottom:6px;line-height:1.3}
+#c1 .gain span{font-size:15px;color:var(--ink2);line-height:1.5}
+#c1 .turnline{font-size:17px;color:var(--ink2);max-width:520px;margin:0 auto 22px}
+#c1 .answer{display:inline-block;background:#fff;border:1px solid var(--ink);border-radius:20px;padding:22px 28px;max-width:600px}
+#c1 .answer p.label{margin-bottom:8px;font-size:13px;font-weight:600;color:var(--muted)}
+#c1 .answer p{font-size:19px;line-height:1.45;color:var(--ink);margin:0;font-weight:600}
+@media (max-width:720px){#c1{padding:40px 18px}#c1 .blk{margin-bottom:52px}#c1 .start,#c1 .vsrow,#c1 .gains{grid-template-columns:1fr}#c1 .vs{justify-self:center}#c1 .arrow{transform:rotate(90deg);justify-self:center}}
+</style>
+
+<div class="blk">
 <div class="kicker">Chapter 1 · The problem</div>
 <h2 id="h1x">How do you know your recruiter understood the role?</h2>
-<p class="say">Every search starts the same way: a JD and a kickoff call. The information is there. What nobody checks is whether the recruiter understood it.</p>
-<div class="start" aria-label="The start of a search">
+<p class="lede">Every search starts with a JD and a kickoff call. The information is there. <b>Nobody checks whether the recruiter understood it.</b></p>
+</div>
+
+<div class="blk">
+<p class="label">Day one of a search</p>
+<div class="start">
 <div class="docs">
 <div class="doc"><b>Job description</b>Senior Backend Engineer · Go · Postgres · event-driven</div>
 <div class="doc"><b>Kickoff call with the CTO</b>"Go can be learned. Incident ownership cannot."</div>
@@ -160,17 +199,21 @@ dialog img{border-radius:12px;border:1px solid var(--line)}
 <div class="arrow" aria-hidden="true">→</div>
 <div class="mind"><div class="av">A</div><b>Ana, recruiter</b><br><span class="bubble">"Incident ownership"… what does that sound like?</span></div>
 </div>
-<p>For a technical role, the gap shows up in the first screening. Same candidate, two calls:</p>
-<div class="calls" id="calls">
-<div class="call"><h3>Reading from a list <span class="chip rs">robot</span></h3>
+</div>
+
+<div class="blk wide">
+<p class="label">Same candidate · two first screenings</p>
+<div class="vsrow" id="calls">
+<div class="call bad"><h3><span class="ic" aria-hidden="true">✕</span>Reads the list</h3><p class="sub">Asks about keywords</p>
 <div class="chat">
 <div class="ln r"><small>Ana</small>How many years have you worked with Go?</div>
 <div class="ln c">About five.</div>
 <div class="ln r"><small>Ana</small>Great. Have you used Postgres?</div>
 <div class="ln c">Yes.</div>
 </div>
-<div class="out bad">The client, after their interview: "Weak on system design."</div></div>
-<div class="call"><h3>Knows what it means <span class="chip gs">conversation</span></h3>
+<div class="out bad">Client, after their interview: "Weak on system design."</div></div>
+<div class="vs" aria-hidden="true">VS</div>
+<div class="call good"><h3><span class="ic" aria-hidden="true">✓</span>Understands the role</h3><p class="sub">Asks what the client actually needs</p>
 <div class="chat">
 <div class="ln r"><small>Ana</small>Tell me about the last incident you owned.</div>
 <div class="ln c">Payments went down. I rolled back and ran the review.</div>
@@ -179,14 +222,22 @@ dialog img{border-radius:12px;border:1px solid var(--line)}
 </div>
 <div class="out good">A real signal, before the client's engineers spend an hour.</div></div>
 </div>
-<p style="font-size:14px;color:var(--muted)">The left call mirrors a screening in the demo data, where 4 of 11 questions went to Go. The right one is an illustration.</p>
-<div class="wins">
-<div class="win"><span class="i">1</span><p><b>Everybody saves time.</b> A recruiter who filters well sends fewer, better people to the client's engineers.</p></div>
-<div class="win"><span class="i">2</span><p><b>Screenings become conversations.</b> AI can already filter CVs. The follow-up question in a live call is still the recruiter's.</p></div>
-<div class="win"><span class="i">3</span><p><b>It compounds.</b> Each role teaches the recruiter something, like a short course. The next similar search starts ahead.</p></div>
+<p class="note">The left call mirrors a real screening in the demo data (4 of 11 questions on Go). The right one is an illustration.</p>
 </div>
-<p style="margin-top:14px">And the role doesn't stay still. A month later the founder cuts the budget, and that email reaches one inbox.</p>
-<p class="punch">So the harness answers one question: <b>does every recruiter on this search understand what the client needs, today?</b></p>
+
+<div class="blk wide">
+<p class="label">What you get when the recruiter understands</p>
+<div class="gains">
+<div class="gain"><div class="ic" aria-hidden="true">⏱</div><b>Everybody saves time</b><span>Fewer, better candidates reach the client's engineers.</span></div>
+<div class="gain"><div class="ic" aria-hidden="true">💬</div><b>Screenings become conversations</b><span>AI can filter CVs. The follow-up question is still the recruiter's.</span></div>
+<div class="gain"><div class="ic" aria-hidden="true">↗</div><b>It compounds</b><span>Each role works like a short course. The next similar search starts ahead.</span></div>
+</div>
+</div>
+
+<div class="blk">
+<p class="turnline">And the role doesn't stay still: a month later the founder cuts the budget, and that email reaches one inbox.</p>
+<div class="answer"><p class="label">The question this harness answers</p><p>Does every recruiter on this search understand what the client needs, today?</p></div>
+</div>
 </section>
 
 <section class="glass rv" id="c2" aria-labelledby="h2x">
