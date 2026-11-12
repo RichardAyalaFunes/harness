@@ -9,7 +9,9 @@
 
 **Who it's for.** Recruiters and account leads at an agency serving small companies (up to about 100 people). For them the job description is only the starting point: the criteria that decide a hire keep arriving later, in a kickoff call, a founder's email or a rejection.
 
-The candidate brief is in [RadHires Harness Challenge (Candidate Brief).md](RadHires%20Harness%20Challenge%20%28Candidate%20Brief%29.md). The design document is [DESIGN.md](DESIGN.md), and [readme.html](readme.html) is the presentation.
+The candidate brief is in [RadHires Harness Challenge (Candidate Brief).md](RadHires%20Harness%20Challenge%20%28Candidate%20Brief%29.md). The design document is [DESIGN.md](DESIGN.md).
+
+**Start here:** the presentation, [readme.html](https://richardayalafunes.github.io/harness/readme.html) (five short chapters, about 7 minutes; source: [readme.html](readme.html)).
 
 ## Run it
 
