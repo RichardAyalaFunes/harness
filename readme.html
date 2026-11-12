@@ -2,97 +2,580 @@
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Role Intelligence</title>
 <style>
-:root{--ink:#16181d;--ink2:#4b5160;--muted:#6b7180;--glass:rgba(255,255,255,.58);--tile:rgba(255,255,255,.86);--edge:rgba(255,255,255,.9);--y:#f8c65a;--ys:#fdeec7;--g:#1d6b43;--gs:#dff3e8;--r:#a8324a;--rs:#fbe1e6;
---font:"Segoe UI Variable Display","Segoe UI",system-ui,sans-serif}
-*{box-sizing:border-box}html,body{margin:0}
-body{font:17px/1.6 var(--font);color:var(--ink);background:#eef0f3;background-image:radial-gradient(1000px 700px at 5% 0%,#c3d9f2 0%,transparent 62%),radial-gradient(900px 700px at 100% 100%,#f3d996 0%,transparent 62%);background-attachment:fixed}
-a{color:var(--ink)}a:focus-visible,button:focus-visible{outline:3px solid var(--ink);outline-offset:3px}
-.wrap{max-width:1080px;margin:0 auto;padding:32px 24px 80px}
-.glass{background:var(--glass);backdrop-filter:blur(26px) saturate(140%);-webkit-backdrop-filter:blur(26px) saturate(140%);border:1px solid var(--edge);border-radius:28px;box-shadow:0 12px 40px rgba(40,55,80,.09)}
-.tile{background:var(--tile);border:1px solid var(--edge);border-radius:20px}
-section{padding:36px 40px;margin-bottom:24px}
+:root{--ink:#16181d;--ink2:#4b5160;--muted:#6b7180;--glass:rgba(255,255,255,.58);--tile:rgba(255,255,255,.86);--edge:rgba(255,255,255,.9);--y:#f8c65a;--ys:#fdeec7;--g:#1d6b43;--gs:#dff3e8;--r:#a8324a;--rs:#fbe1e6;--line:#dde1e7;--font:"Segoe UI Variable Display","Segoe UI",system-ui,sans-serif}
+*{box-sizing:border-box}html,body{margin:0}html{scroll-behavior:smooth}
+body{font:18px/1.65 var(--font);color:var(--ink);background:#eef0f3;background-image:radial-gradient(1000px 700px at 5% 0%,#c3d9f2 0%,transparent 62%),radial-gradient(900px 700px at 100% 100%,#f3d996 0%,transparent 62%);background-attachment:fixed}
+a{color:var(--ink)}:focus-visible{outline:3px solid var(--ink);outline-offset:3px}
+button,a,[role=button]{-webkit-tap-highlight-color:transparent}
+button:focus:not(:focus-visible){outline:none}
+button.btn,.steps button,.reeltabs button,button.more{transition:transform .12s ease,background .25s,color .25s,border-color .25s}
+button.btn:active,.steps button:active{transform:scale(.97)}
+button.btn:not(.dark):active{background:rgba(22,24,29,.06)}
+.reeltabs button:focus-visible{outline-offset:2px;border-radius:6px}
+img{max-width:100%;display:block}
+.wrap{max-width:880px;margin:0 auto;padding:20px 20px 120px}
+.proto{background:var(--ink);color:#fff;border-radius:16px;padding:10px 16px;font-size:14px;margin-bottom:18px;line-height:1.5}
+.glass{background:var(--glass);backdrop-filter:blur(26px) saturate(140%);-webkit-backdrop-filter:blur(26px) saturate(140%);border:1px solid var(--edge);border-radius:28px;box-shadow:0 12px 40px rgba(40,55,80,.09);padding:36px 40px;margin-bottom:26px}
+.tile{background:var(--tile);border:1px solid var(--edge);border-radius:20px;padding:16px 18px}
 .kicker{font-size:13px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
-h1{font-size:clamp(34px,5vw,58px);line-height:1.08;letter-spacing:-.02em;margin:8px 0 14px;font-weight:600}
-h2{font-size:28px;letter-spacing:-.01em;margin:6px 0 14px;font-weight:600}
-h3{font-size:18px;margin:0 0 6px}
-p{margin:0 0 12px;color:var(--ink2)}.lead{font-size:20px;color:var(--ink2);max-width:760px}
-.chip{display:inline-block;border-radius:10px;padding:2px 10px;font-size:13px;font-weight:600}.y{background:var(--y);color:#3b2a00}.gs{background:var(--gs);color:var(--g)}.rs{background:var(--rs);color:var(--r)}.k{background:var(--ink);color:#fff}
-.grid{display:grid;gap:14px}.g3{grid-template-columns:repeat(3,1fr)}.g2{grid-template-columns:repeat(2,1fr)}
-.card{padding:18px 20px}.card p{font-size:15px;margin:0}
-.chain{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-top:10px}
-.step{padding:14px;text-align:left}.step b{display:block;font-size:15px}.step small{color:var(--muted);font-size:13px;display:block;margin-top:4px}
-.step .n{width:28px;height:28px;border-radius:50%;background:var(--ink);color:#fff;display:grid;place-items:center;font-size:13px;font-weight:700;margin-bottom:8px}
-.big{font-size:56px;font-weight:600;letter-spacing:-.02em;line-height:1}
-table{width:100%;border-collapse:separate;border-spacing:0 6px;font-size:15px}td{background:rgba(255,255,255,.6);padding:10px 14px;vertical-align:top}td:first-child{border-radius:14px 0 0 14px;font-weight:600;width:34%}td:last-child{border-radius:0 14px 14px 0;color:var(--ink2)}
-figure{margin:0}figure img{width:100%;border-radius:18px;border:1px solid var(--edge);display:block}figcaption{font-size:13px;color:var(--muted);margin-top:6px}
+h1{font-size:clamp(34px,5.4vw,54px);line-height:1.06;letter-spacing:-.02em;margin:8px 0 12px;font-weight:600}
+h2{font-size:clamp(25px,3.6vw,34px);line-height:1.18;letter-spacing:-.01em;margin:6px 0 14px;font-weight:600}
+h3{font-size:17px;margin:0 0 4px}
+p{margin:0 0 14px;color:var(--ink2)}p.say{font-size:20px;color:var(--ink)}
+.ph{background:var(--ys);color:#3b2a00;border:1px dashed #c99a2e;border-radius:8px;padding:0 6px;font-weight:600;font-size:.88em}
+.chip{display:inline-block;border-radius:10px;padding:1px 9px;font-size:13px;font-weight:600}
+.gs{background:var(--gs);color:var(--g)}.rs{background:var(--rs);color:var(--r)}.yc{background:var(--y);color:#3b2a00}.k{background:var(--ink);color:#fff}
+.grid{display:grid;gap:12px}.g2{grid-template-columns:1fr 1fr}
+.tile p{font-size:15.5px;margin:0}
+button.btn{font:inherit;font-size:15px;font-weight:600;min-height:44px;border-radius:22px;border:1px solid var(--ink);padding:0 18px;background:transparent;color:var(--ink);cursor:pointer}
+button.btn.dark{background:var(--ink);color:#fff}button.btn:disabled{opacity:.35;cursor:default}
+button.more{font:inherit;font-size:15px;font-weight:600;background:none;border:0;padding:0;min-height:44px;cursor:pointer;color:var(--ink);text-decoration:underline;text-underline-offset:3px}
+button.more::after{content:" ↗"}
+ol.toc{list-style:none;padding:0;margin:18px 0 0;display:grid;gap:8px}
+ol.toc a{display:flex;align-items:center;gap:14px;min-height:52px;padding:8px 14px;border-radius:16px;background:var(--tile);border:1px solid var(--line);text-decoration:none}
+ol.toc a:hover{border-color:var(--ink)}
+ol.toc .n{flex:none;width:30px;height:30px;border-radius:50%;background:#e4e7ec;color:var(--ink);display:grid;place-items:center;font-size:13px;font-weight:700}
+ol.toc li.rec a{border-color:var(--ink);background:#fff}ol.toc li.rec .n{background:var(--ink);color:#fff}
+ol.toc .t{display:flex;flex-direction:column;line-height:1.3}ol.toc .t small{color:var(--muted);font-size:14px}
+ol.toc .meta{margin-left:auto;display:flex;gap:8px;align-items:center;white-space:nowrap;font-size:13px;color:var(--muted)}
+.star{background:var(--y);color:#3b2a00;border-radius:8px;padding:1px 8px;font-weight:700;font-size:12px}
+.tocnote{font-size:14.5px;color:var(--muted);margin:12px 0 0}
+.start{display:grid;grid-template-columns:1fr auto 1fr;gap:14px;align-items:center;margin:6px 0 20px}
+.doc{background:#fff;border:1px solid var(--line);border-radius:16px;padding:12px 14px;font-size:14.5px;color:var(--ink2)}
+.doc b{display:block;font-size:12.5px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted)}
+.docs{display:grid;gap:8px}.arrow{font-size:26px;color:var(--muted)}
+.mind{background:#fff;border:1px solid var(--line);border-radius:20px;padding:14px;text-align:center}
+.av{width:48px;height:48px;border-radius:50%;margin:0 auto 6px;display:grid;place-items:center;font-weight:700;background:var(--y);color:#3b2a00}
+.bubble{display:inline-block;margin-top:6px;background:var(--ink);color:#fff;border-radius:14px;padding:6px 12px;font-size:14px;animation:bob 2.6s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(-4px)}}
+.calls{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:6px 0 8px}
+.call{background:rgba(255,255,255,.7);border:1px solid var(--line);border-radius:20px;padding:14px;display:flex;flex-direction:column;min-height:330px}
+.call h3{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:15px}
+.chat{display:flex;flex-direction:column;gap:8px;margin:10px 0;flex:1}
+.ln{max-width:88%;border-radius:14px;padding:7px 11px;font-size:14.5px;line-height:1.4;opacity:0;transform:translateY(8px);transition:opacity .45s,transform .45s}
+.ln.show{opacity:1;transform:none}
+.ln.r{align-self:flex-start;background:#fff;border:1px solid var(--line);color:var(--ink)}
+.ln.c{align-self:flex-end;background:#e9edf3;color:var(--ink2)}
+.ln small{display:block;font-size:11.5px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.04em}
+.out{border-radius:12px;padding:8px 12px;font-size:14.5px;font-weight:600;opacity:0;transition:opacity .5s}
+.out.show{opacity:1}.out.bad{background:var(--rs);color:var(--r)}.out.good{background:var(--gs);color:var(--g)}
+.wins{display:grid;gap:10px;margin:14px 0 4px}
+.win{display:grid;grid-template-columns:36px 1fr;gap:12px;align-items:start}
+.win .i{width:36px;height:36px;border-radius:12px;background:var(--ink);color:#fff;display:grid;place-items:center;font-weight:700;font-size:15px}
+.win p{margin:0;font-size:16.5px}.win b{color:var(--ink)}
+.punch{font-size:21px;color:var(--ink);background:#fff;border:1px solid var(--ink);border-radius:18px;padding:14px 18px;margin:18px 0 0}
+.turns{display:grid;gap:10px;margin-top:6px}
+.turn{display:grid;grid-template-columns:1fr 30px 1fr;gap:10px;align-items:stretch}
+.turn .from{background:rgba(255,255,255,.45);border:1px dashed #b9c0cb;border-radius:18px;padding:10px 14px;font-size:15px;color:var(--muted);text-decoration:line-through;text-decoration-color:rgba(107,113,128,.5)}
+.turn .to{background:#fff;border:1px solid var(--ink);border-radius:18px;padding:10px 14px;font-size:15px;color:var(--ink2)}
+.turn .arr{display:grid;place-items:center;font-size:20px}
+figure{margin:0}figure img{border-radius:16px;border:1px solid var(--line);box-shadow:0 6px 24px rgba(40,55,80,.08)}
+figcaption{font-size:14px;color:var(--muted);margin-top:8px}
+.kinds{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:16px}
+.kind img{border-radius:12px;border:1px solid var(--line);margin-top:10px;aspect-ratio:16/10;object-fit:cover;object-position:top left;cursor:zoom-in}
+.steps{display:flex;gap:6px;margin:4px 0 14px;flex-wrap:wrap}
+.steps span{font-size:13.5px;font-weight:600;border-radius:12px;padding:5px 11px;background:rgba(255,255,255,.7);border:1px solid var(--line);color:var(--muted);transition:all .3s}
+.steps span.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.steps span.done{background:var(--gs);color:var(--g);border-color:var(--gs)}
+.steps span.done::before{content:"✓ "}.steps span.fail::before{content:"✕ "}
+.steps span.fail{background:var(--rs);color:var(--r);border-color:var(--rs)}
+.stage{display:grid;grid-template-columns:1.05fr .95fr;gap:16px;align-items:start;min-height:330px}
+.mail{background:#fff;border:1px solid var(--line);border-radius:18px;padding:14px 16px;font-size:15px;color:var(--ink2);position:relative}
+.mail .hd{font-size:13px;color:var(--muted);border-bottom:1px solid var(--line);padding-bottom:6px;margin-bottom:8px}
+.mail .hd b{color:var(--ink)}
+.mail q{quotes:none;border-radius:4px;transition:background .5s,box-shadow .5s}
+.mail.hl q{background:var(--ys);box-shadow:0 0 0 2px var(--y)}
+.stamp{position:absolute;top:10px;right:12px;font-size:12px;font-weight:700;border-radius:8px;padding:2px 8px;background:var(--ink);color:#fff;opacity:0;transform:scale(1.4) rotate(-6deg);transition:all .35s}
+.mail.filed .stamp{opacity:1;transform:scale(1) rotate(-6deg)}
+.right{display:grid;gap:10px;align-content:start}
+.panel{background:rgba(255,255,255,.75);border:1px solid var(--line);border-radius:18px;padding:12px 14px;opacity:.25;transition:opacity .45s,border-color .45s}
+.panel.on{opacity:1;border-color:var(--ink)}
+.panel h3{font-size:13px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);margin-bottom:8px}
+.found{display:flex;align-items:center;gap:8px;font-size:15px;margin:6px 0;color:var(--ink)}
+.found .ok{color:var(--g);font-weight:700;opacity:0;transition:opacity .3s}.found .x{color:var(--r);font-weight:700;opacity:0}
+.panel.checked .found .ok,.panel.checked .found .x{opacity:1}
+.found.bad{color:var(--r)}
+.row{display:grid;grid-template-columns:70px 1fr;gap:6px;font-size:14.5px;padding:4px 0;border-top:1px solid #eef0f3}
+.row:first-of-type{border-top:0}
+.row s{color:var(--muted)}.row ins{text-decoration:none;background:var(--ys);border-radius:4px;padding:0 4px;color:var(--ink);font-weight:600}
+.appr{display:flex;align-items:center;gap:10px;font-size:15px}
+.appr .btnfake{border-radius:16px;padding:4px 12px;font-weight:600;font-size:14px;border:1px solid var(--ink);transition:all .3s}
+.panel.approved .btnfake{background:var(--ink);color:#fff}
+.panel.approved .btnfake::before{content:"✓ "}
+.teamrow{display:flex;gap:14px;flex-wrap:wrap}
+.mate{text-align:center;font-size:13px;color:var(--ink2);position:relative}
+.mate .av{width:40px;height:40px;font-size:14px;background:#e4e7ec;color:var(--ink);margin-bottom:2px}
+.mate .badge{position:absolute;top:-4px;right:-10px;background:var(--y);color:#3b2a00;border-radius:8px;font-size:11px;font-weight:700;padding:0 5px;opacity:0;transform:scale(.4);transition:all .35s}
+.panel.taught .mate .badge{opacity:1;transform:none}
+.panel.taught .mate:nth-child(2) .badge{transition-delay:.1s}.panel.taught .mate:nth-child(3) .badge{transition-delay:.2s}.panel.taught .mate:nth-child(4) .badge{transition-delay:.3s}
+.stop{background:var(--rs);color:var(--r);border-radius:14px;padding:10px 12px;font-size:15px;font-weight:600;display:none;margin-top:8px}
+.stop.show{display:block}
+.caption{min-height:56px;font-size:17px;color:var(--ink);margin:14px 0 6px}
+.controls{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.bars{display:grid;gap:10px;margin:8px 0 6px}
+.bar{display:grid;grid-template-columns:180px 1fr 54px;gap:10px;align-items:center;font-size:14.5px}
+.bar .lab small{display:block;color:var(--muted);font-size:12.5px}
+.bar .bg{height:22px;border-radius:11px;background:rgba(255,255,255,.7);border:1px solid var(--line);overflow:hidden}
+.bar .fill{display:block;height:100%;width:0;background:var(--ink);border-radius:11px;transition:width 1.1s cubic-bezier(.2,.7,.2,1)}
+.bar.best .fill{background:var(--g)}.bar .v{font-weight:700;text-align:right}
+table{width:100%;border-collapse:separate;border-spacing:0 6px;font-size:15px}
+td{background:rgba(255,255,255,.66);padding:9px 14px;vertical-align:top;color:var(--ink2)}td:first-child{border-radius:14px 0 0 14px;font-weight:600;color:var(--ink);width:30%}td:last-child{border-radius:0 14px 14px 0}
+pre{background:var(--ink);color:#f3f4f6;border-radius:16px;padding:16px 18px;overflow-x:auto;font-size:14px;line-height:1.55;margin:0 0 12px}
 code{background:var(--tile);border-radius:6px;padding:1px 6px;font-size:14px}
-pre{background:var(--ink);color:#f3f4f6;border-radius:16px;padding:16px 18px;overflow-x:auto;font-size:14px;line-height:1.5}
-.quote{font-size:22px;line-height:1.4;color:var(--ink);border-left:4px solid var(--y);padding-left:16px;margin:16px 0}
-@media (max-width:760px){.g3,.g2,.chain{grid-template-columns:1fr}section{padding:24px 18px}.wrap{padding:16px}}
-</style></head><body><div class="wrap">
+.quote{font-size:21px;line-height:1.45;color:var(--ink);border-left:4px solid var(--y);padding-left:16px;margin:12px 0 16px}
+dialog{border:1px solid var(--edge);border-radius:24px;padding:0;max-width:720px;width:calc(100% - 32px);background:#fbfbfc;color:var(--ink);box-shadow:0 30px 80px rgba(20,30,50,.25)}
+dialog::backdrop{background:rgba(22,24,29,.35);backdrop-filter:blur(3px)}
+dialog .db{padding:26px 28px;max-height:80vh;overflow:auto}
+dialog h2{font-size:24px;margin-top:0}dialog ul{padding-left:20px;color:var(--ink2);font-size:16px}dialog li{margin:6px 0}
+dialog .close{position:sticky;top:0;float:right;width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:#fff;font-size:20px;cursor:pointer;margin-left:10px}
+dialog img{border-radius:12px;border:1px solid var(--line)}
+.rv{opacity:0;transform:translateY(18px);transition:opacity .7s ease,transform .7s ease}.rv.in{opacity:1;transform:none}
+.progress{position:fixed;left:0;top:0;height:4px;background:var(--ink);width:0;z-index:5}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.rv,.ln,.out{opacity:1;transform:none}html{scroll-behavior:auto}}
+@media (max-width:720px){.g2,.calls,.stage,.kinds,.start{grid-template-columns:1fr}.arrow{transform:rotate(90deg);justify-self:center}.glass{padding:24px 18px}.turn{grid-template-columns:1fr}.turn .arr{transform:rotate(90deg);height:22px}.bar{grid-template-columns:1fr 48px}.bar .bg{grid-column:1/-1;grid-row:2}ol.toc .meta .time{display:none}.call{min-height:0}}
+</style></head><body>
+<div class="progress" id="prog" aria-hidden="true"></div>
+<div class="wrap">
 
-<section class="glass">
-<div class="kicker">RadHires harness challenge · fictional agency</div>
-<h1>The job description is the least reliable thing a recruiter reads.</h1>
-<p class="lead">In searches for small companies, the real criteria arrive later: in the kickoff call, the founder's email, the client's rejection. This harness keeps every recruiter on a search current with those changes, and checks that they learned them.</p>
-<p><span class="chip k">One Next.js service · SQLite · traced AI calls</span> <span class="chip y">7 checked stages</span> <span class="chip gs">185 tests</span></p>
-</section>
 
-<section class="glass">
-<div class="kicker">The problem</div>
-<h2>One recruiter hears the change. Three keep screening the old role.</h2>
-<div class="grid g3">
-<div class="tile card"><h3>Kickoff, 5 Oct</h3><p>"Go can be learned on the job. Incident ownership cannot." The must-have flips; the JD still says Go.</p></div>
-<div class="tile card"><h3>CEO email, 3 Nov</h3><p>Budget cut to €72k, start moved to Q1, mid-level "maybe". Only Ana got the email.</p></div>
-<div class="tile card"><h3>Rejection, 6 Nov</h3><p>"Weak on system design." Nobody had asked about design in the screening; 4 of 11 questions went to Go.</p></div>
+<header class="glass rv" id="intro">
+<style>
+#intro{text-align:center;padding:72px 40px 64px}
+#intro .kicker{margin-bottom:18px}
+#intro .hero{min-height:calc(100vh - 140px);min-height:calc(100svh - 140px);display:flex;flex-direction:column;justify-content:center;align-items:center;margin-bottom:56px;position:relative}
+#intro h1{max-width:760px;margin:0 auto 32px;font-size:clamp(38px,6vw,64px);line-height:1.08;letter-spacing:-.025em;text-wrap:balance}
+#intro .say{max-width:560px;margin:0 auto;font-size:clamp(19px,2.2vw,23px);line-height:1.5;color:var(--muted)}
+#intro .say span{display:block;text-wrap:balance}
+#intro .say .strong{color:var(--ink);font-weight:500;margin-top:6px}
+#intro .hero>*{opacity:0;transform:translateY(12px);animation:heroin .9s cubic-bezier(.2,.7,.2,1) forwards}
+#intro .hero h1{animation-delay:.15s}#intro .say span:first-child{opacity:0;animation:heroin .9s .9s forwards}#intro .say .strong{opacity:0;animation:heroin .9s 1.6s forwards}#intro .say{opacity:1;transform:none;animation:none}
+#intro .cue{position:absolute;bottom:0;font-size:13px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);text-decoration:none;display:flex;flex-direction:column;align-items:center;gap:6px;animation-delay:2.4s}
+#intro .cue span{font-size:18px;animation:nudge 2s 3s ease-in-out infinite}
+@keyframes heroin{to{opacity:1;transform:none}}
+@keyframes nudge{50%{transform:translateY(5px)}}
+#intro .label{font-size:13px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:0 0 20px}
+#intro ol.toc{max-width:640px;margin:0 auto;text-align:left;gap:10px}
+#intro ol.toc a{min-height:64px;padding:12px 18px;border-radius:18px}
+#intro .tocnote{max-width:560px;margin:28px auto 0;line-height:1.7}
+@media (max-width:720px){#intro{padding:48px 18px 40px}#intro .say{margin-bottom:44px}}
+</style>
+<div class="hero">
+<div class="kicker">RadHires harness challenge · Richard Ayala</div>
+<h1>Are your recruiters screening for the right thing?</h1>
+<p class="say"><span>Most people would show you RAG and agents.</span> <span class="strong">I run a business, so I put the effort into quality, speed and revenue.</span></p>
+<a class="cue" href="#toc">Five short chapters<span aria-hidden="true">↓</span></a>
+</div>
+<p class="label" id="toc">Five short chapters</p>
+<ol class="toc" aria-label="Chapters">
+<li class="rec"><a href="#c1"><span class="n">1</span><span class="t"><b>The problem</b><small>What recruiters don't know they don't know</small></span><span class="meta"><span class="star">Start here</span><span class="time">2 min</span></span></a></li>
+<li><a href="#c3"><span class="n">2</span><span class="t"><b>What the recruiter sees</b><small>Real screens from the app</small></span><span class="meta"><span class="time">1 min</span></span></a></li>
+<li class="rec"><a href="#c4"><span class="n">3</span><span class="t"><b>Follow one email through the harness</b><small>Interactive, 5 steps</small></span><span class="meta"><span class="star">Recommended</span><span class="time">2 min</span></span></a></li>
+<li class="rec"><a href="#c5"><span class="n">4</span><span class="t"><b>How I know it works</b><small>Live model results, what's stubbed</small></span><span class="meta"><span class="star">Recommended</span><span class="time">1 min</span></span></a></li>
+<li><a href="#c6"><span class="n">5</span><span class="t"><b>What I left out, and how to run it</b><small>Stack, tradeoffs, commands</small></span><span class="meta"><span class="time">reference</span></span></a></li>
+</ol>
+</header>
+
+<section class="glass rv" id="c1" aria-labelledby="h1x">
+<style>
+#c1{text-align:center;padding:64px 40px}
+#c1 .blk{margin:0 auto 72px;max-width:720px}
+#c1 .blk:last-child{margin-bottom:0}
+#c1 .blk.wide{max-width:none}
+#c1 .kicker{margin-bottom:14px}
+#c1 h2{font-size:clamp(30px,4.4vw,44px);max-width:640px;margin:0 auto 20px}
+#c1 .lede{font-size:20px;color:var(--ink2);max-width:540px;margin:0 auto}
+#c1 .lede b{color:var(--ink);font-weight:600}
+#c1 .label{font-size:13px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:0 0 20px}
+#c1 .start{grid-template-columns:1fr 40px 1fr;gap:20px;margin:0;text-align:left}
+#c1 .mind{text-align:center;padding:22px 18px}
+#c1 .vsrow{display:grid;grid-template-columns:1fr 44px 1fr;gap:14px;align-items:stretch;text-align:left}
+#c1 .vs{align-self:center;width:44px;height:44px;border-radius:50%;background:var(--ink);color:#fff;display:grid;place-items:center;font-size:13px;font-weight:700}
+#c1 .call{min-height:0;padding:18px}
+#c1 .call h3{justify-content:flex-start;gap:10px;font-size:16px;margin-bottom:4px}
+#c1 .call h3 .ic{width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font-size:14px}
+#c1 .call.bad{border-color:#e8c3cc}#c1 .call.bad .ic{background:var(--rs);color:var(--r)}
+#c1 .call.good{border-color:var(--g);background:#fff}#c1 .call.good .ic{background:var(--gs);color:var(--g)}
+#c1 .call .sub{font-size:13.5px;color:var(--muted);margin:0}
+#c1 .chat{margin:16px 0}
+#c1 .note{font-size:13.5px;color:var(--muted);margin:16px auto 0;max-width:520px}
+#c1 .gains{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;text-align:left}
+#c1 .gain{background:#fff;border:1px solid var(--line);border-top:3px solid var(--g);border-radius:20px;padding:20px 20px 22px}
+#c1 .gain .ic{width:40px;height:40px;border-radius:12px;background:var(--gs);color:var(--g);display:grid;place-items:center;font-size:19px;margin-bottom:14px}
+#c1 .gain b{display:flex;gap:8px;align-items:flex-start;font-size:16.5px;color:var(--ink);margin-bottom:6px;line-height:1.3}
+#c1 .gain .ck{flex:none;width:18px;height:18px;margin-top:2px;color:var(--g)}
+#c1 .gain span{display:block;padding-left:26px}
+#c1 .gain span{font-size:15px;color:var(--ink2);line-height:1.5}
+#c1 .turnline{font-size:17px;color:var(--ink2);max-width:520px;margin:0 auto 22px}
+#c1 .answer{display:inline-block;background:#fff;border:1px solid var(--ink);border-radius:20px;padding:22px 28px;max-width:600px}
+#c1 .answer p.label{margin-bottom:8px;font-size:13px;font-weight:600;color:var(--muted)}
+#c1 .answer p{font-size:19px;line-height:1.45;color:var(--ink);margin:0;font-weight:600}
+@media (max-width:720px){#c1{padding:40px 18px}#c1 .blk{margin-bottom:52px}#c1 .start,#c1 .vsrow,#c1 .gains{grid-template-columns:1fr}#c1 .vs{justify-self:center}#c1 .arrow{transform:rotate(90deg);justify-self:center}}
+</style>
+
+<div class="blk">
+<div class="kicker">Chapter 1 · The problem</div>
+<h2 id="h1x">What nobody checks on day one</h2>
+<p class="lede">Every search starts with a JD and a kickoff call. The information is there. <b>Nobody checks whether the recruiter understood it.</b></p>
+</div>
+
+<div class="blk">
+<p class="label">Day one of a search</p>
+<div class="start">
+<div class="docs">
+<div class="doc"><b>Job description</b>Senior Backend Engineer · Go · Postgres · event-driven</div>
+<div class="doc"><b>Kickoff call with the CTO</b>"Go can be learned. Incident ownership cannot."</div>
+</div>
+<div class="arrow" aria-hidden="true">→</div>
+<div class="mind"><div class="av">A</div><b>Ana, recruiter</b><br><span class="bubble">"Incident ownership"… what does that sound like?</span></div>
+</div>
+</div>
+
+<div class="blk wide">
+<p class="label">Same candidate · two first screenings</p>
+<div class="vsrow" id="calls">
+<div class="call bad"><h3><span class="ic" aria-hidden="true">✕</span>Reads the list</h3><p class="sub">Asks about keywords</p>
+<div class="chat">
+<div class="ln r"><small>Ana</small>How many years have you worked with Go?</div>
+<div class="ln c">About five.</div>
+<div class="ln r"><small>Ana</small>Great. Have you used Postgres?</div>
+<div class="ln c">Yes.</div>
+</div>
+<div class="out bad">Client, after their interview: "Weak on system design."</div></div>
+<div class="vs" aria-hidden="true">VS</div>
+<div class="call good"><h3><span class="ic" aria-hidden="true">✓</span>Understands the role</h3><p class="sub">Asks what the client actually needs</p>
+<div class="chat">
+<div class="ln r"><small>Ana</small>Tell me about the last incident you owned.</div>
+<div class="ln c">Payments went down. I rolled back and ran the review.</div>
+<div class="ln r"><small>Ana</small>What did you change in the design after?</div>
+<div class="ln c">Hmm, the team handled that part…</div>
+</div>
+<div class="out good">A real signal, before the client's engineers spend an hour.</div></div>
+</div>
+<p class="note">The left call mirrors a real screening in the demo data (4 of 11 questions on Go). The right one is an illustration.</p>
+</div>
+
+<div class="blk wide">
+<p class="label">What you get when the recruiter understands</p>
+<div class="gains">
+<div class="gain"><b><svg class="ck" viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8.5l3 3 6-7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Everybody saves time</b><span>Fewer, better candidates reach the client's engineers.</span></div>
+<div class="gain"><b><svg class="ck" viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8.5l3 3 6-7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Screenings become conversations</b><span>AI can filter CVs. The follow-up question is still the recruiter's.</span></div>
+<div class="gain"><b><svg class="ck" viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8.5l3 3 6-7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>It compounds</b><span>Each role works like a short course. The next similar search starts ahead.</span></div>
+</div>
+</div>
+
+<div class="blk">
+<p class="turnline">And the role doesn't stay still: a month later the founder cuts the budget, and that email reaches one inbox.</p>
+<div class="answer"><p class="label">The question this harness answers</p><p>Does every recruiter on this search understand what the client needs, today?</p></div>
+<p class="note">It reviews the recruiter's screening, never the candidate. Most AI recruiting demos score candidates; that wasn't the gap.</p>
 </div>
 </section>
 
-<section class="glass">
-<div class="kicker">The harness</div>
-<h2>From client signal to recruiter judgment, with a check at every step</h2>
-<div class="chain">
-<div class="tile step"><div class="n">1</div><b>Read a source</b><small>Hashed and registered; raw file stays readable.</small></div>
-<div class="tile step"><div class="n">2</div><b>Extract changes</b><small>Model returns JSON; every quote verified word for word.</small></div>
-<div class="tile step"><div class="n">3</div><b>Propose a version</b><small>Only material changes; the lead approves or rejects.</small></div>
-<div class="tile step"><div class="n">4</div><b>Flag bias</b><small>"Under 35" or "top-10 universities" appear in the brief only as "not applied" and never filter candidates.</small></div>
-<div class="tile step"><div class="n">5</div><b>Teach the team</b><small>Confirm, study or review, by kind of change; team completion tracked.</small></div>
+<style>
+.ch{text-align:center;padding:64px 40px}
+.ch .blk{margin:0 auto 64px;max-width:640px}
+.ch .blk.wide{max-width:none}
+.ch .blk:last-child{margin-bottom:0}
+.ch .kicker{margin-bottom:14px}
+.ch h2{font-size:clamp(28px,4vw,40px);max-width:620px;margin:0 auto 18px}
+.ch .lede{font-size:19px;color:var(--ink2);max-width:540px;margin:0 auto}
+.ch .label{font-size:13px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:0 0 18px}
+.ch .left{text-align:left}
+.ch .more{margin-top:20px}
+.ch .colhead{display:grid;grid-template-columns:1fr 30px 1fr;gap:10px;margin-bottom:8px;font-size:12.5px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);text-align:left}
+.ch .colhead span{padding-left:14px}
+.ch .turn .from,.ch .turn .to{padding:14px 16px;font-size:15.5px}
+.ch .kinds{margin-top:0}
+.ch .callout{display:inline-block;background:#fff;border:1px solid var(--line);border-left:3px solid var(--g);border-radius:16px;padding:16px 22px;max-width:560px;text-align:left;font-size:17px;color:var(--ink)}
+.ch .pair{display:grid;grid-template-columns:1fr 1fr;gap:14px;text-align:left}
+.ch .trio{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;text-align:left}
+.ch .card{background:#fff;border:1px solid var(--line);border-radius:20px;padding:20px}
+.ch .card h3{font-size:16px;margin-bottom:8px}
+.ch .card p{font-size:15px;margin:0;color:var(--ink2);line-height:1.55}
+.ch .card.ok{border-top:3px solid var(--g)}.ch .card.lim{border-top:3px solid var(--r)}.ch .card.neu{border-top:3px solid var(--ink)}
+.ch .quote{text-align:left;max-width:600px;margin:0 auto}
+.ch pre{text-align:left;max-width:480px;margin:0 auto 14px}
+.ch .runnote{font-size:15px;max-width:520px;margin:0 auto}
+.ch .controls{justify-content:center}
+.ch .caption{text-align:center;max-width:640px;margin:20px auto 16px}
+.ch .steps{justify-content:center;margin-bottom:22px}
+.ch .stage{text-align:left}
+.ch .bars{text-align:left;max-width:640px;margin:0 auto}
+.ch .thanks{font-size:16px;color:var(--muted)}
+.ch .num{text-align:center;padding:24px 18px}
+.ch .num .big{font-size:40px;font-weight:600;letter-spacing:-.02em;line-height:1;color:var(--ink);margin-bottom:10px}
+.ch .pair .full{grid-column:1/-1}
+.ch .fine{font-size:13.5px;color:var(--muted);margin:16px auto 0;max-width:520px}
+.reel{position:relative;aspect-ratio:1440/1000;border-radius:16px;overflow:hidden;border:1px solid var(--line);box-shadow:0 6px 24px rgba(40,55,80,.08);background:#eef0f3}
+.reel img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top left;opacity:0;transition:opacity .8s ease}
+.reel img.on{opacity:1}
+.reeltabs{display:inline-flex;gap:28px;margin-top:18px;border-bottom:1px solid var(--line)}
+.reeltabs button{font:inherit;font-size:14.5px;font-weight:500;min-height:44px;padding:0 2px;border:0;border-bottom:2px solid transparent;margin-bottom:-1px;background:none;color:var(--muted);cursor:pointer;transition:color .25s,border-color .25s}
+.reeltabs button:hover{color:var(--ink)}
+.reeltabs button.on{color:var(--ink);font-weight:600;border-bottom-color:var(--ink)}
+.reelcap{font-size:15px;color:var(--muted);margin:12px auto 0;min-height:24px}
+.stance{font-size:19px;line-height:1.5;color:var(--ink);max-width:600px;margin:0 auto 26px}
+.steps button{font:inherit;font-size:13.5px;font-weight:600;border-radius:12px;padding:0 12px;min-height:36px;background:rgba(255,255,255,.7);border:1px solid var(--line);color:var(--muted);cursor:pointer;transition:all .3s}
+.steps button:hover{border-color:var(--ink)}
+.steps button.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.steps button.done{background:var(--gs);color:var(--g);border-color:var(--gs)}
+.steps button.done::before{content:"✓ "}.steps button.fail::before{content:"✕ "}
+.steps button.fail{background:var(--rs);color:var(--r);border-color:var(--rs)}
+.ch .controls.three{display:grid;grid-template-columns:1fr auto 1fr;max-width:640px;margin:0 auto}
+.ch .controls.three #prev{justify-self:start}.ch .controls.three #next{justify-self:end}
+@media (max-width:720px){.reeltabs{flex-wrap:wrap;justify-content:center}.ch .controls.three{grid-template-columns:1fr 1fr}.ch .controls.three #bad{grid-column:1/-1;grid-row:2}}
+@media (max-width:720px){.ch{padding:44px 18px}.ch .blk{margin-bottom:48px}.ch .pair,.ch .trio{grid-template-columns:1fr}.ch .colhead{display:none}}
+</style>
+
+<section class="glass rv ch" id="c3" aria-labelledby="h3x">
+<div class="blk">
+<div class="kicker">Chapter 2 · The recruiter's view</div>
+<h2 id="h3x">An app should explain itself</h2>
+<p class="lede">The harness lives inside the ATS recruiters already open every morning, one role, four tabs.</p>
 </div>
-<p style="margin-top:16px">A stage is complete only when its check passes and the result is stored. Open "How this was processed" on any source to see it. The model proposes; rules and a person decide.</p>
-</section>
-
-<section class="glass">
-<div class="kicker">The recruiter's view</div>
-<h2>Inside the ATS they already use, as the next thing to do</h2>
-<div class="grid g2">
-<figure><img src="_work/2026-11-08-harness-build/evidence/ui-current.png" alt="Stay current tab: confirm items, study questions, a screening review and the team panel"><figcaption>Stay current: tick what you only need to know, explain what you need to understand, learn from the client's decision.</figcaption></figure>
-<figure><img src="_work/2026-11-08-harness-build/evidence/ui-changes.png" alt="Changes tab: timeline of sources and version comparison table"><figcaption>Changes: every source, the version it created, and a table to compare versions.</figcaption></figure>
+<div class="blk wide">
+<div class="reel" id="reel" aria-roledescription="slideshow" aria-label="The four tabs of a role">
+<img class="on" src="docs/readme-shots/tab-pipeline.jpg" alt="Pipeline tab: candidates by stage for the Senior Backend Engineer role">
+<img src="docs/readme-shots/tab-brief.jpg" alt="Role brief tab: the approved brief as tables, with what changed in the latest version">
+<img src="docs/readme-shots/tab-changes.jpg" alt="Changes tab: everything the client sent, and what each message changed">
+<img src="docs/readme-shots/tab-current.jpg" alt="Stay current tab: 8 steps waiting for Ana, and the team at 2 of 4 up to date">
 </div>
-<p style="margin-top:14px">Moving a candidate is never blocked. Checks happen when the role changes, not on every submission. A lead sees "2 of 4 up to date" and knows who to nudge.</p>
-</section>
-
-<section class="glass">
-<div class="kicker">What I left out, on purpose</div>
-<h2>No RAG. No integrations. That's the point.</h2>
-<p class="quote">I've built retrieval pipelines and app integrations many times. They depend on each agency's tools and are easy to add. They would also hide what matters here: the reasoning from what the client said to what the recruiter knows.</p>
-<p style="font-size:13px;color:var(--muted)">Draft wording of the owner's stated reasoning; the owner confirms or edits it before submission.</p>
-<table>
-<tr><td>RAG / embeddings</td><td>One approved brief plus one new source fits the context window. Retrieval would add a failure mode with no benefit at this scale.</td></tr>
-<tr><td>Email, Slack, tl;dv, ATS connectors</td><td>Simulated as files with metadata. A connector only changes how a file arrives, not what happens next.</td></tr>
-<tr><td>Candidate scoring</td><td>Out of scope by design. The harness reviews the recruiter's screening against the brief, never the candidate.</td></tr>
-<tr><td>Quizzes with a score</td><td>Recruiters explain better than they pick options: free text, with feedback on what a full answer covers.</td></tr>
-</table>
-</section>
-
-<section class="glass">
-<div class="kicker">Honest status</div>
-<h2>What is real, and what isn't yet</h2>
-<div class="grid g2">
-<div class="tile card"><h3><span class="chip gs">Real</span></h3><p>Ingest and hashing, seven checked stages, verbatim-quote evidence, approval and audit, bias rules, learning steps by change type, team completion, screening review against the brief at screening time, CLI, web UI, 164 tests.</p></div>
-<div class="tile card"><h3><span class="chip y">Stubbed</span></h3><p>The model runs on recorded outputs by default, so the demo shows orchestration and checks, not extraction quality. The OpenAI provider is wired and tested; the live run is pending. Study feedback is keyword-based. Candidates are fake.</p></div>
+<div class="reeltabs" id="reeltabs" role="group" aria-label="Show a tab">
+<button type="button" class="on" data-i="0">Pipeline</button><button type="button" data-i="1">Role brief</button><button type="button" data-i="2">Changes</button><button type="button" data-i="3">Stay current</button>
 </div>
-<pre>cd app-next && pnpm install && pnpm harness rebuild && pnpm dev</pre>
-<p>Details: <a href="README.md">README</a> · <a href="DESIGN.md">DESIGN.md</a> · plan and reviews in <code>_work/2026-11-08-harness-build/</code></p>
+<p class="reelcap" id="reelcap" aria-live="polite">Candidates by stage. Moving a card is never blocked.</p>
+</div>
+<div class="blk wide">
+<p class="label">Why this interface</p>
+<p class="stance">Most people open a tool without knowing where to start, or why it's asking them for something. So every screen leads with one clear next step and the reason behind it.</p>
+<div class="trio">
+<div class="card neu"><h3>It shows where to start</h3><p>"8 steps waiting for you. Start now." One action first, everything else below it.</p></div>
+<div class="card neu"><h3>It says why you're here</h3><p>Each step names the client message it came from: "From the founder's email, 3 Nov".</p></div>
+<div class="card neu"><h3>It stays out of the way</h3><p>It lives in the ATS recruiters already use. I first tried blocking "submit candidate" until a check passed, and dropped it: learning starts when the role changes, never as a gate.</p></div>
+</div>
+</div>
+<div class="blk wide">
+<p class="label">Three kinds of change, three kinds of effort</p>
+<div class="kinds left">
+<div class="tile kind"><h3><span class="chip yc">Confirm</span></h3><p>Budget is now up to €72k. One tick. The lead sees who's done.</p><img src="docs/readme-shots/team.png" alt="Team panel: Ana 0 of 8, Jon 5 of 8, Luis and Marta up to date" data-zoom loading="lazy"></div>
+<div class="tile kind"><h3><span class="chip k">Study</span></h3><p>Incident ownership is a new must-have. Answer in your own words.</p><img src="docs/readme-shots/study.png" alt="Study step: how would you tell, in a screening, that someone led an incident rather than just joined it" data-zoom loading="lazy"></div>
+<div class="tile kind"><h3><span class="chip gs">Review</span></h3><p>The client rejected D. Ruiz. Pick what the team checks next time.</p><img src="docs/readme-shots/review.png" alt="Review step: D. Ruiz rejected, weak on system design, with checks to adopt" data-zoom loading="lazy"></div>
+</div>
+<button class="more" type="button" data-open="d-changes">See the Changes tab</button>
+</div>
 </section>
 
-</div></body></html>
+<section class="glass rv ch" id="c4" aria-labelledby="h4x">
+<div class="blk">
+<div class="kicker">Chapter 3 · The harness</div>
+<h2 id="h4x">Follow one email through the harness</h2>
+<p class="lede">The AI reads and proposes. Checks and a person decide. Step through it at your own pace.</p>
+</div>
+<div class="blk wide">
+<div class="steps" id="steps" role="group" aria-label="Go to step"><button type="button" data-i="1">1 Read</button><button type="button" data-i="2">2 Find what changed</button><button type="button" data-i="3">3 Check it's really there</button><button type="button" data-i="4">4 Lead approves</button><button type="button" data-i="5">5 Team learns</button></div>
+<div class="stage">
+<div class="mail" id="mail"><span class="stamp">Filed with brief v3</span>
+<div class="hd"><b>From:</b> Northwind founder · 3 Nov<br><b>Re:</b> budget and timing for the backend hire</div>
+After the board meeting we need to be more careful with spend. For the Senior Backend Engineer, please work with <q>up to €72k</q> as the maximum. We'd also prefer the person <q>starts in Q1</q> rather than right away.</div>
+<div class="right">
+<div class="panel" id="pFound"><h3>What the AI found</h3>
+<div class="found" id="f1"><span class="ok">✓</span><span class="x" style="display:none">✕</span><span id="f1t">Budget: "up to €72k"</span></div>
+<div class="found"><span class="ok">✓</span><span>Start: "starts in Q1"</span></div>
+<div class="stop" id="stop">Not in the email. Stopped. Nothing saved; the team keeps v3.</div>
+</div>
+<div class="panel" id="pBrief"><h3>Proposed brief v4</h3>
+<div class="row"><span>Budget</span><span><s>€70–80k</s> <ins>up to €72k</ins></span></div>
+<div class="row"><span>Start</span><span><s>As soon as possible</s> <ins>Q1</ins></span></div>
+</div>
+<div class="panel" id="pAppr"><div class="appr"><span class="btnfake">Approve</span><span>Ana, lead recruiter</span></div></div>
+<div class="panel" id="pTeam"><h3>Team · new steps</h3><div class="teamrow">
+<div class="mate"><div class="av">A</div>Ana<span class="badge">+2</span></div><div class="mate"><div class="av">J</div>Jon<span class="badge">+2</span></div><div class="mate"><div class="av">L</div>Luis<span class="badge">+2</span></div><div class="mate"><div class="av">M</div>Marta<span class="badge">+2</span></div></div></div>
+</div>
+</div>
+<p class="caption" id="cap" aria-live="polite"></p>
+<div class="controls three">
+<button class="btn" type="button" id="prev">← Back</button>
+<button class="btn" type="button" id="bad">What if the AI makes it up?</button>
+<button class="btn dark" type="button" id="next">Next →</button>
+</div>
+<button class="more" type="button" data-open="d-arch">All 7 stages, checks and tracing</button>
+</div>
+</section>
+
+<section class="glass rv ch" id="c5" aria-labelledby="h5x">
+<div class="blk">
+<div class="kicker">Chapter 4 · Quality and honesty</div>
+<h2 id="h5x">How I know it works</h2>
+<p class="lede">I ran a live model through the same checks on all 13 demo sources.</p>
+</div>
+<div class="blk wide">
+<p class="label">Sources that passed every check</p>
+<div class="bars" id="bars">
+<div class="bar"><span class="lab">gpt-4o-mini · try 1<small>first prompt</small></span><span class="bg"><span class="fill" data-v="1"></span></span><span class="v">1/13</span></div>
+<div class="bar"><span class="lab">gpt-4o-mini · try 2<small>added examples</small></span><span class="bg"><span class="fill" data-v="6"></span></span><span class="v">6/13</span></div>
+<div class="bar"><span class="lab">gpt-4o-mini · try 4<small>one retry on errors</small></span><span class="bg"><span class="fill" data-v="8"></span></span><span class="v">8/13</span></div>
+<div class="bar best"><span class="lab">gpt-4o<small>same harness</small></span><span class="bg"><span class="fill" data-v="12"></span></span><span class="v">11–12/13</span></div>
+</div>
+<button class="more" type="button" data-open="d-live">What failed in the live runs, and why</button>
+</div>
+<div class="blk">
+<div class="callout">In every run, a bad answer was rejected and nothing wrong was saved. That's the behaviour I care about most.</div>
+</div>
+<div class="blk wide">
+<p class="label">What it took</p>
+<div class="trio nums">
+<div class="card neu num"><div class="big">9–11 h</div><p>From deciding what to build to this presentation.</p></div>
+<div class="card neu num"><div class="big">&lt; $0.10</div><p>OpenAI tokens for every live run and test of the app.</p></div>
+<div class="card neu num"><div class="big">≈ $85</div><p>Claude tokens used to build it with an AI assistant, at list prices.</p></div>
+</div>
+<p class="fine">Estimates from usage logs at list prices, not a bill. Claude covers every chat in this workspace, including review calls; Codex review calls are not included.</p>
+</div>
+<div class="blk wide">
+<p class="label">Honest status</p>
+<div class="pair">
+<div class="card ok"><h3>Real</h3><p>The checked pipeline, lead approval, bias flags, learning steps, team progress, live OpenAI path, tracing, 185 automated tests.</p></div>
+<div class="card lim"><h3>Stubbed or limited</h3><p>Synthetic data. The demo replays recorded answers by default. The live model finds fewer changes than my reference. One demo user.</p></div>
+<div class="card neu full"><h3>Least sure about</h3><p>Whether my rules for "how big is this change" match a real lead's judgment.</p></div>
+</div>
+</div>
+</section>
+
+<section class="glass rv ch" id="c6" aria-labelledby="h6x">
+<div class="blk">
+<div class="kicker">Chapter 5 · Choices and reference</div>
+<h2 id="h6x">What I left out, and how to run it</h2>
+</div>
+<div class="blk">
+<p class="quote">I've built RAG pipelines and agentic systems with tool calling many times. What actually moves a company is quality, speed and revenue. So that's where I spent my time: making sure we're doing the right thing, so nobody wastes time.</p>
+</div>
+<div class="blk wide">
+<p class="label">What I chose, and why</p>
+<table class="left"><tbody>
+<tr><td>Role first, then people</td><td>My first idea was to test recruiters before each role. A test against an outdated brief is useless, so the harness keeps the brief current first.</td></tr>
+<tr><td>No RAG</td><td>RAG pays off when there's a large body of data to ask about. Here the model reads one brief and one new email, which fit in its context, so retrieval would add a way to fail and nothing else.</td></tr>
+<tr><td>No connectors</td><td>Emails, transcripts and news are files. A connector only changes how a file arrives.</td></tr>
+<tr><td>Next.js + Zod</td><td>I proved the workflow with zero dependencies first. Then I moved to one Next.js service so the UI and API share validation and every AI call is traced and tested.</td></tr>
+<tr><td>SQLite</td><td>Built into Node 24, nothing to install. Original emails and transcripts stay readable, so every change traces back to the exact text.</td></tr>
+</tbody></table>
+<button class="more" type="button" data-open="d-log">Where each decision came from</button>
+</div>
+<div class="blk">
+<p class="label">Run it · offline, no key needed</p>
+<pre>cd app-next
+pnpm install
+pnpm harness rebuild
+pnpm dev            # http://localhost:3000</pre>
+<p class="runnote">Node 24.12+ and pnpm. For the live model, set <code>OPENAI_API_KEY</code>, <code>OPENAI_MODEL=gpt-4o</code> and <code>HARNESS_MODEL=openai</code> in <code>app-next/.env</code>, then rebuild.</p>
+</div>
+<div class="blk wide">
+<p class="label">Next, with more time</p>
+<div class="trio">
+<div class="card neu"><h3>Reuse field names</h3><p>Make the model reuse the brief's existing labels. Fixes the one failing source.</p></div>
+<div class="card neu"><h3>A lead view</h3><p>One screen across all roles: who's behind, and on what.</p></div>
+<div class="card neu"><h3>Role primers</h3><p>A short primer when a recruiter meets an unfamiliar kind of role.</p></div>
+</div>
+</div>
+<div class="blk">
+<p class="fine">Full detail: <a href="README.md">README.md</a> (setup and commands) · <a href="DESIGN.md">DESIGN.md</a> (design and tradeoffs)</p>
+<p class="thanks">Thanks for reading. Happy to walk through any of it on a call.</p>
+</div>
+</section>
+</div>
+
+<dialog id="d-log" aria-labelledby="dl1"><div class="db"><button class="close" type="button" aria-label="Close">×</button><h2 id="dl1">Where each decision came from</h2>
+<ul><li>Every request and answer between me and the AI agents is logged in <code>prompts/</code>.</li><li>Decisions and their reasons are in <a href="knowledge/business.md">knowledge/business.md</a>, each linked to the message it came from.</li><li>Plans were reviewed by a second model (Codex) at plan, pre-merge and final gates. It failed my plan twice. The fixes made completion evidence-based, gated publishing on approval, and reviewed screenings against the brief as it was that day.</li><li>Prototypes I threw away are kept in <code>_work/</code>.</li></ul></div></dialog>
+
+<dialog id="d-changes" aria-labelledby="dl2"><div class="db"><button class="close" type="button" aria-label="Close">×</button><h2 id="dl2">The Changes tab</h2><p>Everything the client sent, and what it changed. A news item can arrive and change nothing; that's shown too.</p><img src="docs/readme-shots/changes.jpg" alt="Changes tab: timeline of the JD, kickoff call, an expansion news item with no change, and the budget email" loading="lazy"></div></dialog>
+
+<dialog id="d-arch" aria-labelledby="dl3"><div class="db"><button class="close" type="button" aria-label="Close">×</button><h2 id="dl3">All 7 stages</h2>
+<ul><li><b>Register:</b> the file is hashed; the original stays readable.</li><li><b>Extract:</b> the model returns JSON in a fixed shape, and every quote must appear word for word. One retry with the error, then it stops.</li><li><b>Propose:</b> a new version only for material changes; a budget change can't be marked "minor".</li><li><b>Bias screen:</b> "top-10 universities" or an age limit is shown as "not applied" and never filters anyone.</li><li><b>Learning:</b> confirm, study or review, by kind of change.</li><li><b>Screening review:</b> only after a client decision, against the brief as it was that day.</li><li><b>Publish:</b> invisible to the team until the lead approves.</li></ul>
+<p>Each stage has a check written before it runs, and the result is stored. A failure stops that email at that stage, visibly. The model sees only the current brief and the new email, never the whole history. Every AI call is traced in SQLite.</p></div></dialog>
+
+<dialog id="d-live" aria-labelledby="dl4"><div class="db"><button class="close" type="button" aria-label="Close">×</button><h2 id="dl4">What failed, and why</h2>
+<ul><li><b>Try 1:</b> the model copied <code>"weight?"</code> literally from my prompt. My offline tests couldn't catch it, because they replay perfect answers. I rewrote the prompt with two worked examples.</li><li><b>Tries 2–4:</b> small slips, like a quote that wasn't word for word or a missing field. One retry with the error message fixed most of them.</li><li><b>gpt-4o:</b> 11 to 12 of 13, varying run to run. On the best run, the one failure (a client rejection) uses different labels than the brief, so the review is correctly refused.</li><li>The live model finds fewer changes than my hand-written reference. That's why every proposal still goes to a person.</li></ul>
+<p>Full notes: <a href="_work/2026-11-08-nextjs-migration/live-baseline.claude.md">live baseline</a></p></div></dialog>
+
+<dialog id="d-zoom" aria-label="Screenshot"><div class="db"><button class="close" type="button" aria-label="Close">×</button><img id="zoomImg" alt=""></div></dialog>
+
+<script>
+(function(){
+var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+var $=function(id){return document.getElementById(id);};
+var prog=$('prog');
+addEventListener('scroll',function(){var h=document.documentElement;prog.style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight)*100)+'%';},{passive:true});
+var io=new IntersectionObserver(function(es){es.forEach(function(e){if(!e.isIntersecting)return;e.target.classList.add('in');if(e.target.id==='c1')calls();if(e.target.id==='c5')bars();io.unobserve(e.target);});},{threshold:.15});
+document.querySelectorAll('.rv').forEach(function(el){if(reduce)el.classList.add('in');io.observe(el);});
+
+function calls(){
+  document.querySelectorAll('#calls .call').forEach(function(col){
+    var items=[].slice.call(col.querySelectorAll('.ln')).concat([col.querySelector('.out')]);
+    items.forEach(function(el,i){setTimeout(function(){el.classList.add('show');},reduce?0:600+i*900);});
+  });
+}
+
+document.querySelectorAll('[data-open]').forEach(function(b){b.addEventListener('click',function(){$(b.dataset.open).showModal();});});
+document.querySelectorAll('dialog').forEach(function(d){
+  d.querySelector('.close').addEventListener('click',function(){d.close();});
+  d.addEventListener('click',function(e){if(e.target===d)d.close();});
+});
+document.querySelectorAll('[data-zoom]').forEach(function(img){img.tabIndex=0;img.setAttribute('role','button');
+  function open(){$('zoomImg').src=img.src;$('zoomImg').alt=img.alt;$('d-zoom').showModal();}
+  img.addEventListener('click',open);img.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();open();}});});
+
+var steps=document.querySelectorAll('#steps button'),mail=$('mail'),pF=$('pFound'),pB=$('pBrief'),pA=$('pAppr'),pT=$('pTeam'),f1=$('f1');
+var caps=[
+ 'An email from the founder arrives. Press Next.',
+ 'Read: the email is filed next to the current brief (v3). The AI sees only these two, never the whole history.',
+ 'Find what changed: the AI picks out two changes and the exact words behind each.',
+ 'Check: each quote must appear word for word in the email. Both do, so a v4 is proposed.',
+ 'Lead approves: nobody on the team sees v4 until Ana says yes.',
+ 'Team learns: everyone gets two "confirm" steps. A budget and a start date need a tick, not a lesson.'];
+var s=0,badMode=false;
+function render(){
+  badMode=false;
+  steps.forEach(function(el,i){el.className=i<s-1?'done':(i===s-1?'on':'');});
+  mail.classList.toggle('filed',s>=1);mail.classList.toggle('hl',s>=2);
+  pF.className='panel'+(s>=2?' on':'')+(s>=3?' checked':'');
+  pB.className='panel'+(s>=3?' on':'');
+  pA.className='panel'+(s>=4?' on approved':'');
+  pT.className='panel'+(s>=5?' on taught':'');
+  f1.classList.remove('bad');$('f1t').textContent='Budget: "up to €72k"';$('stop').classList.remove('show');
+  f1.querySelector('.x').style.display='none';f1.querySelector('.ok').style.display='';
+  $('cap').textContent=caps[s];
+  $('prev').disabled=s===0;$('next').disabled=s===5;$('next').textContent=s===5?'Done ✓':'Next →';
+}
+function bad(){
+  badMode=true;
+  steps.forEach(function(el,i){el.className=i<2?'done':(i===2?'fail':'');});
+  mail.classList.add('filed','hl');
+  pF.className='panel on checked';pB.className='panel';pA.className='panel';pT.className='panel';
+  f1.classList.add('bad');$('f1t').textContent='Budget: "around €70k"';
+  f1.querySelector('.ok').style.display='none';f1.querySelector('.x').style.display='';
+  $('stop').classList.add('show');
+  $('cap').textContent='The AI paraphrased: "around €70k" isn’t in the email. It gets one retry with the error. Still wrong, so it stops, and nothing reaches the team.';
+  $('next').disabled=true;$('prev').disabled=false;$('next').textContent='Next →';
+}
+var walk=null;
+function goTo(t){
+  clearInterval(walk);
+  if(badMode){badMode=false;s=0;render();}
+  if(reduce||t===s){s=t;render();return;}
+  walk=setInterval(function(){s+=t>s?1:-1;render();if(s===t)clearInterval(walk);},380);
+}
+steps.forEach(function(b){b.addEventListener('click',function(){goTo(+b.dataset.i);});});
+$('next').addEventListener('click',function(){clearInterval(walk);if(s<5){s++;render();}});
+$('prev').addEventListener('click',function(){clearInterval(walk);if(badMode){s=0;}else if(s>0){s--;}render();});
+$('bad').addEventListener('click',function(){clearInterval(walk);bad();});
+render();
+
+(function(){
+  var imgs=document.querySelectorAll('#reel img'),tabs=document.querySelectorAll('#reeltabs button'),cap=$('reelcap'),i=0,timer=null;
+  var caps=['Candidates by stage. Moving a card is never blocked.','The approved brief as tables, with what changed in the latest version.','Everything the client sent, and what each message changed.','What Ana needs to do now, and who on the team is up to date.'];
+  function show(n){i=n;imgs.forEach(function(im,k){im.classList.toggle('on',k===n);});tabs.forEach(function(t,k){t.classList.toggle('on',k===n);t.setAttribute('aria-pressed',k===n);});cap.textContent=caps[n];}
+  function start(){if(reduce)return;clearInterval(timer);timer=setInterval(function(){show((i+1)%imgs.length);},2600);}
+  tabs.forEach(function(t){t.addEventListener('click',function(){show(+t.dataset.i);start();});});
+  show(0);start();
+})();
+function bars(){document.querySelectorAll('#bars .fill').forEach(function(f,i){setTimeout(function(){f.style.width=(f.dataset.v/13*100)+'%';},reduce?0:200*i);});}
+})();
+</script>
+</body></html>

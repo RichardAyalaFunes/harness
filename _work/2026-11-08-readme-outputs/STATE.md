@@ -38,3 +38,14 @@ Removed the prototype banner. Chapter 5 now has a "What it took" block: 9-11 h, 
 
 ## Round 8 (2026-11-11)
 OpenAI cost corrected to < $0.10 (owner read it from OpenAI). Chapter 3 tabs restyled as text with an underline for the selected one. All buttons: no square tap highlight, no focus ring on mouse click (kept for keyboard), soft press scale instead.
+
+## Round 9 (2026-11-11)
+Opening is a full-screen hero: "Are your recruiters screening for the right thing?" plus the owner's line (agent-shortened). Chapter 2 ("Four times I changed course") removed by owner decision; its decisions moved to chapter 1 (review the recruiter, not the candidate), chapter 2 card (never block) and the chapter 5 table (role first). Five chapters.
+
+## Round 10 (2026-11-11) final
+- Video reference removed (owner: no video). Placeholders removed; tests filled as 185 (160 unit + 16 integration + 9 e2e, from README/DESIGN).
+- Claude cost: ~$84 at list prices over every Claude Code transcript of this workspace (4 worktree chats + subagents + peer runs; 958 API calls, ~256M tokens, of which ~250M cache reads, ~1.1M output). Codex not included. Page shows "≈ $85". Earlier chats run from the main checkout / business-discovery worktree have no transcripts on disk, so they are not counted.
+- Cross-check vs README/DESIGN: gpt-4o shown as 11-12/13 (was 12/13; README/DESIGN and P7 smoke say 11-12); live-model setup now names HARNESS_MODEL=openai and app-next/.env; README "least reliable source" reworded per owner ("JD is not unreliable").
+- Screenshots retaken from the current Next.js production build (4 tabs, study, review, team, changes).
+- Promoted to root readme.html with images in docs/readme-shots/; README/DESIGN links added near the end. All local links resolve; no console errors; no horizontal overflow at 375px.
+- Not done: Codex review of the final presentation (final gate was on the app/docs, not this page).

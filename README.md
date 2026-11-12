@@ -7,7 +7,7 @@
 - turns each approved change into a short learning step for every recruiter on the search;
 - records every AI call (input, output, prompt version, tokens, checks) as a trace in SQLite.
 
-**Who it's for.** Recruiters and account leads at an agency serving small companies (up to about 100 people). For them the job description is the least reliable source: the real criteria arrive later, in a kickoff call, a founder's email or a rejection.
+**Who it's for.** Recruiters and account leads at an agency serving small companies (up to about 100 people). For them the job description is only the starting point: the criteria that decide a hire keep arriving later, in a kickoff call, a founder's email or a rejection.
 
 The candidate brief is in [RadHires Harness Challenge (Candidate Brief).md](RadHires%20Harness%20Challenge%20%28Candidate%20Brief%29.md). The design document is [DESIGN.md](DESIGN.md), and [readme.html](readme.html) is the presentation.
 

@@ -173,7 +173,6 @@ dialog img{border-radius:12px;border:1px solid var(--line)}
 <li class="rec"><a href="#c5"><span class="n">4</span><span class="t"><b>How I know it works</b><small>Live model results, what's stubbed</small></span><span class="meta"><span class="star">Recommended</span><span class="time">1 min</span></span></a></li>
 <li><a href="#c6"><span class="n">5</span><span class="t"><b>What I left out, and how to run it</b><small>Stack, tradeoffs, commands</small></span><span class="meta"><span class="time">reference</span></span></a></li>
 </ol>
-<p class="tocnote">Video walkthrough: <span class="ph">link pending</span></p>
 </header>
 
 <section class="glass rv" id="c1" aria-labelledby="h1x">
@@ -414,7 +413,7 @@ After the board meeting we need to be more careful with spend. For the Senior Ba
 <div class="bar"><span class="lab">gpt-4o-mini · try 1<small>first prompt</small></span><span class="bg"><span class="fill" data-v="1"></span></span><span class="v">1/13</span></div>
 <div class="bar"><span class="lab">gpt-4o-mini · try 2<small>added examples</small></span><span class="bg"><span class="fill" data-v="6"></span></span><span class="v">6/13</span></div>
 <div class="bar"><span class="lab">gpt-4o-mini · try 4<small>one retry on errors</small></span><span class="bg"><span class="fill" data-v="8"></span></span><span class="v">8/13</span></div>
-<div class="bar best"><span class="lab">gpt-4o<small>same harness</small></span><span class="bg"><span class="fill" data-v="12"></span></span><span class="v">12/13</span></div>
+<div class="bar best"><span class="lab">gpt-4o<small>same harness</small></span><span class="bg"><span class="fill" data-v="12"></span></span><span class="v">11–12/13</span></div>
 </div>
 <button class="more" type="button" data-open="d-live">What failed in the live runs, and why</button>
 </div>
@@ -424,16 +423,16 @@ After the board meeting we need to be more careful with spend. For the Senior Ba
 <div class="blk wide">
 <p class="label">What it took</p>
 <div class="trio nums">
-<div class="card neu num"><div class="big">9–11 h</div><p>From deciding what to build to this presentation and the video.</p></div>
+<div class="card neu num"><div class="big">9–11 h</div><p>From deciding what to build to this presentation.</p></div>
 <div class="card neu num"><div class="big">&lt; $0.10</div><p>OpenAI tokens for every live run and test of the app.</p></div>
-<div class="card neu num"><div class="big">$65–75</div><p>Claude tokens used to build it with an AI assistant, at list prices.</p></div>
+<div class="card neu num"><div class="big">≈ $85</div><p>Claude tokens used to build it with an AI assistant, at list prices.</p></div>
 </div>
-<p class="fine">Estimates from usage logs, not a bill. Not counted yet: second-model review calls and the work still to come. <span class="ph">provisional</span></p>
+<p class="fine">Estimates from usage logs at list prices, not a bill. Claude covers every chat in this workspace, including review calls; Codex review calls are not included.</p>
 </div>
 <div class="blk wide">
 <p class="label">Honest status</p>
 <div class="pair">
-<div class="card ok"><h3>Real</h3><p>The checked pipeline, lead approval, bias flags, learning steps, team progress, live OpenAI path, tracing, <span class="ph">N</span> tests.</p></div>
+<div class="card ok"><h3>Real</h3><p>The checked pipeline, lead approval, bias flags, learning steps, team progress, live OpenAI path, tracing, 185 automated tests.</p></div>
 <div class="card lim"><h3>Stubbed or limited</h3><p>Synthetic data. The demo replays recorded answers by default. The live model finds fewer changes than my reference. One demo user.</p></div>
 <div class="card neu full"><h3>Least sure about</h3><p>Whether my rules for "how big is this change" match a real lead's judgment.</p></div>
 </div>
@@ -465,7 +464,7 @@ After the board meeting we need to be more careful with spend. For the Senior Ba
 pnpm install
 pnpm harness rebuild
 pnpm dev            # http://localhost:3000</pre>
-<p class="runnote">Node 24.12+ and pnpm. For the live model, set <code>OPENAI_API_KEY</code> and <code>OPENAI_MODEL=gpt-4o</code> in <code>.env</code>.</p>
+<p class="runnote">Node 24.12+ and pnpm. For the live model, set <code>OPENAI_API_KEY</code>, <code>OPENAI_MODEL=gpt-4o</code> and <code>HARNESS_MODEL=openai</code> in <code>app-next/.env</code>, then rebuild.</p>
 </div>
 <div class="blk wide">
 <p class="label">Next, with more time</p>
@@ -476,6 +475,7 @@ pnpm dev            # http://localhost:3000</pre>
 </div>
 </div>
 <div class="blk">
+<p class="fine">Full detail: <a href="../../README.md">README.md</a> (setup and commands) · <a href="../../DESIGN.md">DESIGN.md</a> (design and tradeoffs)</p>
 <p class="thanks">Thanks for reading. Happy to walk through any of it on a call.</p>
 </div>
 </section>
@@ -491,7 +491,7 @@ pnpm dev            # http://localhost:3000</pre>
 <p>Each stage has a check written before it runs, and the result is stored. A failure stops that email at that stage, visibly. The model sees only the current brief and the new email, never the whole history. Every AI call is traced in SQLite.</p></div></dialog>
 
 <dialog id="d-live" aria-labelledby="dl4"><div class="db"><button class="close" type="button" aria-label="Close">×</button><h2 id="dl4">What failed, and why</h2>
-<ul><li><b>Try 1:</b> the model copied <code>"weight?"</code> literally from my prompt. My offline tests couldn't catch it, because they replay perfect answers. I rewrote the prompt with two worked examples.</li><li><b>Tries 2–4:</b> small slips, like a quote that wasn't word for word or a missing field. One retry with the error message fixed most of them.</li><li><b>gpt-4o:</b> 12 of 13. The one failure (a client rejection) uses different labels than the brief, so the review is correctly refused.</li><li>The live model finds fewer changes than my hand-written reference. That's why every proposal still goes to a person.</li></ul>
+<ul><li><b>Try 1:</b> the model copied <code>"weight?"</code> literally from my prompt. My offline tests couldn't catch it, because they replay perfect answers. I rewrote the prompt with two worked examples.</li><li><b>Tries 2–4:</b> small slips, like a quote that wasn't word for word or a missing field. One retry with the error message fixed most of them.</li><li><b>gpt-4o:</b> 11 to 12 of 13, varying run to run. On the best run, the one failure (a client rejection) uses different labels than the brief, so the review is correctly refused.</li><li>The live model finds fewer changes than my hand-written reference. That's why every proposal still goes to a person.</li></ul>
 <p>Full notes: <a href="_work/2026-11-08-nextjs-migration/live-baseline.claude.md">live baseline</a></p></div></dialog>
 
 <dialog id="d-zoom" aria-label="Screenshot"><div class="db"><button class="close" type="button" aria-label="Close">×</button><img id="zoomImg" alt=""></div></dialog>
